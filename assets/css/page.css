@@ -1,4 +1,3 @@
-/*!normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css*/
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -2054,7 +2053,7 @@ li {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background: url(/assets/img/home/background.jpeg);
+  background: url(https://daanrox.github.io/subway-pay/assets/img/home/background.jpeg);
   color: #fff;
   text-align: center;
 }
@@ -2062,7 +2061,7 @@ li {
   height: auto;
   min-height: 100vh;
   padding: 130px 24px;
-  background: url(/assets/img/home/background.jpeg);
+  background: url(https://daanrox.github.io/subway-pay/assets/img/home/background.jpeg);
   color: #000;
 }
 .hero-heading {
