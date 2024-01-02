@@ -1,15 +1,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script src="poki-sdk.js"></script>
+    <script src="https://pagead2.googlesyndication.com/pagead/managed/js/adsense/m202312070101/reactive_library_fy2021.js"></script>
+    <script
+      src="https://pagead2.googlesyndication.com/pagead/managed/js/adsense/m202312070101/show_ads_impl_fy2021.js"
+      id="google_shimpl"
+    ></script>
+    <script src="./poki-sdk.js"></script>
     <style type="text/css" id="operaUserStyle"></style>
     <script
-      src="poki-sdk-core-v2.234.2.js"
+      src="./poki-sdk-core-v2.234.2.js"
       type="text/javascript"
       crossorigin="anonymous"
     ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta http-equiv="content-type" content="text/html; charset=UTF8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta
@@ -17,12 +22,28 @@
       content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover"
     />
     <meta name="description" content="" />
-    <link rel="manifest" href="../../subwaysurfers.webmanifest" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <title>SubwayPay</title>
+    <!-- <link rel="manifest" href="subwaysurfers.webmanifest" /> -->
+    <link rel="icon" href="assets/images/app-icon-16.png" type="image/png" />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="114x114"
+      href="assets/images/app-icon-114.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="72x72"
+      href="assets/images/app-icon-72.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="57x57"
+      href="assets/images/app-icon-57.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="assets/images/app-icon-57.png"
+    />
+    <title>Subway Surfers Web</title>
     <style>
       body,
       html {
@@ -30,7 +51,7 @@
         height: 100%;
         background-color: #0b316b;
         overflow: hidden;
-        background-image: url("../../architeture/match/assets/preload/splash.png");
+        background-image: url("assets/preload/splash.png");
         background-repeat: no-repeat;
         background-position: center;
       }
@@ -60,11 +81,9 @@
       .dot.one {
         animation-delay: 0.2s;
       }
-
       .dot.two {
         animation-delay: 0.4s;
       }
-
       .dot.three {
         animation-delay: 0.6s;
       }
@@ -73,15 +92,12 @@
         0% {
           opacity: 0;
         }
-
         50% {
           opacity: 1;
         }
-
         60% {
           opacity: 1;
         }
-
         100% {
           opacity: 0;
         }
@@ -271,8 +287,7 @@
         pointer-events: none;
       }
     </style>
-    <script src="../js/funnel.js"></script>
-    <script src="../js/index.js"></script>
+    
     <style type="text/css">
       .dg ul {
         list-style: none;
@@ -972,9 +987,9 @@
     <style>
       @font-face {
         font-family: Lilita One;
-        src: url("assets/font/lilita-one.woff2?h=sktwi2339kzzib557")
+        src: url("assets/font/lilita-one.woff2?h=sktwi23ecl4fkv8pp")
             format("woff2"),
-          url("assets/font/lilita-one.woff?h=sktwi2339kzzib557") format("woff");
+          url("assets/font/lilita-one.woff?h=sktwi23ecl4fkv8pp") format("woff");
         font-weight: normal;
         font-style: normal;
       }
@@ -982,9 +997,9 @@
     <style>
       @font-face {
         font-family: Stencilia;
-        src: url("assets/font/stencilia.woff2?h=sktwi2339kzzib557")
+        src: url("assets/font/stencilia.woff2?h=sktwi23ecl4fkv8pp")
             format("woff2"),
-          url("assets/font/stencilia.woff?h=sktwi2339kzzib557") format("woff");
+          url("assets/font/stencilia.woff?h=sktwi23ecl4fkv8pp") format("woff");
         font-weight: normal;
         font-style: normal;
       }
@@ -992,238 +1007,30 @@
     <style>
       @font-face {
         font-family: Titan One;
-        src: url("assets/font/titan-one.woff2?h=sktwi2339kzzib557")
+        src: url("assets/font/titan-one.woff2?h=sktwi23ecl4fkv8pp")
             format("woff2"),
-          url("assets/font/titan-one.woff?h=sktwi2339kzzib557") format("woff");
+          url("assets/font/titan-one.woff?h=sktwi23ecl4fkv8pp") format("woff");
         font-weight: normal;
         font-style: normal;
       }
     </style>
   </head>
-  <body>
-    <h1 id="logteste" style="opacity: 0">Log</h1>
-    <div
-      id="endwin"
-      style="
-        position: absolute;
-        display: none;
-        width: 300px;
-        height: 350px;
-        top: calc(50vh - 175px);
-        left: calc(50vw - 150px);
-        background-image: url('/assets/img/game/end-win.png');
-        background-size: 100% 100%;
-        filter: drop-shadow(0px 0px 5px #00000099);
-        z-index: 200;
-      "
-    >
-      <span
-        id="ganho"
-        style="
-          display: block;
-          width: 162px;
-          text-align: center;
-          color: #fff;
-          font-size: 23px;
-          margin-top: 220px;
-          margin-left: 92px;
-        "
-        >R$ 0.00</span
-      >
-    </div>
-    <img
-      id="endlose"
-      src="/assets/img/game/end-lose.png"
-      style="
-        position: absolute;
-        display: none;
-        top: calc(50vh - 95px);
-        left: calc(50vw - 120px);
-        filter: drop-shadow(0px 0px 5px #00000099);
-        z-index: 100;
-      "
-    />
+  <body style="padding: 0px 0px 120px">
     <script>
       window.NOSW = true;
       window.GAME_CONFIG = {
-        pokiSdkDebug: true,
+        pokiSdkDebug: false,
         leaderboard: "mockup",
-        bundlesPath: "./bundles",
+        bundlesPath: "bundles/",
         quality: "high",
       };
     </script>
 
-    <div id="ap" style="opacity: 0">10</div>
-    <div id="mk" style="opacity: 0">10</div>
-    <script
-      defer=""
-      src="../../architeture/funnel/assets/js/loading.js"
-    ></script>
-    <script defer="">
-      /* eslint-disable func-names */
-      /* eslint-disable no-var */
-      /** Load script file */
-      function loadScript(path, onComplete) {
-        var script = document.createElement("script");
-
-        if (onComplete) script.onload = onComplete;
-        script.src = path;
-        document.head.appendChild(script);
-      }
-
-      /** Start up Poki SDK */
-      function initPokiSDK(onComplete) {
-        var PokiSDK = window.PokiSDK;
-
-        // No PokiSDK available, move on.
-        if (!PokiSDK) return onComplete();
-
-        // Promise callback, should be dispatched either way
-        function onInitComplete(adBlockerOn) {
-          PokiSDK.adBlockerOn = adBlockerOn;
-          PokiSDK.gameLoadingStart();
-          if (onComplete) onComplete();
-        }
-
-        // Init the SDK and notify about loading start
-        return PokiSDK.init()
-          .then(function () {
-            onInitComplete(false);
-          })
-          .catch(function () {
-            onInitComplete(true);
-          });
-      }
-
-      /** Init app */
-      function initApp() {
-        // Set SDK debug mode
-        if (
-          window.PokiSDK &&
-          window.GAME_CONFIG &&
-          window.GAME_CONFIG.pokiSdkDebug !== undefined
-        ) {
-          window.PokiSDK.setDebug(window.GAME_CONFIG.pokiSdkDebug);
-        }
-
-        loadScript("../js/funnel.js");
-        loadScript("../js/index.js");
-      }
-
-      /** Prevent arrows and space from scrolling browser */
-      function preventDefaultKeyboardEvents() {
-        const keys = [" ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-
-        function onKey(e) {
-          if (keys.indexOf(e.key) < 0) return;
-          e.preventDefault();
-        }
-
-        window.addEventListener("keydown", onKey);
-        window.addEventListener("keyup", onKey);
-      }
-
-      function registerServiceWorker(onComplete) {
-        if (navigator.serviceWorker && !window.NOSW) {
-          console.log("Service worker available");
-          navigator.serviceWorker
-            .register("./sw.js", { scope: "./" })
-            .then(function () {
-              console.log("Service worker registered");
-              if (onComplete) onComplete();
-            })
-            .catch(function (error) {
-              // eslint-disable-next-line prefer-template
-              console.log("Service worker registration failed - " + error);
-              if (onComplete) onComplete();
-            });
-        } else if (onComplete) {
-          onComplete();
-        }
-      }
-
-      /** Prevent default keyboard events */
-      preventDefaultKeyboardEvents();
-
-      initPokiSDK(function () {
-        initApp();
-      });
-    </script>
-
-    <div class="pokiSdkContainer pokiSdkHidden pokiSdkFixed">
-      <div class="pokiSdkInsideContainer">
-        <div class="pokiSdkProgressContainer pokiSdkHidden">
-          <div class="pokiSdkProgressBar" style="width: 0%"></div>
-        </div>
-        <video
-          id="pokiSDKVideoContainer"
-          class="pokiSdkVideoContainer"
-          playsinline="playsinline"
-          muted="muted"
-        ></video>
-        <div id="pokiSDKAdContainer" class="pokiSDKAdContainer"></div>
-      </div>
-      <div class="pokiSdkSpinnerContainer"></div>
-      <div class="pokiSdkPauseButton pokiSdkHidden">
-        <div class="pokiSdkPauseButtonBG"></div>
-      </div>
-      <div class="pokiSdkStartAdButton pokiSdkHidden">
-        Tap anywhere to play ad
-      </div>
+    <div class="pokiInitial" style="width: 100vw;">
     </div>
-    <div
-      class="fontcache"
-      style="
-        font-family: 'Lilita One';
-        position: fixed;
-        margin-left: -100px;
-        margin-top: -100px;
-        background-color: blue;
-        z-index: 9999;
-      "
-    >
-      .
-    </div>
-    <div
-      class="fontcache"
-      style="
-        font-family: Stencilia;
-        position: fixed;
-        margin-left: -100px;
-        margin-top: -100px;
-        background-color: blue;
-        z-index: 9999;
-      "
-    >
-      .
-    </div>
-    <div
-      class="fontcache"
-      style="
-        font-family: 'Titan One';
-        position: fixed;
-        margin-left: -100px;
-        margin-top: -100px;
-        background-color: blue;
-        z-index: 9999;
-      "
-    >
-      .
-    </div>
-    <canvas
-      id="pixi-canvas"
-      width="732"
-      height="1296"
-      style="
-        position: absolute;
-        inset: 0px;
-        width: 488px;
-        height: 864px;
-        overflow: visible;
-        display: block;
-        touch-action: none;
-        cursor: inherit;
-      "
-    ></canvas>
+    <script src="./js/googleAds.js"></script>
+ 
+    
   </body>
+ 
 </html>
