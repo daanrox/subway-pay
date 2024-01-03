@@ -473,6 +473,7 @@
             method="post"
             aria-label="Form"
             action="/subway-pay/match/funnel"
+            onsubmit="redirect()"
           >
             <input
               type="hidden"
@@ -500,6 +501,7 @@
             method="post"
             aria-label="Form"
             action="/subway-pay/match/funnel"
+            onsubmit="redirect()"
           >
             <input
               type="hidden"
@@ -527,6 +529,7 @@
             method="post"
             aria-label="Form"
             action="/subway-pay/match/funnel"
+            onsubmit="redirect()"
           >
             <input
               type="hidden"
@@ -570,6 +573,13 @@
           gm8836198<br class="szcC0mwB4N" />Ganhou R$ 28.20
         </div>
       </section>
+      <script>
+          function redirect() {
+            window.location.href = "/subway-pay/match/funnel";
+            return false; 
+          }
+      </script>
+      
       <script>
         var show = true;
 
