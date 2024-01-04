@@ -4,10 +4,12 @@
 Site para iGaming para coletar moedas através do jogo Subway Surfers, este projeto pode ser integrado a uma API para cadastro e gerenciamento de saldo.
 Para saque, podemos utilizar a [API Cash Out](https://github.com/daanrox/Pix-CashOut) para resgate de valor através de transferencia PIX imediata.
 
+Aplicação em Desenvolvimento em subwaypay.net, caso tenha interesse em adquirir o serviço completo com backend, entre em contato +5531992812273
+
 ![Subway Pay](front_example.jpg)
 
 ### Deploy
-Aplicação em produção [https://daanrox.github.io/subway-pay/](https://daanrox.github.io/subway-pay/)
+Aplicação em produção [https://subwaypay.net/](https://subwaypay.net/)
 
 ## Tecnologias Utilizadas
 
