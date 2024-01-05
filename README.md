@@ -9,7 +9,7 @@ Aplicação em Desenvolvimento em subwaypay.net, caso tenha interesse em adquiri
 ![Subway Pay](front_example.jpg)
 
 ### Deploy
-Aplicação em produção [https://subwaypay.net/](https://subwaypay.net/)
+Aplicação em produção [https://lucroapp.shop](https://lucroapp.shop)
 
 ## Tecnologias Utilizadas
 
