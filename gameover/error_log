@@ -1,0 +1,2 @@
+[08-Jan-2024 12:02:12 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/betia/subway/gameover/loss.php:53) in /home/betia/subway/gameover/loss.php on line 58
+[08-Jan-2024 12:09:28 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/betia/subway/gameover/loss.php:56) in /home/betia/subway/gameover/loss.php on line 103
