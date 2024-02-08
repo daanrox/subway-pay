@@ -4,7 +4,9 @@
 Site para iGaming para coletar moedas através do jogo Subway Surfers, este projeto pode ser integrado a uma API para cadastro e gerenciamento de saldo.
 Para saque, podemos utilizar a [API Cash Out](https://github.com/daanrox/Pix-CashOut) para resgate de valor através de transferencia PIX imediata.
 
-Aplicação 100% funcional, caso tenha interesse em adquirir o serviço completo com backend, entre em contato +5531992812273
+Para um melhor desempenho, utilize a hospedagem na Hostinger, através deste link: [https://hostinger.com.br](https://hostinger.com.br?REFERRALCODE=1DANIEL1306)
+
+Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
 ![Subway Pay](front_example.jpg)
 
