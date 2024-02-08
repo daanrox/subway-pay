@@ -7,7 +7,7 @@ Para um melhor desempenho, utilize a hospedagem na Hostinger, através deste lin
 
 Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
-![Subway Pay](front_example.jpg)
+![Subway Pay](front_example2.jpg)
 
 ### Deploy
 Aplicação em produção [https://lucroapp.shop](https://lucroapp.shop)
