@@ -144,7 +144,7 @@ body {
                       ></span>
                     </div>
                     <input
-                      type="text"
+                      type="email"
                       class="form-control form-control-lg"
                       placeholder="Email"
                       aria-label="Email"
