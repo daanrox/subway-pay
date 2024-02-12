@@ -37,7 +37,7 @@ CREATE TABLE `admlogin` (
 --
 
 INSERT INTO `admlogin` (`email`, `senha`) VALUES
-('admin', 'admin123@');
+('admin@admin.com', 'admin123@');
 
 -- --------------------------------------------------------
 
