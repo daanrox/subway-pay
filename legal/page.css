@@ -1924,7 +1924,7 @@ li{
     display:-ms-flexbox;
     display:flex
 }
-.hero-section{position:relative;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;overflow:hidden;height:100vh;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;background-image: url(https://res.cloudinary.com/dpqjdd8gi/image/upload/v1706018199/grola5tpr3aqyifcbk27.png);background-size: cover;background-position: center;background-repeat: no-repeat;color:#fff;text-align:center}.hero-section.dark{height:auto;min-height:100vh;padding:130px 24px;background-color:#1fbffe;color:#000}
+.hero-section{position:relative;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;overflow:hidden;height:100vh;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;background-image: url(https://i.postimg.cc/0yXSG9g3/background-1.jpg);background-size: cover;background-position: center;background-repeat: no-repeat;color:#fff;text-align:center}.hero-section.dark{height:auto;min-height:100vh;padding:130px 24px;background-color:#1fbffe;color:#000}
 .hero-heading{
     position:relative;
     z-index:1;

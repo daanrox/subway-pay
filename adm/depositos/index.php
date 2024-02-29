@@ -2,11 +2,11 @@
 session_start();
 
 if (!isset($_SESSION['emailadm'])) {
-    header("Location: login");
+    header("Location: ../login");
     exit();
 }
 
-include './../../conectarbanco.php';
+include '../../conectarbanco.php';
 
 $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
 
@@ -15,47 +15,6 @@ $sql = "SELECT * FROM app";
 $result2 = $conn->query($sql);
 $result = $result2->fetch_assoc();
 
-// Consulta para obter a quantidade de depósitos
-$sqlTotalDepositos = "SELECT COUNT(*) AS total_depositos FROM confirmar_deposito WHERE status = 'PAID_OUT'";
-$resultTotalDepositos = $conn->query($sqlTotalDepositos);
-$rowTotalDepositos = $resultTotalDepositos->fetch_assoc();
-$qtdDepositos = $rowTotalDepositos['total_depositos'];
-
-// Consulta para obter a soma da coluna valor de todos os depósitos com status PAID_OUT
-$sqlSomaValorDepositos = "SELECT SUM(valor) AS soma_valor_depositos FROM confirmar_deposito WHERE status = 'PAID_OUT'";
-$resultSomaValorDepositos = $conn->query($sqlSomaValorDepositos);
-$rowSomaValorDepositos = $resultSomaValorDepositos->fetch_assoc();
-$somaValorDepositos = $rowSomaValorDepositos['soma_valor_depositos'];
-
-if(isset($somaValorDepositos) && !empty($somaValorDepositos)) {
-    // Formate o valor para duas casas decimais
-    $somaValorDepositosFormatado = number_format($somaValorDepositos, 2, ',', '.');
-    // Adicione o símbolo "R$" ao valor formatado
-    $somaValorDepositosFormatadoComSimbolo = 'R$ ' . $somaValorDepositosFormatado;
-} else {
-    // Defina um valor padrão se $somaValorDepositos não estiver definido ou for vazio
-    $somaValorDepositosFormatadoComSimbolo = 'R$ 0,00';
-}
-
-
-$sqlTotalSaques = "SELECT COUNT(*) AS total_saques FROM (
-                    SELECT 1 FROM saques WHERE status = 'aprovado'
-                    UNION ALL
-                    SELECT 1 FROM saque_afiliado WHERE status = 'aprovado'
-                  ) AS saques_aprovados";
-$resultTotalSaques = $conn->query($sqlTotalSaques);
-$rowTotalSaques = $resultTotalSaques->fetch_assoc();
-$totalSaques = $rowTotalSaques['total_saques'];
-
-// Valor Total de Saques (soma dos valores)
-$sqlValorTotalSaques = "SELECT SUM(valor) AS valor_total_saques FROM (
-                         SELECT valor FROM saques WHERE status = 'aprovado'
-                         UNION ALL
-                         SELECT valor FROM saque_afiliado WHERE status = 'aprovado'
-                       ) AS valores_saques_aprovados";
-$resultValorTotalSaques = $conn->query($sqlValorTotalSaques);
-$rowValorTotalSaques = $resultValorTotalSaques->fetch_assoc();
-$valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
 
 ?>
 
@@ -164,7 +123,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
             <div class="col-md-12 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
                     <div class="box bg-danger text-center">
-                        <h1 class="font-light text-white" id="valorUsuarios00"><?php echo $qtdDepositos; ?></h1>
+                        <h1 class="font-light text-white" id="valorUsuarios1">0</h1>
                         <h4 class="text-white">Nº de Depósitos</h4>
                     </div>
                 </div>
@@ -183,7 +142,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
             <div class="col-md-12 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
                     <div class="box bg-danger text-center">
-                        <h1 class="font-light text-white" id="valorUsuarios5"><?php echo $somaValorDepositosFormatadoComSimbolo; ?></h1>
+                        <h1 class="font-light text-white" id="valorUsuarios5">0</h1>
                         <h4 class="text-white">Valor Total Depositado</h4>
                     </div>
                 </div>
@@ -526,10 +485,5 @@ function saveFile(blob, filename) {
        ****************************************/
       $("#zero_config").DataTable();
     </script>
-    <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
-      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
-        <div class="rwb-tooltip">Entre em contato!</div>
-        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
-      </a>
   </body>
 </html>

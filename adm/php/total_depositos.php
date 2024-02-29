@@ -15,11 +15,9 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $total = $row["total"]; // Armazena o total sem formatar
-    $total_formatado = number_format($total, 2, ',', '.'); // Formata o total com duas casas decimais
-    echo "R$ " . $total_formatado; // Exibe o total formatado com "R$ "
+    echo "R$ " . $row["total"]; // Adiciona "R$ " antes do valor
 } else {
-    echo "R$ 0,00"; // Adiciona "R$ " antes de 0 se nenhum resultado for encontrado
+    echo "R$ 0"; // Adiciona "R$ " antes de 0 se nenhum resultado for encontrado
 }
 
 $conn->close();

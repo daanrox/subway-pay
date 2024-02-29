@@ -15,12 +15,6 @@ $sql = "SELECT * FROM app";
 $result2 = $conn->query($sql);
 $result = $result2->fetch_assoc();
 
-// Consulta para obter a quantidade de depósitos
-$sqlTotalDepositos = "SELECT COUNT(*) AS total_depositos FROM confirmar_deposito WHERE status = 'PAID_OUT'";
-$resultTotalDepositos = $conn->query($sqlTotalDepositos);
-$rowTotalDepositos = $resultTotalDepositos->fetch_assoc();
-$qtdDepositos = $rowTotalDepositos['total_depositos'];
-
 $sqlTotalSaques = "SELECT COUNT(*) AS total_saques FROM (
                     SELECT 1 FROM saques WHERE status = 'aprovado'
                     UNION ALL
@@ -219,7 +213,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
       
             <li class="sidebar-item p-3">
             <a
-              href="https://api.whatsapp.com/send?phone=+5531992812273&text=Olá%20preciso%20de%20ajuda"
+              href="https://api.whatsapp.com/send?phone=+5584999445239&text=Olá%20preciso%20de%20ajuda"
               target="_blank"
               class="
                 w-100
@@ -270,18 +264,17 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
           <!-- ============================================================== -->
           <div class="row">
 
-
-<div class="col-md-6 col-lg-3 col-xlg-3">
-  <div class="card card-hover">
-    <div class="box bg-success text-center">
-      <h1 class="font-light text-white">
-        <i class="mdi mdi-arrow-down-bold"></i>
-      </h1>
-      <h4 class="text-white" id="valorUsuarios5"><?php echo $qtdDepositos; ?></h4>
-      <h6 class="text-white">Depósitos</h6>
-    </div>
-  </div>
-</div>
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+              <div class="card card-hover">
+                <div class="box bg-success text-center">
+                  <h1 class="font-light text-white">
+                    <i class="mdi mdi-arrow-down-bold"></i>
+                  </h1>
+                  <h4 class="text-white" id="valorUsuarios4">0</h4>
+                  <h6 class="text-white">Depósitos</h6>
+                </div>
+              </div>
+            </div>
 
 
 
@@ -772,11 +765,5 @@ if ($conn->connect_error) {
     <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="dist/js/pages/chart/chart-page-init.js"></script>
-    
-     <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
-      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
-        <div class="rwb-tooltip">Entre em contato!</div>
-        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
-      </a>
   </body>
 </html>

