@@ -183,7 +183,7 @@ $conn->close();
 <meta property="og:image" content="../img/logo.png">
 <meta content="<?= $nomeUnico ?> 🌊" property="og:title">
 <meta name="twitter:image" content="../img/logo.png">
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <link href="arquivos/page.css" rel="stylesheet" type="text/css">
 

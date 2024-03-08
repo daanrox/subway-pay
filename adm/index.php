@@ -42,7 +42,7 @@ $result = $result2->fetch_assoc();
     />
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Dashboard</title>
- 
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <link
       rel="icon"
       type="image/png"

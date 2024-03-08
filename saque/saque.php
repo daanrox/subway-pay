@@ -391,7 +391,7 @@ $conn->close();
     </style>
 
     <meta charset="pt-br">
-
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <title>SubwayPay 🌊 </title>
 
     <meta property="og:image" content="../img/logo.png">

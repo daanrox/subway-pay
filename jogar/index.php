@@ -194,7 +194,7 @@ include './../config.php';
     </div>
     <script src="js/loading.js"></script>
     <script src="js/boot.js?v=<?php echo time(); ?>"></script>
-    <!--<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>-->
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 </body>
 
 </html>

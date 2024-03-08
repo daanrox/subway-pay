@@ -157,7 +157,7 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
     };
 </script>
 
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <script type="text/javascript">
         WebFont.load({
             google: {

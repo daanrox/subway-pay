@@ -266,7 +266,7 @@ $conn->close();
 <a href="../cadastrar/" class="button nav w-button w--current">Cadastrar</a>
 </nav>
 
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 
 
 

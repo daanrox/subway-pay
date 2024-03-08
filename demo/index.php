@@ -20,6 +20,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/images/app-icon-57.png">
     <link rel="apple-touch-icon-precomposed" href="assets/images/app-icon-57.png">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <meta name="robots" content="noindex,nofollow" />
     <title>Subway Surfers Web</title>
     <style>

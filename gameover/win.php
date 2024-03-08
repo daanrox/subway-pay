@@ -212,7 +212,7 @@ $conn->close();
     </script>
 
 
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="../img/logo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./img/logo.png">

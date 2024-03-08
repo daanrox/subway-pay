@@ -90,7 +90,7 @@ $conn->close();
 </nav>
 
 
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 
 
 

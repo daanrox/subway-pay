@@ -1,4 +1,5 @@
 <aside class="left-sidebar" data-sidebarbg="skin5">
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <!-- Sidebar scroll-->
     <div class="scroll-sidebar">
       <!-- Sidebar navigation-->

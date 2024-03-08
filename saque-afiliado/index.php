@@ -179,7 +179,7 @@ $conn->close();
 <a href="../logout.php" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
 <a href="../deposito/" class="button nav w-button">Depositar</a>
 </nav>
-
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 
 
 
