@@ -181,7 +181,7 @@ $saldo = 10
                 <form data-name="" id="auth" method="post" aria-label="Form" action="jogoteste">
                     <div class="">
                         <?php if ($jogo_demo > 0): ?>
-                            <input type="submit" value="Iniciar Jogo" class="botao-jogar"><br><br>
+                            <input type="submit" value="Iniciar Jogo" class="botao-jogar" style='cursor: pointer'><br><br>
                         <?php else: ?>
                             <p>Todas as tentativas foram usadas.</p>
                         <?php endif; ?>

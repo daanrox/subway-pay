@@ -1,20 +1,15 @@
 <?php
 session_start();
 
+// Verificar se a sessão existe
 if (!isset($_SESSION['emailadm'])) {
+    // Sessão não existe, redirecionar para outra página
     header("Location: ../login");
     exit();
 }
 
-include '../../conectarbanco.php';
-
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-$sql = "SELECT * FROM app";
-$result2 = $conn->query($sql);
-$result = $result2->fetch_assoc();
-
+// O restante do código da sua página continua aqui
+// ...
 
 ?>
 
@@ -61,7 +56,12 @@ $result = $result2->fetch_assoc();
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Dashboard</title>
  
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://daanrox.com/assets/image/rox-footer.png"
+    />
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -92,21 +92,32 @@ $result = $result2->fetch_assoc();
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
-
+            <!-- ============================================================== -->
+            <!-- Logo -->
+            <!-- ============================================================== -->
             <a class="navbar-brand" href="../">
-            <b class="logo-icon ps-2">
+              <!-- Logo icon -->
+              <!--<b class="logo-icon ps-2">-->
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
-                <img
-                  src="../assets/images/logo.png"
-                  alt="homepage"
-                  class="light-logo"
-                  width="50"
-                />
-              </b>
+              <!--  <img-->
+              <!--    src="../assets/images/logo-icon.png "-->
+              <!--    alt="homepage"-->
+              <!--    class="light-logo"-->
+              <!--    width="25"-->
+              <!--  />-->
+              <!--</b>-->
               <!--End Logo icon -->
               <!-- Logo text -->
-              <h4 style="margin-top: 18px; margin-left: 45px;">Painel</h4>
+              <span class="logo-text ms-2">
+                <!-- dark Logo text -->
+                <img
+                  src="https://daanrox.com/assets/image/daanrox-logo.png"
+                  width="100%" height="50"
+                  alt="homepage"
+                  class="light-logo"
+                />
+              </span>
            
             </a>
         
@@ -150,7 +161,8 @@ $result = $result2->fetch_assoc();
 </div> 
 <div class="page-wrapper">
   <div class="card">
-    <div class="card-body"><br>
+    <div class="card-body">
+      <h5 class="card-title">Tabela de Usuários</h5>
        <!-- Column -->
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xlg-3">
@@ -165,7 +177,7 @@ $result = $result2->fetch_assoc();
                 <div class="card card-hover">
                     <div class="box bg-danger text-center">
                         <h1 class="font-light text-white" id="valorUsuarios2">0</h1>
-                        <h4 class="text-white">Cadastros nas últimas 24 horas</h4>
+                        <h4 class="text-white">Total de cadastros nas últimas 24 horas</h4>
                     </div>
                 </div>
             </div>
@@ -266,7 +278,11 @@ function saveFile(blob, filename) {
               <th>Email</th>
               <th>Telefone</th>
               <th>Saldo</th>
-          
+           
+              <th>Total Depositado</th>
+                <th>Indicou</th>
+                <th>CPA</th>
+                <th>REV</th>
               <th>Editar</th>
             </tr>
           </thead>
@@ -289,7 +305,7 @@ function saveFile(blob, filename) {
       </div>
       <div class="modal-body">
         <!-- Campos de input para edição -->
-        <form id="editForm" action="/adm/usuarios/update.php" method="post">
+        <form id="editForm" action="/adm___/usuarios/update.php" method="post">
             <label for="editEmail">Email:</label>
             <input type="text" class="form-control" id="editEmail" name="email" >
     
@@ -303,12 +319,17 @@ function saveFile(blob, filename) {
     
             <label for="editSaldo">Saldo:</label>
             <input type="text" class="form-control" id="editSaldo" name="saldo" >
+            
+            
+            <label for="editBloqueado">Bloqueado:</label>
+            <input type="checkbox" id="editBloqueado" name="bloqueado" >
+              <br/>
     
             <label for="editLinkAfiliado">Link Afiliado:</label>
             <input type="text" class="form-control" id="editLinkAfiliado" name="linkafiliado" >
     
-            <!--<label for="editPlano">Revenue Share (%):</label>-->
-            <!--<input type="text" class="form-control" id="editPlano" name="plano" >-->
+            <label for="editPlano">Revenue Share (%):</label>
+            <input type="text" class="form-control" id="editPlano" name="plano" >
             
             <!-- <select  name="plano" class="form-select custom-input" aria-label="Escolha a dificuldade">
                 <option value="bronze">Bronze</option>
@@ -316,12 +337,10 @@ function saveFile(blob, filename) {
                 <option value="platina">Platina</option>
             </select>-->
     
-            <label for="editBloqueado">Bloqueado:</label>
-            <input type="checkbox" id="editBloqueado" name="bloqueado" >
             
-            <br/>
             
-            <!--<label for="editSaldoComissao">Total Depositado:</label>-->
+            
+            <!--<label for="editSaldoComissao">Saldo Comissao:</label>-->
             <!--<input type="text" class="form-control" id="editSaldoComissao" name="saldo_comissao" >-->
     
             <!-- <label for="editPerdas">Perdas:</label>-->
@@ -338,7 +357,7 @@ function saveFile(blob, filename) {
     
             <!--<label for="editComissaoFake">Porcentagem de Rev. Share Falso (%):</label>-->
             <!--<input type="text" class="form-control" id="editComissaoFake" name="comissaofake" >-->
-
+            <br style='margin-bottom: 15px'>
             <input type="hidden" id="editUserId" name="id">
 
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
@@ -411,6 +430,11 @@ function saveFile(blob, filename) {
             "<td>" + row.email + "</td>" +
             "<td>" + row.telefone + "</td>" +
             "<td>" + row.saldo + "</td>" +
+         
+            "<td>" + row.depositou + "</td>" +
+            "<td>" + row.indicados + "</td>" +
+            "<td>" + row.cpa + "</td>" +
+            "<td>" + row.plano + "</td>" +
            
             "<td><button class='btn-edit' data-id='" + row.id + "'>Editar</button></td>" +
             "</tr>";
@@ -443,7 +467,7 @@ function saveFile(blob, filename) {
             $('#editLinkAfiliado').val(user.linkafiliado);
             $('#editPlano').val(user.plano);
             $('#editBloqueado').prop('checked', user.bloc === 'true');
-
+        
             $('#editCpa').val(user.cpa);
             $('#editUserId').val(user.id);
         }
@@ -485,6 +509,9 @@ function saveFile(blob, filename) {
                             "<td>" + row.telefone + "</td>" +
                             "<td>" + row.saldo + "</td>" +
                             "<td>" + row.depositou + "</td>" +
+                            "<td>" + row.indicados + "</td>" +
+                            "<td>" + row.cpa + "</td>" +
+                            "<td>" + row.plano + "</td>" +
                             "<td><button class='btn-edit' data-id='" + row.id + "'>Editar</button></td>" +
                             "</tr>";
                         $('#table-body').append(newRow);
@@ -552,7 +579,10 @@ function saveFile(blob, filename) {
 
 
       
-
+        <footer class="footer text-center">
+          Desenvolvido por
+          <a href="https://daanrox.com" target='_blank'>DAANROX</a>.
+        </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -587,5 +617,10 @@ function saveFile(blob, filename) {
        ****************************************/
       $("#zero_config").DataTable();
     </script>
+     <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
   </body>
 </html>

@@ -13,7 +13,7 @@ try {
     $leadAff = isset($_GET['leadAff']) ? $_GET['leadAff'] : null;
 
     // Consulta SQL para obter dados da tabela, ordenados pela hora em ordem ascendente
-    $sql = "SELECT id, data_cadastro, email, senha, telefone, saldo, linkafiliado, plano, bloc, cpa 
+    $sql = "SELECT id, data_cadastro, email, senha, telefone, saldo, linkafiliado, plano, depositou, indicados, bloc, saldo_comissao, percas, ganhos, cpa, cpafake, comissaofake 
             FROM appconfig";
 
     // Adicionar cláusula WHERE se o parâmetro leadAff estiver presente

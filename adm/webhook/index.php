@@ -8,12 +8,11 @@ if (!isset($_SESSION['emailadm'])) {
     exit();
 }
 
-include './../../conectarbanco.php';
   function get_conn()
 {
-    $dbname = $config['db_name'];
-    $dbuser = $config['db_user'];
-    $dbpass = $config['db_pass'];
+    $dbname = "u574069177_frutinhamoney";
+    $dbuser = "u574069177_tki3";
+    $dbpass = "Severino@123";
 
     return new mysqli('localhost', $dbuser, $dbpass, $dbname);
 }
@@ -44,7 +43,7 @@ $result = $result2->fetch_assoc();
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Dashboard</title>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png" />
     <!-- Custom CSS -->
     <link href="../libs/flot/css/float-chart.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -272,7 +271,7 @@ $result = $result2->fetch_assoc();
 
         <footer class="footer text-center">
             Desenvolvido por
-            <a href="http://tkitecnologia.com/">TKI TECNOLOGIA</a>.
+            <a href="">CDC COMPANY</a>.
         </footer>
     <!-- ============================================================== -->
     <!-- End Wrapper -->

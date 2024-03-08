@@ -1,171 +1,34 @@
 <?php
 session_start();
 
-include './../conectarbanco.php';
-
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-
-$betValues = [
-    '1BC' => 1.00,
-    '2BC' => 2.00,
-    '3BC' => 5.00,
-];
-
-$bet = isset($_GET['bet']) && isset($betValues[$_GET['bet']]) ? $betValues[$_GET['bet']] : 0.00;
-
-if (isset($_GET['msg'])) {
-    $valor = $_GET['msg'];
-
-    if ($valor === 0 || $valor === null || $valor === '') {
-        $valor = 0.00;
-    }
-
-    if ($email) {
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-        if ($conn->connect_error) {
-            die("Erro na conexão com o banco de dados: " . $conn->connect_error);
-        }
-
-        $saldoQuery = "SELECT saldo FROM appconfig WHERE email = '$email'";
-        $saldoResult = $conn->query($saldoQuery);
-
-        if ($saldoResult) {
-            $row = $saldoResult->fetch_assoc();
-            $saldoAtual = $row['saldo'];
-
-            $novoSaldo = $saldoAtual - $bet;
-
-            $updateQuery = "UPDATE appconfig SET saldo = $novoSaldo WHERE email = '$email'";
-            $updateResult = $conn->query($updateQuery);
-
-            if (!$updateResult) {
-                echo "Erro ao atualizar o saldo: " . $conn->error;
-            }
-        } else {
-            echo "Erro ao obter o saldo: " . $conn->error;
-        }
-
-        $conn->close();
-    }
-}
-?>
-
-
-<?php
-session_start();
-if (!isset($_SESSION['email'])) {
-    header("Location: ../");
-    exit();}
 
 ?>
+
+
+
+
 <?php
 // Iniciar ou resumir a sessão
 session_start();
 
 // Obtém o email da sessão
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+$email = 'influencer@mail.com';
+$saldo = 1
 
-if (!empty($email)) {
-    try {
-        
-        
-         include './../conectarbanco.php';
-
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-        $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Verifica se o email existe na tabela confirmar_deposito
-        $stmt = $conn->prepare("SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-
-        // Loop através de todas as entradas com o mesmo email e status pendente
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Verifica se há uma correspondência na tabela pix_deposito
-            $stmtPix = $conn->prepare("SELECT * FROM pix_deposito WHERE code = :externalReference");
-            $stmtPix->bindParam(':externalReference', $result['externalreference']);
-            $stmtPix->execute();
-
-            // Verifica se há uma correspondência na tabela pix_deposito
-            $resultPix = $stmtPix->fetch(PDO::FETCH_ASSOC);
-
-            if ($resultPix !== false) {
-                // Atualiza o status para 'aprovado' na tabela confirmar_deposito
-                $updateStmt = $conn->prepare("UPDATE confirmar_deposito SET status = 'aprovado' WHERE externalreference = :externalReference");
-                $updateStmt->bindParam(':externalReference', $result['externalreference']);
-                $updateStmt->execute();
-
-                // Obtém o valor da correspondência na tabela pix_deposito
-                $valorCorrespondencia = $resultPix['value'];
-
-                // Atualiza a coluna saldo na tabela appconfig
-                $updateSaldoStmt = $conn->prepare("UPDATE appconfig SET saldo = saldo + :valorCorrespondencia, depositou = depositou + :valorCorrespondencia WHERE email = :email");
-                $updateSaldoStmt->bindParam(':valorCorrespondencia', $valorCorrespondencia);
-                $updateSaldoStmt->bindParam(':email', $email);
-                $updateSaldoStmt->execute();
-                
-                header("Location: ../obrigado");
-                break; // Sai do loop assim que encontrar uma correspondência
-            }
-        }
-
-
-    } catch (PDOException $e) {
-        // Trata a exceção, se necessário
-        echo "Erro: " . $e->getMessage();
-    }
-} else {
-    // O código que você quer executar se o email estiver vazio
-}
-?>
-
-
-
-
-
-
+    ?>
 
 
 <?php
-// Inicie a sessão se ainda não foi iniciada
+if (isset($_POST['msg'])) {
+    $valor = $_POST['msg'];
 
-    include './../conectarbanco.php';
-
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-// Verifique se a conexão foi bem-sucedida
-if ($conn->connect_error) {
-    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-}
-
-// Recupere o email da sessão
-if (isset($_SESSION['email'])) {
-    $email = $_SESSION['email'];
-
-    // Consulta para obter o saldo associado ao email na tabela appconfig
-    $consulta_saldo = "SELECT saldo FROM appconfig WHERE email = '$email'";
-
-    // Execute a consulta
-    $resultado_saldo = $conn->query($consulta_saldo);
-
-    // Verifique se a consulta foi bem-sucedida
-    if ($resultado_saldo) {
-        // Verifique se há pelo menos uma linha retornada
-        if ($resultado_saldo->num_rows > 0) {
-            // Obtenha o saldo da primeira linha
-            $row = $resultado_saldo->fetch_assoc();
-            $saldo = $row['saldo'];
-        }
+    if ($valor === 0 || $valor === null || $valor === '') {
+        $valor = 0.00;
     }
 }
-
-// Feche a conexão com o banco de dados
-$conn->close();
 ?>
+
+
 
 
 
@@ -219,6 +82,93 @@ $conn->close();
 
 
 
+
+
+
+
+
+    <style>
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+
+        .popup-content {
+            margin-bottom: 20px;
+        }
+
+        .popup-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 16px 40px;
+            border-style: solid;
+            border-width: 4px;
+            border-color: #1f2024;
+            border-radius: 8px;
+            background-color: #1fbffe;
+            box-shadow: -3px 3px 0 0 #1f2024;
+            -webkit-transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+            transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+            transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+            transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+            font-family: right grotesk, sans-serif;
+            color: #fff;
+            font-size: 1.25em;
+            text-align: center;
+            letter-spacing: .12em cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .popup-button:hover {
+            background-color: #0f9bd8;
+        }
+    </style>
+
+    <div class="overlay" id="overlay"></div>
+    <div id="popup" class="minting-container w-container"
+        style=" z-index: 200; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="popup-content">
+            <h2 class="win-warn" style="display: flex;">Excelente!</h2>
+            <p>Parabéns campeão, você ganhou <strong>R$
+                    <?php echo $valor; ?>
+                </strong> de Bônus no seu Primeiro deposito </p>
+            <p>Continue assim, <strong>faça seu cadastro!</strong></p>
+        </div>
+        <button class="popup-button" onclick="closePopup()">OK</button>
+    </div>
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        });
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
     <div>
 
 
@@ -248,20 +198,19 @@ $conn->close();
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
-                <h2>VOCÊ PERDEU</H2> 
-                <h2>NÃO DESANIME!</h2>
-                <p class="win-warn"><strong>Você poderia ter ganho incríveis R$
+                <h2>VAMOS JOGAR COM DINHEIRO REAL?</h2>
+                <p class="win-warn"><strong>Uau! Continue assim, ganhou R$
                         <?php echo $valor; ?>
                     </strong>
                 </p>
-                <p>A persistência é a chave para o sucesso, não deixe isso te por pra baixo. #ficadica!</p>
-                <strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo para Jogar Novamente</strong>
+                <p>Para aproveitar o seu Bônus você precisa criar sua conta e depósitar um valor minimo. #ficadica!</p>
+                <strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo</strong>
 
-                <a href="../painel/" class="cadastro-btn">JOGAR</a>
+                <a href="../cadastrar/" class="cadastro-btn">CADASTRAR</a>
 
                 <style>
                     .win-warn {
-                        color: red;
+                        color: #22C55E;
                     }
 
                     .cadastro-btn {

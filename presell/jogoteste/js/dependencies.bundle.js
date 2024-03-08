@@ -1,21 +1,64 @@
 /*! For license information please see dependencies.bundle.js.LICENSE.txt */
+
 var jogando = true;
-var xmeta = 1;//meta vezes a aposta
-var meta = aposta * xmeta;
+var xmeta = 5;//meta vezes a aposta
+var meta = 3;
 var acumulado;
 var check_end = 0;
 var btnSair = () => { return document.querySelector('button#sair'); }
+
+
+
 btnSair().addEventListener('click', () => {
-   if(jogando) {
+    if (jogando) {
         jogando = false;
         if (acumulado >= meta) {
-            $.post("../auth?action=game&type=win",{ session: session, bet: aposta, val: acumulado },function (data) {
-              let msg = 'Parabens, você ganhou R$ ' + acumulado + '!';
-              location.href = "../panel?type=win&msg=" + msg;
-            });
+            function generateToken() {
+                return Math.random().toString(36).substr(2) + Date.now().toString(36);
         }
-    } 
+            
+            
+            var token = generateToken();
+
+            // Armazene o token no localStorage
+            localStorage.setItem('token', token);
+
+            // Crie um formulário dinâmico
+            var form = document.createElement('form');
+            form.method = 'post';
+            form.action = '../win.php';
+
+            // Adicione os parâmetros como campos do formulário
+            var typeInput = document.createElement('input');
+            typeInput.type = 'hidden';
+            typeInput.name = 'type';
+            typeInput.value = 'win';
+            form.appendChild(typeInput);
+
+            var msgInput = document.createElement('input');
+            msgInput.type = 'hidden';
+            msgInput.name = 'msg';
+            msgInput.value = acumulado;
+            form.appendChild(msgInput);
+
+            var tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'token';
+            tokenInput.value = token;
+            form.appendChild(tokenInput);
+
+            // Adicione o formulário ao corpo da página
+            document.body.appendChild(form);
+
+            // Submeta o formulário
+            form.submit();
+        }
+    }
 });
+
+
+
+
 ((self || this).webpackJsonp = (self || this).webpackJsonp || []).push([
 	[0],
 	[function(t, e, i) {
@@ -32039,13 +32082,13 @@ btnSair().addEventListener('click', () => {
     				if (this.game.state !== o.a.RUNNING || !this._built) return;
     				if (this.multiplier.update(), this.updateCount += 1, 480 === this.updateCount && this.removeAllItemBoost(!0), this.updateCount % 4 > 0) return;
     				const t = this.game.stats;
-    				let numberMoney = parseFloat(t.coins / 10).toFixed(2);
+    				let numberMoney = parseFloat(t.coins / 5).toFixed(2);
     				let money = "R$" + numberMoney;// ALTERACAO DO SALDO moedas
     				acumulado = numberMoney;
     				this.distance.getText() <= t.score && this.distance.setText(t.score, 6), this.coins.setText(money), this.multiplier.text = "x" + (t.multiplier + t.missionMultiplier), this.ranking && this.ranking.update()
-			        // if(numberMoney > 5.00) {
-			        //     btnSair().style.display = 'block';
-			        // }
+			        if(numberMoney > 5.00) {
+			            btnSair().style.display = 'block';
+			        }
 			    }        
 			}
 			reset() {

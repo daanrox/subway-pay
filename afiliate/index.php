@@ -49,7 +49,7 @@ if (isset($_SESSION['email'])) {
   $email = $_SESSION['email'];
 
 
-  $getLinkQuery = "SELECT revenue_share_falso FROM app";
+  $getLinkQuery = "SELECT plano FROM appconfig WHERE email='$email'";
   $stmt = $conn->prepare($getLinkQuery);
   $stmt->execute();
   $stmt->bind_result($plano);
@@ -138,38 +138,18 @@ if (isset($_SESSION['email'])) {
   $stmt->fetch();
   $stmt->close();
   
-  $getLinkQuery = "SELECT lead_aff FROM appconfig WHERE email = ?";
-  $stmt = $conn->prepare($getLinkQuery);
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $stmt->bind_result($leadId);
-  $stmt->fetch();
-  $stmt->close();
-  
-  $getLinkQuery = "SELECT saldo_comissao FROM appconfig WHERE email = ?";
-  $stmt = $conn->prepare($getLinkQuery);
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $stmt->bind_result($rev_ativo_sum);
-  $stmt->fetch();
-  $stmt->close();
-  
-  $consultaSaqueQuery = "SELECT SUM(valor) AS total_saque FROM saque_afiliado WHERE email = ?";
-  $stmtConsultaSaque = $conn->prepare($consultaSaqueQuery);
-  $stmtConsultaSaque->bind_param("s", $email);
-  $stmtConsultaSaque->execute();
-  $stmtConsultaSaque->bind_result($totalSaque);
-  $stmtConsultaSaque->fetch();
-  $stmtConsultaSaque->close();
-  
-  
+  $getLinkQuery2 = "SELECT comissaofake FROM appconfig WHERE email = ?";
+  $stmt2 = $conn->prepare($getLinkQuery2);
+  $stmt2->bind_param("s", $email);
+  $stmt2->execute();
+  $stmt2->bind_result($rev_ativo_sum);
+  $stmt2->fetch();
+  $stmt2->close();
   
   $saldo_comissao = floatval($saldo_cpa) + floatval($rev_ativo_sum);
 
-
-
 // Atualizar o valor na tabela appconfig apenas para a linha com o email da sessão
-$query = "UPDATE appconfig SET comissaofake = ? WHERE email = ?";
+$query = "UPDATE appconfig SET saldo_comissao = ? WHERE email = ?";
 $stmt = $conn->prepare($query);
 
 // Vincular os parâmetros e executar a declaração
@@ -410,49 +390,49 @@ $stmt->execute();
             <div class="properties">
               <h3 class="rarity-heading">Extrato</h3>
               <div class="rarity-row roboto-type">
-                <div class="rarity-number full">Contabilização pode demorar até 1 hora.</div>
+                <div class="rarity-number full">Contabilização pode demorar até 24 horas.</div>
               </div>
               <div class="rarity-row roboto-type">
                 <div class="rarity-number full">Saldo disponível:</div>
-      <div class="padded">R$<?php echo floatval($saldo_cpa) + floatval($rev_ativo_sum); ?></div>
+      <div class="padded">R$ <?php echo floatval($saldo_cpa) + floatval($rev_ativo_sum); ?></div>
 
               </div>
               <div class="w-layout-grid grid">
                 <div>
                   <div class="rarity-row blue">
-                    <div class="rarity-number">Saldo de Indicação:</div>
+                    <div class="rarity-number">Comissão CPA</div>
                     <div>R$ <?php echo $saldo_cpa; ?> </div>
                   </div>
                   <div class="rarity-row">
-                    <div class="rarity-number">Comissão Rev:</div>
+                    <div class="rarity-number">Comissão REV</div>
                     <div>R$ <?php echo $rev_ativo_sum; ?> </div>
                   </div>
 
                   <div class="rarity-row blue">
-                    <div class="rarity-number">Cadastros:</div>
-                    <div><?php echo $cads; ?> cadastros</div>
+                    <div class="rarity-number">Indicações</div>
+                    <div><?php echo $indicados; ?> cadastros</div>
 
                   </div>
                 </div>
                 <div>
-                  <div class="rarity-row blue">
-                    <div class="rarity-number">Cadastros ativos:</div>
-                    <div>
-                      <?php echo $cad_ativo?> cadastros
-                    </div>
-                  </div>
+                  <!--<div class="rarity-row blue">-->
+                  <!--  <div class="rarity-number">Indicações</div>-->
+                  <!--  <div>-->
+                  <!--    <?php echo $indicados?> cadastros-->
+                  <!--  </div>-->
+                  <!--</div>-->
                   <div class="rarity-row">
-                    <div class="rarity-number">Valor por ativo(CPA)</div>
+                    <div class="rarity-number">Valor por depósito do indicado (CPA)</div>
                     <div>
-                      R$ <?php echo $cpa; ?>
+                      R$ <?php echo $cpa_u; ?>
                     </div>
 
 
                   </div>
                   <div class="rarity-row blue">
-                    <div class="rarity-number">Revenue Share</div>
+                    <div class="rarity-number">% Sobre a perda do indicado (REV)</div>
                     <div>
-                      <?php echo $plano; ?> %
+                      <?php echo $plano; ?>%
                     </div>
                   </div>
 

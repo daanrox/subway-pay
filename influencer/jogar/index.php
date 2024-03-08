@@ -21,7 +21,7 @@
     <link rel="apple-touch-icon-precomposed" href="assets/images/app-icon-57.png">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta name="robots" content="noindex,nofollow" />
-    <title>Subway Surfers Web</title>
+    <title>Subway Pay 🌊</title>
     <style>
         body, html {
             margin: 0;
@@ -68,44 +68,33 @@
         button#sair {
             position: absolute;
             display: none;
-            top: 100px;
-            left: calc(50% - 95px);
-            width: 190px;
+            top: 135px;
+            left: calc(50% - 130px);
+            padding:.85rem 2.8rem;
             line-height: 32px;
-            font-size: 16px;
-            font-family: sans-serif;
+            font-size: 18px;
             text-align: center;
-            color: #ffc107;
-            background-color: #2e1a07e8;
-            box-shadow: 0 0 6px 0 #fff;
-            border: .5px solid #120904;
-            border-radius: 10px;
+            font-weight:700;
+            color: white;
+            background-color: #1fbffe;
+            box-shadow:-3px 3px 0 0 #1f2024;
+            border:4px solid #1f2024;
+            border-radius:8px;
+            transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease;
             z-index: 100000;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <button id="sair" onclick="redirecionarParaOutraPagina()">ENCERRAR APOSTA</button>
+    <button id="sair" >ENCERRAR APOSTA</button>
 
-    <script>
-        function redirecionarParaOutraPagina() {
-         
-            window.location.href = '../painel';
-        }
-    </script>
+   
     
     
     
     
-    <script>
-    
-    function redirecionar() {
-        window.location.href = '../painel';
-    }
-
-
-    setTimeout(redirecionar, 40000);
-</script>
+  
 
 
 
@@ -117,6 +106,8 @@
             bundlesPath: './bundles',
         }
     </script>
+    
+    
     <div id="message">
         <h1>Loading</h1>
         <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>

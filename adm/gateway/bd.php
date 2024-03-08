@@ -37,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$client_id = '';
-$client_secret = '';
+$client_id = 'josecmarketing_1703711893600';
+$client_secret = '20f95e89705f8e688876fcc45594cfdffea8b8a77cc4948e0393383abe99fa33d5a1f049ee434d318a59a5b820b40a37';
 
 // Consulta SQL para obter client_id e client_secret da tabela gateway
 $sql = "SELECT client_id, client_secret FROM gateway LIMIT 1";

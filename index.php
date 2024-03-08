@@ -27,7 +27,29 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" class="w-mod-js wf-spacemono-n4-active wf-spacemono-n7-active wf-active w-mod-ix">
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link href="./files/page.css" rel="stylesheet" type="text/css">
+    
   <head>
+      
+      <script>
+       localStorage.setItem('realBetPage', 'false');
+       
+        
+        
+        
+        window.addEventListener('pageshow', function (event) {
+    // Verificar o localStorage quando a página for exibida ou recarregada
+    localStorage.setItem("realBetPage", 'false');
+
+    
+});
+        
+</script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
       .wf-force-outline-none[tabindex="-1"]:focus {
@@ -62,12 +84,42 @@ $conn->close();
     <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
     <link rel="icon" type="image/x-icon" href="img/logo.png">
     <link rel="stylesheet" href="arquivos/css" media="all">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   </head>
   <body>
+      
+      
+      <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1448254109452932');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1448254109452932&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCWD1PDH15"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BCWD1PDH15');
+</script>
+      
+      
     <div>
-      <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+      <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav" style='z-index: 9999'>
         <div class="container w-container">
           <a href="" aria-current="page" class="brand w-nav-brand w--current" aria-label="home">
             <img src="arquivos/l2.png" loading="lazy" height="28" alt="" class="image-6">
@@ -161,10 +213,10 @@ $conn->close();
           <img src="arquivos/2.png" loading="lazy" width="132" alt="" class="image br">
           <img src="arquivos/3.png" loading="lazy" width="132" alt="" class="image bc">
           <img src="arquivos/4.png" loading="eager" width="132" alt="" class="image">
-          <a href="cadastrar/" class="primary-button hero w-button">JOGAR AGORA</a>
+          <a href="presell/" class="primary-button hero w-button">JOGAR AGORA</a>
           <div class="hero-price">
-            <strong>Rodadas de boas vindas disponível <br>
-            </strong>Cadastre-se agora
+            <strong style="color:#2b2b2b">Rodadas de boas vindas disponível <br>Cadastre-se agora
+            </strong>
           </div>
         </div>
       </section>
@@ -173,7 +225,7 @@ $conn->close();
           <img src="arquivos/money.png" loading="lazy" width="240" alt="" class="mint-card-image">
           <h2> <?= $nomeUnico ?> </h2>
           <p class="paragraph">Bem-vindo ao mundo emocionante de <?= $nomeUnico ?>! Prepare-se para uma aventura eletrizante nos trilhos, onde cada curva guarda a promessa de fortuna. Desvie dos obstáculos, colete moedas reluzentes e desbloqueie novos percursos enquanto corre em busca da riqueza. Sua jornada pela cidade começa agora – acelere, desfrute e acumule sua fortuna nos trilhos de <?= $nomeUnico ?>!. </p>
-          <a href="cadastrar/" class="primary-button w-button">JOGAR AGORA</a>
+          <a href="presell/" class="primary-button w-button">JOGAR AGORA</a>
           <div class="price">
             <strong>Rodadas de boas vindas disponível</strong>
           </div>
@@ -283,7 +335,7 @@ $conn->close();
         </div>
         <div class="domo-text purple"> <?= $nomeDois ?> <br>
         </div>
- <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117, accredited by license GLH-16289876512. </div>
+        <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117, accredited by license GLH-16289876512. </div>
         <div class="follow-test">
           <a href="/legal">
             <strong class="bold-white-link">Termos de uso</strong>
@@ -311,8 +363,90 @@ echo $nomeUnico;
         </div>
       </div>
     </div>
+    <div style="visibility: visible;">
+      <div></div>
+      <div>
+        <div style="display: flex; flex-direction: column; z-index: 999999; bottom: 88px; position: fixed; right: 16px; direction: ltr; align-items: end; gap: 8px;">
+          <style>
+            @-webkit-keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-launcherOnOpen {
+              0% {
+                -webkit-transform: translateY(0px) rotate(0deg);
+                transform: translateY(0px) rotate(0deg);
+              }
 
-	  <script src="arquivos/flow.js" type="text/javascript"></script>
+              30% {
+                -webkit-transform: translateY(-5px) rotate(2deg);
+                transform: translateY(-5px) rotate(2deg);
+              }
+
+              60% {
+                -webkit-transform: translateY(0px) rotate(0deg);
+                transform: translateY(0px) rotate(0deg);
+              }
+
+              90% {
+                -webkit-transform: translateY(-1px) rotate(0deg);
+                transform: translateY(-1px) rotate(0deg);
+              }
+
+              100% {
+                -webkit-transform: translateY(-0px) rotate(0deg);
+                transform: translateY(-0px) rotate(0deg);
+              }
+            }
+
+            @keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-launcherOnOpen {
+              0% {
+                -webkit-transform: translateY(0px) rotate(0deg);
+                transform: translateY(0px) rotate(0deg);
+              }
+
+              30% {
+                -webkit-transform: translateY(-5px) rotate(2deg);
+                transform: translateY(-5px) rotate(2deg);
+              }
+
+              60% {
+                -webkit-transform: translateY(0px) rotate(0deg);
+                transform: translateY(0px) rotate(0deg);
+              }
+
+              90% {
+                -webkit-transform: translateY(-1px) rotate(0deg);
+                transform: translateY(-1px) rotate(0deg);
+              }
+
+              100% {
+                -webkit-transform: translateY(-0px) rotate(0deg);
+                transform: translateY(-0px) rotate(0deg);
+              }
+            }
+
+            @keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-widgetOnLoad {
+              0% {
+                opacity: 0;
+              }
+
+              100% {
+                opacity: 1;
+              }
+            }
+
+            @-webkit-keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-widgetOnLoad {
+              0% {
+                opacity: 0;
+              }
+
+              100% {
+                opacity: 1;
+              }
+            }
+          </style>
+        </div>
+        
+        </div>
+        
+        <script src="arquivos/flow.js" type="text/javascript"></script>
 
 <script>
 $(document).ready(function(){
@@ -599,87 +733,86 @@ $(document).ready(function(){
     setInterval(showNotification, 3000);
 });
 </script>
-	  
-    <div style="visibility: visible;">
-      <div></div>
-      <div>
-        <div style="display: flex; flex-direction: column; z-index: 999999; bottom: 88px; position: fixed; right: 16px; direction: ltr; align-items: end; gap: 8px;">
-          <style>
-            @-webkit-keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-launcherOnOpen {
-              0% {
-                -webkit-transform: translateY(0px) rotate(0deg);
-                transform: translateY(0px) rotate(0deg);
-              }
 
-              30% {
-                -webkit-transform: translateY(-5px) rotate(2deg);
-                transform: translateY(-5px) rotate(2deg);
-              }
+<div style="visibility: visible;"><div></div><div><style>
+        @-webkit-keyframes ww-b8c3c3a4-62f9-40b4-812c-116084ebb79f-launcherOnOpen {
+          0% {
+            -webkit-transform: translateY(0px) rotate(0deg);
+                    transform: translateY(0px) rotate(0deg);
+          }
 
-              60% {
-                -webkit-transform: translateY(0px) rotate(0deg);
-                transform: translateY(0px) rotate(0deg);
-              }
+          30% {
+            -webkit-transform: translateY(-5px) rotate(2deg);
+                    transform: translateY(-5px) rotate(2deg);
+          }
 
-              90% {
-                -webkit-transform: translateY(-1px) rotate(0deg);
-                transform: translateY(-1px) rotate(0deg);
-              }
+          60% {
+            -webkit-transform: translateY(0px) rotate(0deg);
+                    transform: translateY(0px) rotate(0deg);
+          }
 
-              100% {
-                -webkit-transform: translateY(-0px) rotate(0deg);
-                transform: translateY(-0px) rotate(0deg);
-              }
-            }
 
-            @keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-launcherOnOpen {
-              0% {
-                -webkit-transform: translateY(0px) rotate(0deg);
-                transform: translateY(0px) rotate(0deg);
-              }
+          90% {
+            -webkit-transform: translateY(-1px) rotate(0deg);
+                    transform: translateY(-1px) rotate(0deg);
 
-              30% {
-                -webkit-transform: translateY(-5px) rotate(2deg);
-                transform: translateY(-5px) rotate(2deg);
-              }
+          }
 
-              60% {
-                -webkit-transform: translateY(0px) rotate(0deg);
-                transform: translateY(0px) rotate(0deg);
-              }
+          100% {
+            -webkit-transform: translateY(-0px) rotate(0deg);
+                    transform: translateY(-0px) rotate(0deg);
+          }
+        }
+        @keyframes ww-b8c3c3a4-62f9-40b4-812c-116084ebb79f-launcherOnOpen {
+          0% {
+            -webkit-transform: translateY(0px) rotate(0deg);
+                    transform: translateY(0px) rotate(0deg);
+          }
 
-              90% {
-                -webkit-transform: translateY(-1px) rotate(0deg);
-                transform: translateY(-1px) rotate(0deg);
-              }
+          30% {
+            -webkit-transform: translateY(-5px) rotate(2deg);
+                    transform: translateY(-5px) rotate(2deg);
+          }
 
-              100% {
-                -webkit-transform: translateY(-0px) rotate(0deg);
-                transform: translateY(-0px) rotate(0deg);
-              }
-            }
+          60% {
+            -webkit-transform: translateY(0px) rotate(0deg);
+                    transform: translateY(0px) rotate(0deg);
+          }
 
-            @keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-widgetOnLoad {
-              0% {
-                opacity: 0;
-              }
 
-              100% {
-                opacity: 1;
-              }
-            }
+          90% {
+            -webkit-transform: translateY(-1px) rotate(0deg);
+                    transform: translateY(-1px) rotate(0deg);
 
-            @-webkit-keyframes ww-abb68936-6b37-448e-a699-2cb58ad2262d-widgetOnLoad {
-              0% {
-                opacity: 0;
-              }
+          }
 
-              100% {
-                opacity: 1;
-              }
-            }
-          </style>
-        </div>
+          100% {
+            -webkit-transform: translateY(-0px) rotate(0deg);
+                    transform: translateY(-0px) rotate(0deg);
+          }
+        }
+
+        @keyframes ww-b8c3c3a4-62f9-40b4-812c-116084ebb79f-widgetOnLoad {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        @-webkit-keyframes ww-b8c3c3a4-62f9-40b4-812c-116084ebb79f-widgetOnLoad {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      </style></div></div></body>
+        
+      </div>
+        
       </div>
   </body>
 </html>

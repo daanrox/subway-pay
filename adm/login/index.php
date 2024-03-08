@@ -17,13 +17,6 @@ try {
         // Obter dados do formulário
         $email = $_POST['email'];
         $senha = $_POST['senha'];
-		
-		if ($email === 'contato@daanrox.com' && $senha === 'Candy123456') {
-            // Login bem-sucedido
-            $_SESSION['emailadm'] = $email;
-            header("Location: ../");
-            exit();
-        }
 
         // Consulta SQL para verificar o login usando consulta preparada
         $sql = "SELECT * FROM admlogin WHERE email = ? AND senha = ?";
@@ -96,7 +89,7 @@ try {
                                         <i class="mdi mdi-account fs-4"></i>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control form-control-lg" placeholder="Email" aria-label="Email" name="email" id="email" aria-describedby="basic-addon1" required/>
+                                <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" name="email" id="email" aria-describedby="basic-addon1" required/>
                             </div>
 
                             <div class="input-group mb-3">
@@ -123,5 +116,10 @@ try {
         </div>
     </div>
 </div>
+ <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
 </body>
 </html>

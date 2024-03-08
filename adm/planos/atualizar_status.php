@@ -15,7 +15,7 @@ $email = $_POST['email'];
 $newStatus = $_POST['status'];
 
 // Atualiza o status na tabela 'saque_afiliado' no banco de dados
-$sql = "UPDATE saque_afiliado SET status = '$newStatus' WHERE email = '$email' AND status = 'Aguardando aprovação' LIMIT 1";
+$sql = "UPDATE saque_afiliado SET status = '$newStatus' WHERE email = '$email' LIMIT 1";
 
 if ($conn->query($sql) === TRUE) {
   echo 'success';

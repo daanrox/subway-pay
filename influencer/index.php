@@ -29,7 +29,19 @@
         include '../pixels.php';
         ?>
   </head>
-  <body> <?php
+  <body>
+    <script>
+            let saldoInfluencer = localStorage.getItem('saldoInfluencer');
+            
+        
+            if (!saldoInfluencer) {
+                saldoInfluencer = 20;
+                localStorage.setItem('saldoInfluencer', saldoInfluencer);
+            }
+        </script>
+  
+  
+  <?php
         include '../pixels.php';
         ?> <div>
       <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
@@ -128,8 +140,30 @@
         </a>
         <a href="../deposito/" class="button w-button">Depositar</a>
       </div>
-      <div id="saldoDiv" style="position: absolute; top: 100px; width: 100%; line-height: 26px; color: #fff; z-index: 10; text-align: center;"> SALDO: R$ <b class="saldo"> 10,00 </b>
-      </div>
+      
+      
+      
+      <div id="saldoDiv" style="position: absolute; top: 100px; width: 100%; line-height: 26px; color: #fff; z-index: 10; text-align: center; ">
+    <p style='background-color: rgba(0,0,0,0.55); width: 80%; max-width:350px; margin: 0 auto;'>
+        SALDO: R$ <b class="saldo"> 0,00 </b>
+    </p>
+    </div>
+    
+ 
+
+
+   <script>
+    
+    window.onload = function() {
+        var saldoDiv = document.getElementById('saldoDiv');
+        var saldoInfluencer = localStorage.getItem('saldoInfluencer');
+        var saldoFormatted = parseFloat(saldoInfluencer).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        saldoDiv.innerHTML = `<p style='background-color: rgba(0,0,0,0.55); width: 80%; max-width:350px; margin: 0 auto;'>SALDO: R$ <b class="saldo">${saldoFormatted}</b></p>`;
+    };
+</script>
+ 
+      
+      
       <section id="hero" class="hero-section dark wf-section">
         <style>
           div.escudo {
@@ -152,14 +186,14 @@
         </style>
         <div class="minting-container w-container">
           <div class="escudo">
-            <a href="#">Ranking</a>
+            <!--<a href="#">Ranking</a>-->
             <img src="arquivos/trophy.gif">
-            <a href="../painel/">Painel</a>
+            <!--<a href="../painel/">Painel</a>-->
           </div>
           <h2>Iniciar corrida</h2>
           <p>Pronto para iniciar mais uma corrida?</p>
           <p>Escolha um valor para iniciar:</p>
-          <form id="formSubtrair1" action="jogar" method="post" aria-label="Form" onsubmit="return submeterFormulario('1.00')">
+          <form id="formSubtrair1" action="jogar" method="post" aria-label="Form" onsubmit="localStorage.setItem('betInfluencer', 1)">
             <div class="">
               <input type="hidden" name="valor" value="1.00">
               <input type="submit" value="1,00" class="primary-button w-button">
@@ -167,7 +201,7 @@
               <br>
             </div>
           </form>
-          <form id="formSubtrair2" action="jogar" method="post" aria-label="Form" onsubmit="return submeterFormulario('2.00')">
+          <form id="formSubtrair2" action="jogar" method="post" aria-label="Form" onsubmit="localStorage.setItem('betInfluencer', 2)">
             <div class="">
               <input type="hidden" name="valor" value="2.00">
               <input type="submit" value="2,00" class="primary-button w-button">
@@ -175,7 +209,7 @@
               <br>
             </div>
           </form>
-          <form id="formSubtrair5" action="jogar" method="post" aria-label="Form" onsubmit="return submeterFormulario('5.00')">
+          <form id="formSubtrair5" action="jogar" method="post" aria-label="Form" onsubmit="localStorage.setItem('betInfluencer', 5)">
             <div class="">
               <input type="hidden" name="valor" value="5.00">
               <input type="submit" value="5,00" class="primary-button w-button">
@@ -185,9 +219,14 @@
           </form>
           <script>
             function submeterFormulario(valor) {
+            
+            
+            
               var saldo = < ? php echo $saldo; ? > ;
               if (saldo > 0) {
                 // Se o saldo for maior que zero, execute a função subtrairSaldo
+                
+                localStorage.setItem('betInfluencer', valor)
                 return true; // Permite o envio do formulário
               } else {
                 // Se o saldo for igual ou menor que zero, exibe um alerta e impede o envio do formulário
@@ -213,7 +252,7 @@
                 z-index: 1000;
             "> <?php
                 function obterNumeroAleatorio() {
-                $numeroAleatorio = rand(4000, 10000);
+                $numeroAleatorio = rand(80, 92);
 
                 return $numeroAleatorio;
                 }

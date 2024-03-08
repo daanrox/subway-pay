@@ -48,7 +48,11 @@ function get_form()
         'saldo' => $_POST['saldo'],
         'linkafiliado' => $_POST['linkafiliado'],
         'plano' => $_POST['plano'],
+        'depositou' => $_POST['depositou'],
         'bloqueado' => $_POST['bloqueado'],
+        'saldo_comissao' => $_POST['saldo_comissao'],
+        'percas' => $_POST['percas'],
+        'ganhos' => $_POST['ganhos'],
         'cpa' => $_POST['cpa'],
     );
 }
@@ -61,17 +65,19 @@ if ($conn->connect_error) {
 $form = get_form();
 
 $sql = sprintf(
-    "UPDATE appconfig SET email='%s', senha='%s', telefone='%s', saldo='%s', linkafiliado='%s', plano='%s', bloc='%s', cpa='%s' WHERE id='%s'",
+    "UPDATE appconfig SET email='%s', senha='%s', telefone='%s', saldo='%s', linkafiliado='%s', plano='%s', depositou='%s', bloc='%s', saldo_comissao='%s', percas='%s', ganhos='%s', cpa='%s' WHERE id='%s'",
     $form['email'],
     $form['senha'],
     $form['telefone'],
     $form['saldo'],
     $form['linkafiliado'],
     $form['plano'],
+    $form['depositou'],
     $form['bloqueado'],
-   
+    $form['saldo_comissao'],
+    $form['percas'],
+    $form['ganhos'],    
     $form['cpa'],
-    
     $form['id']
 );
 

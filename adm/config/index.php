@@ -1,7 +1,7 @@
 <?php
 include './../../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -30,26 +30,6 @@ $conn->close();
 <?php
 include './bd.php'; ?>
 
-<?php
-session_start();
-
-if (!isset($_SESSION['emailadm'])) {
-    header("Location: ../login");
-    exit();
-}
-
-include '../../conectarbanco.php';
-
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-$sql = "SELECT * FROM app";
-$result2 = $conn->query($sql);
-$result = $result2->fetch_assoc();
-
-
-?>
-
  <script>
         var nomeUnicoPHP = "<?php echo $nomeUnico; ?>";
         var nomeUmPHP = "<?php echo $nomeUm; ?>";
@@ -74,7 +54,7 @@ $result = $result2->fetch_assoc();
   <meta name="robots" content="noindex,nofollow" />
   <title>Admin Dashboard</title>
 
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://daanrox.com/assets/image/rox-footer.png" />
   <!-- Custom CSS -->
   <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet" />
   <!-- Custom CSS -->
@@ -143,21 +123,19 @@ $result = $result2->fetch_assoc();
           <!-- ============================================================== -->
           <a class="navbar-brand" href="../">
             <!-- Logo icon -->
-            <b class="logo-icon ps-2">
-                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                <!-- Dark Logo icon -->
-                <img
-                  src="../assets/images/logo.png"
-                  alt="homepage"
-                  class="light-logo"
-                  width="50"
-                />
-              </b>
-              <!--End Logo icon -->
-              <!-- Logo text -->
-              <h4 style="margin-top: 18px; margin-left: 45px;">Painel</h4>
-           
-            </a>
+            <!--<b class="logo-icon ps-2">-->
+              <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+              <!-- Dark Logo icon -->
+            <!--  <img src="../assets/images/logo-icon.png " alt="homepage" class="light-logo" width="25" />-->
+            <!--</b>-->
+            <!--End Logo icon -->
+            <!-- Logo text -->
+            <span class="logo-text ms-2">
+              <!-- dark Logo text -->
+              <img src="https://daanrox.com/assets/image/daanrox-logo.png" width="100%" height="50" alt="homepage" class="light-logo" />
+            </span>
+
+          </a>
 
           <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
               class="ti-menu ti-close"></i></a>
@@ -180,6 +158,7 @@ $result = $result2->fetch_assoc();
     <div class="page-wrapper">
       <div class="card" style="margin-bottom: 100px;">
         <div class="card-body">
+          <h5 class="card-title">Configurações do Site</h5>
         </div>
         <h2 style="margin-left: 25px;">Configurações de Nomes</h1>
         <p style=" margin-left: 25px;">Atenção! Não mexa nessa etapa sem ter certeza do que está fazendo.</p>
@@ -285,23 +264,55 @@ $result = $result2->fetch_assoc();
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
 
-  </div>
 
-  </div>
 
+
+
+
+
+    <footer style="position: fixed; bottom: 0; width: 100%; left: 0;" class="footer text-center">
+      Desenvolvido por
+      <a href="https://daanrox.com">DAANROX</a>.
+    </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Page wrapper  -->
+  <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Wrapper -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap tether Core JavaScript -->
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- slimscrollbar scrollbar JavaScript -->
   <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
   <script src="../assets/extra-libs/sparkline/sparkline.js"></script>
+  <!--Wave Effects -->
   <script src="../dist/js/waves.js"></script>
+  <!--Menu sidebar -->
   <script src="../dist/js/sidebarmenu.js"></script>
+  <!--Custom JavaScript -->
   <script src="../dist/js/custom.min.js"></script>
+  <!-- this page js -->
   <script src="../assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
   <script src="../assets/extra-libs/multicheck/jquery.multicheck.js"></script>
   <script src="../assets/extra-libs/DataTables/datatables.min.js"></script>
   <script>
+    /****************************************
+     *       Basic Table                   *
+     ****************************************/
     $("#zero_config").DataTable();
   </script>
+  <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
 </body>
 
 </html>

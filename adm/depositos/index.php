@@ -1,23 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['emailadm'])) {
-    header("Location: ../login");
-    exit();
-}
-
-include '../../conectarbanco.php';
-
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-$sql = "SELECT * FROM app";
-$result2 = $conn->query($sql);
-$result = $result2->fetch_assoc();
-
-
-?>
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
   <head>
@@ -41,8 +21,12 @@ $result = $result2->fetch_assoc();
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Dashboard</title>
  
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png" />
-
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://daanrox.com/assets/image/rox-footer.png"
+    />
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -51,7 +35,13 @@ $result = $result2->fetch_assoc();
   </head>
 
   <body>
-
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+  
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
     <div
       id="main-wrapper"
       data-layout="vertical"
@@ -61,7 +51,9 @@ $result = $result2->fetch_assoc();
       data-header-position="absolute"
       data-boxed-layout="full"
     >
-
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
@@ -70,19 +62,27 @@ $result = $result2->fetch_assoc();
             <!-- ============================================================== -->
             <a class="navbar-brand" href="../">
               <!-- Logo icon -->
-              <b class="logo-icon ps-2">
+              <!--<b class="logo-icon ps-2">-->
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
-                <img
-                  src="../assets/images/logo.png"
-                  alt="homepage"
-                  class="light-logo"
-                  width="50"
-                />
-              </b>
+              <!--  <img-->
+              <!--    src="../assets/images/logo-icon.png "-->
+              <!--    alt="homepage"-->
+              <!--    class="light-logo"-->
+              <!--    width="25"-->
+              <!--  />-->
+              <!--</b>-->
               <!--End Logo icon -->
               <!-- Logo text -->
-              <h4 style="margin-top: 18px; margin-left: 45px;">Painel</h4>
+              <span class="logo-text ms-2">
+                <!-- dark Logo text -->
+                <img
+                  src="https://daanrox.com/assets/image/daanrox-logo.png"
+                  width="100%" height="50"
+                  alt="homepage"
+                  class="light-logo"
+                />
+              </span>
            
             </a>
         
@@ -117,7 +117,7 @@ $result = $result2->fetch_assoc();
       <div class="page-wrapper">
   <div class="card">
     <div class="card-body">
-  <br>
+      <h5 class="card-title">Tabela de Depósitos</h5>
       <!-- Column -->
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xlg-3">
@@ -397,43 +397,61 @@ function saveFile(blob, filename) {
 
 
 <script>
-  $(document).ready(function() {
-    // Use AJAX para buscar dados do arquivo PHP
-    $.ajax({
-      url: 'bd.php',
-      method: 'GET',
-      success: function(data) {
-        // Limpar o corpo da tabela
-        $('#table-body').empty();
-
-        // Inserir dados na tabela
-        data.forEach(function(row) {
-          // Definir a classe com base no status para estilização
-          var statusClass = (row.status === 'Aprovado') ? 'text-success' : 'text-black';
-
-          // Criar a nova linha da tabela com a classe de estilização
-          var newRow = "<tr class='" + statusClass + "'>" +
-            "<td>" + row.data + "</td>" +
-            "<td>" + row.email + "</td>" +
-            "<td>" + row.externalreference + "</td>" +
-            "<td>" + row.valor + "</td>" +
-            "<td>" + row.status + "</td>" +
-            "</tr>";
-
-          // Adicionar a nova linha ao corpo da tabela
-          $('#table-body').append(newRow);
-        });
-
-        // Inicializar DataTables após a conclusão da chamada AJAX
-        $('#user-table').DataTable({
-          ordering: false // Desativa a ordenaço automática
-        });
-      },
-      error: function() {
-        console.log('Erro ao obter dados do servidor.');
-      }
+  $(document).ready(function () {
+    // Inicializar a tabela DataTable
+    var table = $('#user-table').DataTable({
+        order: [[0, 'desc']]  // Ordenar pela primeira coluna (índice 0) de forma descendente
     });
-  });
+
+    // Adicione um identificador ao seu campo de entrada
+    var statusSelect = $('#selectedStatus');
+    statusSelect.val('');
+
+    // Adicione um evento para reagir a mudanças no campo de entrada
+    statusSelect.on('change', function () {
+        // Obter o valor selecionado
+        var statusValue = statusSelect.val();
+
+        // Limpar o corpo da tabela
+        table.clear().draw();
+
+        // Recarregar os dados da tabela com o novo valor de status
+        loadData(statusValue, table);
+    });
+
+    // Função para carregar dados da tabela
+    function loadData(status, dataTable) {
+        $.ajax({
+            url: 'bd.php',
+            method: 'GET',
+            data: { status: status },
+            success: function (data) {
+                // Inserir dados na tabela
+                data.forEach(function (row) {
+                    // Definir a classe com base no status para estilização
+                    var statusClass = (row.status === 'Aprovado') ? 'text-success' : 'text-black';
+
+                    // Adicionar a nova linha ao corpo da tabela
+                    dataTable.row.add([
+                        row.data,
+                        row.email,
+                        row.externalreference,
+                        row.valor,
+                        row.status
+                    ]).draw();
+                });
+            },
+            error: function () {
+                console.log('Erro ao obter dados do servidor.');
+            }
+        });
+    }
+
+    // Chame a função loadData inicialmente para carregar todos os dados
+    loadData('');
+});
+
+
 </script>
 
 
@@ -450,7 +468,10 @@ function saveFile(blob, filename) {
 
 
       
- 
+        <footer class="footer text-center">
+          Desenvolvido por
+          <a href="https://daanrox.com" target='_blank'>DAANROX</a>.
+        </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -485,5 +506,10 @@ function saveFile(blob, filename) {
        ****************************************/
       $("#zero_config").DataTable();
     </script>
+     <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
   </body>
 </html>

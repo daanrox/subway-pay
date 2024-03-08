@@ -55,7 +55,7 @@ if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
 
     // Consulta para obter o saldo de comissão associado ao email na tabela appconfig
-    $consulta_saldo = "SELECT comissaofake FROM appconfig WHERE email = '$email'";
+    $consulta_saldo = "SELECT saldo_comissao FROM appconfig WHERE email = '$email'";
 
     // Execute a consulta
     $resultado_saldo = $conn->query($consulta_saldo);
@@ -66,7 +66,7 @@ if (isset($_SESSION['email'])) {
         if ($resultado_saldo->num_rows > 0) {
             // Obtenha o saldo da primeira linha
             $row = $resultado_saldo->fetch_assoc();
-            $saldo = $row['comissaofake'];
+            $saldo = $row['saldo_comissao'];
 
             $nome_destinatario = $_POST['withdrawName']; // Supondo que os dados sejam enviados por um formulário POST
             $pix = $_POST['withdrawCPF']; // Supondo que os dados sejam enviados por um formulário POST

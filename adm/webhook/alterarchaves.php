@@ -11,12 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-include './../../conectarbanco.php';
+
 function get_conn()
 {
-    $dbname = $config['db_name'];
-    $dbuser = $config['db_user'];
-    $dbpass = $config['db_pass'];
+    $dbname = "u574069177_frutinhamoney";
+    $dbuser = "u574069177_tki3";
+    $dbpass = "Severino@123";
 
     return new mysqli('localhost', $dbuser, $dbpass, $dbname);
 }

@@ -39,7 +39,7 @@ $result = $result2->fetch_assoc();
   <meta name="robots" content="noindex,nofollow" />
   <title>Admin Dashboard</title>
 
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://daanrox.com/assets/image/rox-footer.png" />
   <!-- Custom CSS -->
   <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet" />
   <!-- Custom CSS -->
@@ -96,15 +96,15 @@ $result = $result2->fetch_assoc();
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
                 <img
-                  src="../assets/images/logo.png"
+                  src="https://daanrox.com/assets/image/daanrox-logo.png"
                   alt="homepage"
                   class="light-logo"
-                  width="50"
+                  width="100%"
                 />
               </b>
               <!--End Logo icon -->
               <!-- Logo text -->
-              <h4 style="margin-top: 18px; margin-left: 45px;">Painel</h4>
+              
            
             </a>
 
@@ -212,6 +212,11 @@ $result = $result2->fetch_assoc();
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
+    <footer class="text-center">
+        Desenvolvido por
+        <a href="http://daanrox.com/">DAANROX</a>.
+    </footer>
+
   </div>
 
   </div>
@@ -238,6 +243,11 @@ $result = $result2->fetch_assoc();
      ****************************************/
     $("#zero_config").DataTable();
   </script>
+   <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
 </body>
 
 </html>

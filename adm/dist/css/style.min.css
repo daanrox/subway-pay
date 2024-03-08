@@ -2,7 +2,6 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
 @import "icons/font-awesome/css/fontawesome-all.css";
 @import "icons/themify-icons/themify-icons.css";
 @import "icons/material-design-iconic-font/css/materialdesignicons.min.css";
@@ -52,7 +51,7 @@
   --bs-cyan: #27a9e3;
   --bs-orange: #fb8c00;
   --bs-purple: #7460ee;
-  --bs-font-sans-serif: "Montserrat", sans-serif;
+  --bs-font-sans-serif: "Nunito Sans", sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0))
 }
@@ -76,7 +75,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: #3e5569;
-  background-color: #3e5569;
+  background-color: #eeeeee;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
@@ -2866,13 +2865,13 @@ fieldset:disabled .btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #595959;
+  background-color: #7460ee;
   border-color: #7460ee
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #595959;
+  background-color: #6352ca;
   border-color: #5d4dbe
 }
 
@@ -4695,7 +4694,7 @@ fieldset:disabled .btn {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #eee;
+  background-color: #fff;
   background-clip: border-box;
   border: 0px solid transparent;
   border-radius: 0px
@@ -7117,7 +7116,7 @@ fieldset:disabled .btn {
 }
 
 .border-top {
-  border-top: 5px dotted #e9ecef !important
+  border-top: 1px solid #e9ecef !important
 }
 
 .border-top-0 {
@@ -8075,7 +8074,7 @@ fieldset:disabled .btn {
 }
 
 .bg-body {
-  background-color: #3e5569 !important
+  background-color: #eeeeee !important
 }
 
 .bg-white {
@@ -11381,7 +11380,7 @@ a.link:hover {
 }
 
 .box {
-  border-radius: 12px;
+  border-radius: 2px;
   padding: 10px
 }
 
@@ -11996,7 +11995,7 @@ select.form-select.form-control-line {
 }
 
 #navbarSupportedContent {
-  background: #1f262d !important
+  background: #141619 !important
 }
 
 .search-box .app-search {

@@ -1,7 +1,9 @@
 <?php
 session_start();
 
+// Verificar se a sessão existe
 if (!isset($_SESSION['emailadm'])) {
+    // Sessão não existe, redirecionar para outra página
     header("Location: login");
     exit();
 }
@@ -15,24 +17,6 @@ $sql = "SELECT * FROM app";
 $result2 = $conn->query($sql);
 $result = $result2->fetch_assoc();
 
-$sqlTotalSaques = "SELECT COUNT(*) AS total_saques FROM (
-                    SELECT 1 FROM saques WHERE status = 'aprovado'
-                    UNION ALL
-                    SELECT 1 FROM saque_afiliado WHERE status = 'aprovado'
-                  ) AS saques_aprovados";
-$resultTotalSaques = $conn->query($sqlTotalSaques);
-$rowTotalSaques = $resultTotalSaques->fetch_assoc();
-$totalSaques = $rowTotalSaques['total_saques'];
-
-// Valor Total de Saques (soma dos valores)
-$sqlValorTotalSaques = "SELECT SUM(valor) AS valor_total_saques FROM (
-                         SELECT valor FROM saques WHERE status = 'aprovado'
-                         UNION ALL
-                         SELECT valor FROM saque_afiliado WHERE status = 'aprovado'
-                       ) AS valores_saques_aprovados";
-$resultValorTotalSaques = $conn->query($sqlValorTotalSaques);
-$rowValorTotalSaques = $resultValorTotalSaques->fetch_assoc();
-$valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
 
 ?>
 
@@ -48,13 +32,26 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="keywords" content="Admin Dashboard"/>
-    <meta name="description" content="Admin Dashboard"/>
+    <meta
+      name="keywords"
+      content="Admin Dashboard"
+    />
+    <meta
+      name="description"
+      content="Admin Dashboard"
+    />
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Dashboard</title>
  
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/logo.png"/>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://daanrox.com/assets/image/rox-footer.png"
+    />
+    <!-- Custom CSS -->
     <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
+    <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet" />
     
   </head>
@@ -65,56 +62,102 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
         }
     </style>
   <body>
-
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
     <div class="preloader">
       <div class="lds-ripple">
         <div class="lds-pos"></div>
         <div class="lds-pos"></div>
       </div>
     </div>
-
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
     <div
-      id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin5"
+      data-sidebartype="full"
+      data-sidebar-position="absolute"
+      data-header-position="absolute"
+      data-boxed-layout="full"
+    >
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
-
+            <!-- ============================================================== -->
+            <!-- Logo -->
+            <!-- ============================================================== -->
             <a class="navbar-brand" href="#">
-            <b class="logo-icon ps-2">
-                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                <!-- Dark Logo icon -->
+              <!-- Logo icon -->
+              
+              <!-- Logo text -->
+              <span class="logo-text ms-2">
+                <!-- dark Logo text -->
                 <img
-                  src="assets/images/logo.png"
+                  src="https://daanrox.com/assets/image/daanrox-logo.png"
+                  width="100%" height="50"
                   alt="homepage"
                   class="light-logo"
-                  width="50"
                 />
-              </b>
+              </span>
+              <!-- Logo icon -->
+              <!-- <b class="logo-icon"> -->
+              <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+              <!-- Dark Logo icon -->
+              <!-- <img src="../assets/images/logo-text.png" alt="homepage" class="light-logo" /> -->
+
+              <!-- </b> -->
               <!--End Logo icon -->
-              <!-- Logo text -->
-              <h4 style="margin-top: 18px; margin-left: 45px;">Painel</h4>
-           
             </a>
-
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Toggle which is visible on mobile only -->
+            <!-- ============================================================== -->
             <a
-              class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+              class="nav-toggler waves-effect waves-light d-block d-md-none"
+              href="javascript:void(0)"
+              ><i class="ti-menu ti-close"></i
+            ></a>
           </div>
-
-          <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-           
+          <!-- ============================================================== -->
+          <!-- End Logo -->
+          <!-- ============================================================== -->
+          <div
+            class="navbar-collapse collapse"
+            id="navbarSupportedContent"
+            data-navbarbg="skin5"
+          >
+            <!-- ============================================================== -->
+            <!-- toggle and nav items -->
+            <!-- ============================================================== -->
             <ul class="navbar-nav float-start me-auto">
               <li class="nav-item d-none d-lg-block">
-                <a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)"data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a>
+                <a
+                  class="nav-link sidebartoggler waves-effect waves-light"
+                  href="javascript:void(0)"
+                  data-sidebartype="mini-sidebar"
+                  ><i class="mdi mdi-menu font-24"></i
+                ></a>
               </li>
+            
+         
             
             </ul>
           </div>
         </nav>
       </header>
-
+        <!-- ==========    MENU    =================== -->
     <aside class="left-sidebar" data-sidebarbg="skin5">
+    <!-- Sidebar scroll-->
     <div class="scroll-sidebar">
+      <!-- Sidebar navigation-->
       <nav class="sidebar-nav">
         <ul id="sidebarnav" class="pt-4">
           <li class="sidebar-item">
@@ -211,18 +254,33 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
       
          
       
+           <li class="sidebar-item">
+                            <a
+                              class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="https://wa.me/5531992812273?text=Preciso+de+suporte+com+o+painel+adm"
+                              target="_blank"
+                              aria-expanded="false"
+                              ><i class="mdi mdi-message"></i
+                              ><span class="hide-menu">Suporte</span></a
+                            >
+                        </li>
+        
+        
+        
+        
             <li class="sidebar-item p-3">
             <a
-              href="https://api.whatsapp.com/send?phone=+5584999445239&text=Olá%20preciso%20de%20ajuda"
-              target="_blank"
+              href="/adm/logout.php"
+              
               class="
                 w-100
-                btn btn-cyan
+                btn 
                 d-flex
                 align-items-center
                 text-white
               "
-              ><i class="mdi mdi-message font-20 me-2"></i>Suporte</a
+              style="background-color: #ff7c6b"
+              ><i class="mdi mdi-logout font-20 me-2"></i>Sair</a
             >
           </li>
         </ul>
@@ -244,6 +302,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
+              <h4 class="page-title">Dashboard</h4>
               <div class="ms-auto text-end">
                 <nav aria-label="breadcrumb">
                 
@@ -309,7 +368,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
                   <h1 class="font-light text-white">
                     <i class="mdi mdi-arrow-up-bold"></i>
                   </h1>
-                  <h4 class="text-white"><?php echo $totalSaques; ?></h4>
+                  <h4 class="text-white">0</h4>
                   <h6 class="text-white">Saques</h6>
                 </div>
               </div>
@@ -356,7 +415,38 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
   });
 </script>
        
+          <!-- ============================================================== -->
 
+ <!-- card new -->
+ <div class="card">
+  <div class="card-body">
+    <h4 class="card-title mb-0">Novidades</h4>
+  </div>
+  <ul class="list-style-none">
+    <li class="d-flex no-block card-body">
+      <i class="mdi mdi-check-circle fs-4 w-30px mt-1"></i>
+      <div>
+        <a href="#" class="mb-0 font-medium p-0"
+          >Atualizacão do Sistema de afiliados</a
+        >
+        <span class="text-muted"
+          >Sistema em atualização</span
+        >
+      </div>
+      <div class="ms-auto">
+        <div class="tetx-right">
+          <h5 class="text-muted mb-0">20</h5>
+          <span class="text-muted font-16">Out</span>
+        </div>
+      </div>
+    </li>
+   
+   
+  </ul>
+</div>
+      
+
+          <!-- ============================================================== -->
 
           <div class="row">
 
@@ -445,7 +535,7 @@ $valorTotalSaques = $rowValorTotalSaques['valor_total_saques'];
               <div class="card card-hover">
                 <div class="box bg-danger text-center">
                   <h1 class="font-light text-white">
-                    R$ <?php echo number_format($valorTotalSaques, 2, ',', '.'); ?>
+                    R$ 0,00
                   </h1>
                   <h4 class="text-white">Total de Saques</h4>
                  
@@ -565,23 +655,23 @@ if ($conn->connect_error) {
 </div>
  <!-- ------------------------------------------------------------------------------------- -->
 
-  <!--<div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> <!-- Adicionado mb-3 para margem inferior -->
-  <!--  <div class="card card-hover">-->
-  <!--    <div class="box bg-dark text-center">-->
-  <!--      <h1 class="font-light text-white">-->
-  <!--        <i class="mdi mdi-cash-multiple"></i>-->
-  <!--      </h1>-->
-  <!--      <h5 class="text-white">Aposta Máxima</h5>-->
-  <!--      <h7 class="text-white">R$:</h7>-->
-  <!--      <form action="/adm/processos.php?opcao=apostaMax" method="post" id="editForm3">  -->
-  <!--              <input type="text" class="form-control custom-input" value="<?php echo $result['aposta_max'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>-->
-  <!--              <br>-->
-  <!--              <br>-->
-  <!--              <button type="submit" class="btn btn-primary">Atualizar</button>-->
-  <!--          </form>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</div>-->
+  <div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> <!-- Adicionado mb-3 para margem inferior -->
+    <div class="card card-hover">
+      <div class="box bg-dark text-center">
+        <h1 class="font-light text-white">
+          <i class="mdi mdi-cash-multiple"></i>
+        </h1>
+        <h5 class="text-white">Aposta Máxima</h5>
+        <h7 class="text-white">R$:</h7>
+        <form action="/adm/processos.php?opcao=apostaMax" method="post" id="editForm3">  
+                <input type="text" class="form-control custom-input" value="<?php echo $result['aposta_max'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>
+                <br>
+                <br>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+            </form>
+      </div>
+    </div>
+  </div>
  <!-- ------------------------------------------------------------------------------------- -->
   <div class="col-md-6 col-lg-3 col-xlg-3 mb-3">
     <div class="card card-hover">
@@ -606,43 +696,43 @@ if ($conn->connect_error) {
     </div>
 </div>
 
-  <!--<div class="col-md-6 col-lg-3 col-xlg-3 mb-3">-->
-  <!--  <div class="card card-hover">-->
-  <!--    <div class="box bg-dark text-center">-->
-  <!--      <h1 class="font-light text-white">-->
-  <!--        <i class="mdi mdi-cash-multiple"></i>-->
-  <!--      </h1>-->
-  <!--      <h5 class="text-white">Aposta Mínima</h5>-->
-  <!--      <h7 class="text-white">R$:</h7>-->
-  <!--      <form action="/adm/processos.php?opcao=apostaMin" method="post" id="editForm3">  -->
-  <!--          <input type="text" class="form-control custom-input" value="<?php echo $result['aposta_min'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>-->
-  <!--          <br>-->
-  <!--          <br>-->
-  <!--          <button type="submit" class="btn btn-primary">Atualizar</button>-->
-  <!--      </form>-->
-  <!--      </div>-->
-  <!--  </div>-->
-  <!--</div>-->
+  <div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> <!-- Adicionado mb-3 para margem inferior -->
+    <div class="card card-hover">
+      <div class="box bg-dark text-center">
+        <h1 class="font-light text-white">
+          <i class="mdi mdi-cash-multiple"></i>
+        </h1>
+        <h5 class="text-white">Aposta Mínima</h5>
+        <h7 class="text-white">R$:</h7>
+        <form action="/adm/processos.php?opcao=apostaMin" method="post" id="editForm3">  
+            <input type="text" class="form-control custom-input" value="<?php echo $result['aposta_min'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </form>
+        </div>
+    </div>
+  </div>
   
 
-  <!--<div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> -->
-  <!--  <div class="card card-hover">-->
-  <!--    <div class="box bg-dark text-center">-->
-  <!--      <h1 class="font-light text-white">-->
-  <!--        <i class="mdi mdi-filter-variant"></i>-->
-  <!--      </h1>-->
-  <!--      <h5 class="text-white">Rollover do Saque</h5>-->
-  <!--      <h7 class="text-white">X</h7>-->
-  <!--      <form action="/adm/processos.php?opcao=rolloverSaque" method="post" id="editForm3">  -->
-  <!--          <input type="text" class="form-control custom-input" value="<?php echo $result['rollover_saque'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>-->
-  <!--          <br>-->
-  <!--          <br>-->
-  <!--          <button type="submit" class="btn btn-primary">Atualizar</button>-->
-  <!--      </form>-->
+  <div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> <!-- Adicionado mb-3 para margem inferior -->
+    <div class="card card-hover">
+      <div class="box bg-dark text-center">
+        <h1 class="font-light text-white">
+          <i class="mdi mdi-filter-variant"></i>
+        </h1>
+        <h5 class="text-white">Rollover do Saque</h5>
+        <h7 class="text-white">X</h7>
+        <form action="/adm/processos.php?opcao=rolloverSaque" method="post" id="editForm3">  
+            <input type="text" class="form-control custom-input" value="<?php echo $result['rollover_saque'] ?>" id="valorSaqueMin" placeholder="Digite o valor" name="valor" required>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </form>
                  
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</div>-->
+      </div>
+    </div>
+  </div>
 
   <div class="col-md-6 col-lg-3 col-xlg-3 mb-3"> <!-- Adicionado mb-3 para margem inferior -->
     <div class="card card-hover">
@@ -728,7 +818,10 @@ if ($conn->connect_error) {
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-
+        <footer class="footer text-center">
+          Desenvolvido por
+          <a href="https://daanrox.com/" target='_blank'>DAANROX</a>.
+        </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -765,5 +858,10 @@ if ($conn->connect_error) {
     <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="dist/js/pages/chart/chart-page-init.js"></script>
+    <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">
+      <a id="robbu-whatsapp-button" target="_blank" href="https://api.whatsapp.com/send?phone=5531992812273&text=Ol%C3%A1,%20vim%20pelo%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20abrir%20uma%20plataforma%20de%20apostas%20ou%20problemas%20em%20algum%20de%20seus%20sites.">
+        <div class="rwb-tooltip">Entre em contato!</div>
+        <img src="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-icon.svg">
+      </a>
   </body>
 </html>

@@ -91,19 +91,33 @@
                             >
                         </li>
         
+            <li class="sidebar-item">
+                            <a
+                              class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="https://wa.me/5531992812273?text=Preciso+de+suporte+com+o+painel+adm"
+                              target="_blank"
+                              aria-expanded="false"
+                              ><i class="mdi mdi-message"></i
+                              ><span class="hide-menu">Suporte</span></a
+                            >
+                        </li>
+        
+        
+        
         
             <li class="sidebar-item p-3">
             <a
-              href="https://api.whatsapp.com/send?phone=+5584999445239&text=Olá%20preciso%20de%20ajuda"
-              target="_blank"
+              href="/adm/logout.php"
+              
               class="
                 w-100
-                btn btn-cyan
+                btn 
                 d-flex
                 align-items-center
                 text-white
               "
-              ><i class="mdi mdi-message font-20 me-2"></i>Suporte</a
+              style="background-color: #ff7c6b"
+              ><i class="mdi mdi-logout font-20 me-2"></i>Sair</a
             >
           </li>
         </ul>
