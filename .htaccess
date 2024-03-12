@@ -1,4 +1,4 @@
-
+ErrorDocument 404 /404_not_found.php
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Defina o pacote “ea-php81” como a linguagem padrão de programação “PHP”.
