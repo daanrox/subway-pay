@@ -322,10 +322,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           setTimeout(function() {
               var successMessage = document.querySelector(".login-success");
               if (successMessage) {
-                  successMessage.style.display = "none";
+                  // successMessage.style.display = "none";
                   window.location.href = "../deposito"; // Redirecionar após 3 segundos
               }
-          }, 3000);
+          }, 400);
       </script>
 
 
