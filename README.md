@@ -10,7 +10,7 @@ Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como
 ![Subway Pay](front_example2.jpg)
 
 ### Deploy
-Aplicação em produção [https://lucroapp.shop](https://lucroapp.shop)
+Aplicação em produção [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
 
 ## Tecnologias Utilizadas
 
