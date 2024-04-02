@@ -1,0 +1,4 @@
+[12-Feb-2024 22:24:17 America/Sao_Paulo] PHP Warning:  Undefined array key "depositou" in /home/nubetgames/public_html/adm/usuarios/update.php on line 51
+[12-Feb-2024 22:24:17 America/Sao_Paulo] PHP Warning:  Undefined array key "bloqueado" in /home/nubetgames/public_html/adm/usuarios/update.php on line 52
+[12-Feb-2024 22:24:17 America/Sao_Paulo] PHP Warning:  Undefined array key "percas" in /home/nubetgames/public_html/adm/usuarios/update.php on line 54
+[12-Feb-2024 22:24:17 America/Sao_Paulo] PHP Warning:  Undefined array key "ganhos" in /home/nubetgames/public_html/adm/usuarios/update.php on line 55
