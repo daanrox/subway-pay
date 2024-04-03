@@ -340,6 +340,10 @@ src="https://www.facebook.com/tr?id=1448254109452932&ev=PageView&noscript=1"
           <a href="/legal">
             <strong class="bold-white-link">Termos de uso</strong>
           </a>
+          </br></br>
+          <a href="https://t.me/ROX_BR" target='_blank'>
+            <strong class="bold-white-link">Telegram</strong> <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png' style='width: 20px'/>
+          </a>
         </div>
           <div class="follow-test">contato@<?php
 $nomeUnico = strtolower(str_replace(' ', '', $nomeUnico));
