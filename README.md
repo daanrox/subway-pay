@@ -7,6 +7,11 @@ Para um melhor desempenho, utilize a hospedagem na Hostinger, através deste lin
 
 Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
+Link de indicação para cadastro na Suitpay : [https://web.suitpay.app/register?code=1702059428530](https://web.suitpay.app/register?code=1702059428530)
+Caso tenha interesse em publicar este sistema, é muito importante que registre através deste link na Suitpay, ou entre em contato comigo no Whatsapp para fornecer o contato do Gerente responsável.
+
+
+
 ![Subway Pay](front_example2.jpg)
 
 ### Deploy
