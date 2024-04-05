@@ -1,10 +1,10 @@
 <?php
 include './../../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
-    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+    die("Conexão falhou: " . $conn->connect_error);
 }
 
 $nomeUnico = "";
@@ -16,44 +16,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nomeUm = $_POST["nomeUm"];
     $nomeDois = $_POST["nomeDois"];
 
-    $response = array(); // Inicializa o array de resposta
+    $response = array();
+    $updateSql = "UPDATE app SET nome_unico = ?, nome_um = ?, nome_dois = ? LIMIT 1";
+    $stmt = $conn->prepare($updateSql);
+    $stmt->bind_param("sss", $nomeUnico, $nomeUm, $nomeDois);
 
-    // Atualiza a tabela app se já existir uma linha
-    $checkSql = "SELECT * FROM app LIMIT 1";
-    $result = $conn->query($checkSql);
-
-    if ($result->num_rows > 0) {
-        $updateSql = "UPDATE app SET nome_unico = '$nomeUnico', nome_um = '$nomeUm', nome_dois = '$nomeDois' LIMIT 1";
-
-        if ($conn->query($updateSql) === TRUE) {
-            $response["sucesso"] = "Valores atualizados com sucesso!";
-            $response["nomeUnico"] = $nomeUnico; // Adiciona as variáveis ao array de resposta
-            $response["nomeUm"] = $nomeUm;
-            $response["nomeDois"] = $nomeDois;
-        } else {
-            $response["erro"] = "Erro ao atualizar: " . $conn->error;
-        }
+    if ($stmt->execute()) {
+        $response["sucesso"] = "Valores atualizados com sucesso!";
+        $response["nomeUnico"] = $nomeUnico; 
+        $response["nomeUm"] = $nomeUm;
+        $response["nomeDois"] = $nomeDois;
     } else {
-        // Se não existir, insere uma nova linha
-        $insertSql = "INSERT INTO app (nome_unico, nome_um, nome_dois) VALUES ('$nomeUnico', '$nomeUm', '$nomeDois')";
-
-        if ($conn->query($insertSql) === TRUE) {
-            $response["sucesso"] = "Nova linha adicionada!";
-            $response["nomeUnico"] = $nomeUnico; // Adiciona as variáveis ao array de resposta
-            $response["nomeUm"] = $nomeUm;
-            $response["nomeDois"] = $nomeDois;
-        } else {
-            $response["erro"] = "Erro ao inserir: " . $conn->error;
-        }
+        $response["erro"] = "Erro ao atualizar: " . $conn->error;
     }
 
-    // Retorna a resposta como JSON
-    return true;
+    $stmt->close();
+
+    
+    echo json_encode($response);
 } else {
-    // Se a requisição não for do tipo POST, você pode adicionar aqui lógica adicional conforme necessário
+   
     return false;
 }
 
-// Fecha a conexão com o banco de dados
 $conn->close();
 ?>
