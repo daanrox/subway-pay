@@ -35,48 +35,41 @@ include './../config.php';
         
 </script>
     
-    <script type="text/javascript">
+   <script type="text/javascript">
+    function extrairvalorAposta() {
+        var url = window.location.href;
+        var match = url.match(/jogarsubway=(\d+BC)/);
 
-        function extrairvalorAposta() {
-
-            var url = window.location.href;
-
-            var match = url.match(/jogarsubway=(\d+BC)/);
-
-            if (match) {
-
-                var valorAposta = match[1];
-
-                var valorMapeado;
-                switch (valorAposta) {
-                    case '1BC':
-                        valorMapeado = 1;
-                        break;
-                    case '2BC':
-                        valorMapeado = 2;
-                        break;
-                    case '3BC':
-                        valorMapeado = 5;
-                        break;
-                    default:
-                        valorMapeado = 1;
-                }
-
-                return valorMapeado;
+        if (match) {
+            var valorAposta = match[1];
+            var valorMapeado;
+            switch (valorAposta) {
+                case '1BC':
+                    valorMapeado = 1;
+                    break;
+                case '2BC':
+                    valorMapeado = 2;
+                    break;
+                case '3BC':
+                    valorMapeado = 5;
+                    break;
+                default:
+                    window.location.href = '/painel';
+                    return; 
             }
 
-
-            return 1;
+            return valorMapeado;
+        } else {
+            window.location.href = '/painel';
         }
+    }
 
+    
+    var valorAposta = extrairvalorAposta();
+    const aposta = valorAposta;
+</script>
 
-        var valorAposta = extrairvalorAposta();
-
-
-        const aposta = extrairvalorAposta();
-
-
-    </script>
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
