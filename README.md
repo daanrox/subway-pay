@@ -18,9 +18,9 @@ Aplicação em produção [https://subwayaposta.shop](https://subwayaposta.shop)
 
 ### Outros jogos
 
-Modelo com Jogo Dino : [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
-Modelo com Jogo Candy Crush: [https://candycrushdasorte.com](https://candycrushdasorte.com)
-Estão disponíveis também os jogos do Mario, Angry Birds, Flappy Bird, e Fruit Ninja
+- Modelo com Jogo Dino : [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
+- Modelo com Jogo Candy Crush: [https://candycrushdasorte.com](https://candycrushdasorte.com)
+- Estão disponíveis também os jogos do Mario, Angry Birds, Flappy Bird, e Fruit Ninja
 
 ## Tecnologias Utilizadas
 
