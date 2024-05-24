@@ -14,7 +14,13 @@ Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como
 ![Subway Pay](front_example2.jpg)
 
 ### Deploy
-Aplicação em produção [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
+Aplicação em produção [https://subwayaposta.shop](https://subwayaposta.shop)
+
+### Outros jogos
+
+Modelo com Jogo Dino : [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
+Modelo com Jogo Candy Crush: [https://candycrushdasorte.com](https://candycrushdasorte.com)
+Estão disponíveis também os jogos do Mario, Angry Birds, Flappy Bird, e Fruit Ninja
 
 ## Tecnologias Utilizadas
 
