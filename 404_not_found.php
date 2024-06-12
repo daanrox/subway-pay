@@ -1,121 +1,39 @@
 <?php
-// Inicia a sessão
-session_start();
-date_default_timezone_set('America/Sao_Paulo');
+include 'conectarbanco.php';
 
+$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
 
-include './config.php';
-include './conectarbanco.php';
-
-$dataAtual = date('Y-m-d H:i:s');
-$saqueMinimo = 40; // Defina o valor mínimo do saque conforme necessário
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Capturar dados do formulário
-    $withdrawName = $_POST['withdrawName'];
-    $withdrawCPF = $_POST['withdrawCPF'];
-    $withdrawValue = $_POST['withdrawValue'];
-    $withdrawEmail = $_POST['withdrawEmail'];
-    $dataAtual = date('Y-m-d H:i:s');
-
-    // Função para validar o formulário
-    function validate_form($form)
-    {
-        global $saqueMinimo;
-
-        $errors = array();
-
-        if (empty($form['name'])) {
-            $errors['name'] = 'O nome é obrigatório';
-        }
-
-        if (empty($form['cpf'])) {
-            $errors['cpf'] = 'O CPF é obrigatório';
-        }
-
-        if (empty($form['value'])) {
-            $errors['value'] = 'O valor é obrigatório';
-        } else if ($form['value'] < $saqueMinimo) {
-            $errors['value'] = 'O valor mínimo é de R$ ' . $saqueMinimo;
-        }
-
-        return $errors;
-    }
-
-    // Validar o formulário
-    $form_data = array(
-        'name' => $withdrawName,
-        'cpf' => $withdrawCPF,
-        'value' => $withdrawValue
-    );
-
-    $form_errors = validate_form($form_data);
-
-    // Exibir mensagens de erro, se houver
-    if (!empty($form_errors)) {
-        foreach ($form_errors as $error) {
-            echo $error . '<br>';
-        }
-    } else {
-        // Conectar ao banco de dados
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-        // Verificar a conexão
-        if ($conn->connect_error) {
-            die("Erro na conexão com o banco de dados: " . $conn->connect_error);
-        }
-
-        // Consultar o saldo atual do usuário
-        $consulta_saldo = "SELECT saldo FROM appconfig WHERE email = '$withdrawEmail'";
-        $resultado_saldo = $conn->query($consulta_saldo);
-
-        if ($resultado_saldo) {
-            $row = $resultado_saldo->fetch_assoc();
-            $saldo_atual = $row['saldo'];
-
-            // Verificar se o valor do saque atende ao requisito mínimo
-            if ($withdrawValue >= $saqueMinimo) {
-                // Verificar se o saldo é suficiente para o saque
-                if ($saldo_atual >= $withdrawValue) {
-                    // Preparar e executar a consulta SQL de inserção
-                    $sql = "INSERT INTO saques (nome, cpf, valor, email, datasaque, status) VALUES ('$withdrawName', '$withdrawCPF', '$withdrawValue', '$withdrawEmail', '$dataAtual', 'Pendente')";
-
-                    if ($conn->query($sql) === TRUE) {
-                        // Atualizar o saldo na tabela appconfig após o saque
-                        $novo_saldo = $saldo_atual - $withdrawValue;
-                        $atualizar_saldo = "UPDATE appconfig SET saldo = $novo_saldo WHERE email = '$withdrawEmail'";
-                        $conn->query($atualizar_saldo);
-
-                        // Redirecionar para uma nova página após o processamento do formulário
-                        header("Location: /saque");
-                        exit(); // Certifique-se de parar a execução aqui para evitar o envio de cabeçalhos duplicados
-                    } else {
-                        echo "Erro ao inserir dados: " . $conn->error;
-                    }
-                } else {
-                    echo "Saldo insuficiente. Valor de saque é maior que o saldo atual.";
-                }
-            } else {
-                echo "O valor do saque deve ser no mínimo R$ $saqueMinimo.";
-            }
-        } else {
-            echo "Erro ao obter o saldo: " . $conn->error;
-        }
-
-        // Fechar a conexão com o banco de dados
-        $conn->close();
-    }
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
 }
+
+$sql = "SELECT nome_unico, nome_um, nome_dois FROM app";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+
+    $nomeUnico = $row['nome_unico'];
+    $nomeUm = $row['nome_um'];
+    $nomeDois = $row['nome_dois'];
+
+} else {
+    return false;
+}
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 
 <html lang="pt-br" class="w-mod-js w-mod-ix wf-spacemono-n4-active wf-spacemono-n7-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.wf-force-outline-none[tabindex="-1"]:focus{outline:none;}</style>
 <meta charset="pt-br">
-<title><?php echo $title_site; ?></title>
+<title><?php echo $nomeUnico; ?></title>
 
 <meta property="og:image" content="../img/logo.png">
 
-<meta content="<?php echo $title_site; ?>" property="og:title">
+<meta content="<?php echo $nomeUnico; ?>" property="og:title">
 <meta name="twitter:site" content="@daanrox">
 <meta name="twitter:image" content="../img/logo.png">
 <meta property="og:type" content="website">
@@ -160,8 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
 <div class="container w-container">
 <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
-<img src="/img/app-icon-96.webp" loading="lazy" height="28" alt="" class="image-6">
-<div class="nav-link logo"><?php echo $name_site; ?></div>
+<img src="arquivos/l2.png" loading="lazy" height="28" alt="" class="image-6">
+<div class="nav-link logo"><?php echo $nomeUnico; ?></div>
 </a>
 <nav role="navigation" class="nav-menu w-nav-menu">
 <a href="/playdemo/" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
@@ -3389,6 +3307,7 @@ li{
     }
     .hero-section{
         height:auto
+        background-image: url('https://i.postimg.cc/0yXSG9g3/background-1.jpg');
     }
     .hero-heading{
         margin-top:0;
@@ -3741,7 +3660,7 @@ li{
 <div class="" style="-webkit-user-select: text;">
 
 
-<a href="../deposito/" class="menu-button2 w-nav-dep nav w-button">DEPOSITAR</a>
+<a href="/" class="menu-button2 w-nav-dep nav w-button">OPS!</a>
 </div>
 </div>
 <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
@@ -3757,8 +3676,6 @@ li{
 
 <a href="../login/" class="button w-button">
 <div >Login</div>
-</a><a href="../cadastrar/" class="button w-button">
-<div >Sair</div>
 </a>
 <a href="../cadastrar/" class="button w-button">Cadastrar</a>
 </div>
@@ -3767,7 +3684,7 @@ li{
 
 
 
-<section id="hero" class="hero-section dark wf-section">
+<section id="hero" class="hero-section dark wf-section" style="background-image: url('https://i.postimg.cc/0yXSG9g3/background-1.jpg'); background-position: center; background-size: cover;">
         <div class="minting-container w-container">
           
           <h2>PÁGINA NÃO ENCONTRADA</h2>
@@ -3786,18 +3703,21 @@ li{
 </a>
         </div>
       </section>
-      <div class="footer-section wf-section">
-        <div class="domo-text"><?php echo $first_name; ?> <br /></div>
-        <div class="domo-text purple"><?php echo $second_name; ?>  <br /></div>
-        <div class="follow-test">
-          © Copyright Postbrands of Curacao N.V, with registered offices at Dr.
-          M.L. King Boulevard 117, accredited by license GLH-16286002012.
+    <div class="footer-section wf-section">
+        <div class="domo-text"> <?= $nomeUm ?> <br>
         </div>
-        <div class="follow-test">
-          
-          <br />
+        <div class="domo-text purple"> <?= $nomeDois ?> <br>
         </div>
-        <div class="follow-test"><?php echo $email_site; ?> </div>
+        <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117, accredited by license GLH-16289876512. </div>
+        <div class="follow-test">
+          <a href="/legal">
+            <strong class="bold-white-link">Termos de uso</strong>
+          </a>
+        </div>
+          <div class="follow-test">contato@<?php
+$nomeUnico = strtolower(str_replace(' ', '', $nomeUnico));
+echo $nomeUnico;
+?>.com</div>
       </div>
 
 
