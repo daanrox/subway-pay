@@ -181,22 +181,14 @@ src="https://www.facebook.com/tr?id=1448254109452932&ev=PageView&noscript=1"
               });
             });
           </script>
-          <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false"></div>
+          
           <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
             <div class="icon w-icon-nav-menu"></div>
           </div>
         </div>
         <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
       </div>
-      <div class="nav-bar">
-        <a href="cadastrar/" class="button w-button">
-          <div>Jogar</div>
-        </a>
-        <a href="login" class="button w-button">
-          <div>Login</div>
-        </a>
-        <a href="cadastrar/" class="button w-button">Cadastrar</a>
-      </div>
+      
       <section id="hero" class="hero-section wf-section">
         <div class="hero-container">
           <div class="hero-letters">
