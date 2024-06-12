@@ -3,9 +3,9 @@
 
 Site para iGaming para coletar moedas através do jogo Subway Surfers, em caso de grande quantidade de solicitações de Saque, podemos utilizar a [API Cash Out](https://github.com/daanrox/Pix-CashOut) para resgate do valor através de transferencia PIX imediata.
 
-Para um melhor desempenho, utilize a hospedagem na Hostinger, através deste link: [https://hostinger.com.br](https://hostinger.com.br?REFERRALCODE=1DANIEL1306)
+Para um melhor desempenho, e segurança utilize a hospedagem na Hostinger através deste link: [https://hostinger.com.br](https://hostinger.com.br?REFERRALCODE=1DANIEL1306)
 
-Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
+Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Candy Crush, Dino, Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
 
 
