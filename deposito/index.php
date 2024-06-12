@@ -174,8 +174,7 @@ function make_request($url, $payload, $method = 'POST')
 {
     global $client_id, $client_secret;
     
-    $client_id = "daanrox_1702319994406";
-    $client_secret = "bea982ae6abd2a5b4e4b04fadfc876aec60ed4f934f585eb75737014e876b073ad6e11944d114465810f029057b3c8c9";
+    
 
     $headers = array(
         "Content-Type: application/json",
