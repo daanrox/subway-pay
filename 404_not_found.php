@@ -82,7 +82,7 @@ $conn->close();
 <div class="nav-link logo"><?php echo $nomeUnico; ?></div>
 </a>
 <nav role="navigation" class="nav-menu w-nav-menu">
-<a href="/playdemo/" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+<a href="/presell/" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
 <a href="/login/" class="nav-link w-nav-link w--current" style="max-width: 940px;">Login</a>
 
 <a href="/cadastrar/" class="button nav w-button">Cadastrar</a>
