@@ -7,6 +7,10 @@ Para um melhor desempenho, e segurança utilize a hospedagem na Hostinger atrav�
 
 Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Candy Crush, Dino, Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
+# Doação
+
+Para fazer uma doação em agradecimento pelo projeto! Acesse: [https://roxcheckout.shop](https://roxcheckout.shop)
+
 
 
 
