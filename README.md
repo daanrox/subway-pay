@@ -20,6 +20,7 @@ Aplicação em produção [https://subwayaposta.shop](https://subwayaposta.shop)
 
 - Modelo com Jogo Dino : [https://pay-subwaysurf.store](https://pay-subwaysurf.store)
 - Modelo com Jogo Candy Crush: [https://candycrushdasorte.com](https://candycrushdasorte.com)
+- Modelo com Jogo Snake Bet: [https://cobra.roxgames.online/](https://cobra.roxgames.online/)
 - Estão disponíveis também os jogos do Mario, Angry Birds, Flappy Bird, e Fruit Ninja
 
 ## Tecnologias Utilizadas
