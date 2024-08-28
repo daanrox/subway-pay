@@ -1,7 +1,7 @@
 <?php
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -31,7 +31,7 @@ $conn->close();
 // Conectar ao banco de dados
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 // Verificar a conexão
 if ($conn->connect_error) {
@@ -85,7 +85,7 @@ echo '</script>';
 // Conectar ao banco de dados
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 // Verificar a conexão
 if ($conn->connect_error) {
@@ -136,7 +136,7 @@ function get_conn()
 {
     include './../conectarbanco.php';
 
-    return new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+    return new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 }
 
 function get_form()
@@ -509,7 +509,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

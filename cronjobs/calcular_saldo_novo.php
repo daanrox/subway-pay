@@ -3,7 +3,7 @@
 
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 // Verificar a conexão
 if ($conn->connect_error) {
