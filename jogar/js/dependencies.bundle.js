@@ -45,11 +45,27 @@ if (url.includes('?jogarsubway=')) {
 
 
 
+function obterMultiplicador() {
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const jogarSubway = urlParams.get('jogarsubway');
 
+  switch (jogarSubway) {
+    case '1BC':
+      return 1;
+    case '2BC':
+      return 2;
+    case '3BC':
+      return 3;
+    default:
+      return 1;
+  }
+}
 
 
 var jogando = true;
-var xmeta = 5;
+var xmeta = 7;
+var multiplies = obterMultiplicador();
 var meta = aposta * xmeta;
 var acumulado;
 var check_end = 0;
@@ -32171,7 +32187,7 @@ btnSair().addEventListener('click', () => {
     				if (this.game.state !== o.a.RUNNING || !this._built) return;
     				if (this.multiplier.update(), this.updateCount += 1, 480 === this.updateCount && this.removeAllItemBoost(!0), this.updateCount % 4 > 0) return;
     				const t = this.game.stats;
-    				let numberMoney = parseFloat(t.coins / 85).toFixed(2); //
+    				let numberMoney = parseFloat(t.coins * 0.10 * multiplies).toFixed(2); //
     				let money = "R$" + numberMoney;//rox 
     				acumulado = numberMoney;
     				this.distance.getText() <= t.score && this.distance.setText(t.score, 6), this.coins.setText(money), this.multiplier.text = "x" + (t.multiplier + t.missionMultiplier), this.ranking && this.ranking.update()
