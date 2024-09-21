@@ -1,0 +1,20 @@
+services:
+  app:
+    image: "docker.io/daanrox/subway-pay:latest"
+    build:
+      context: "."
+      target: "production"
+    env_file:
+      - "docker.env"
+    ports:
+      - mode: "host"
+        published: 8080
+        target: 80
+  mariadb:
+    image: "docker.io/mariadb:11"
+    env_file:
+      - "docker.env"
+    ports:
+      - mode: "host"
+        published: 3306
+        target: 3306

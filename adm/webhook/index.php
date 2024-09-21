@@ -14,7 +14,7 @@ if (!isset($_SESSION['emailadm'])) {
     $dbuser = "u574069177_tki3";
     $dbpass = "Severino@123";
 
-    return new mysqli('localhost', $dbuser, $dbpass, $dbname);
+    return new mysqli($config['db_host'], $dbuser, $dbpass, $dbname);
 }
 
 $conn = get_conn();

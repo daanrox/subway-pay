@@ -1,7 +1,7 @@
 <?php
 include '../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -48,9 +48,9 @@ if (!empty($email)) {
         
          include './../conectarbanco.php';
 
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+        $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
         $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
+        $conn = new PDO("mysql:host={$config['db_host']};dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Verifica se o email existe na tabela confirmar_deposito
@@ -103,7 +103,7 @@ if (!empty($email)) {
     // Inicie a sessão se ainda não foi iniciada
     include './../conectarbanco.php';
     
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+    $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
     
     
     // Verifique se a conexão foi bem-sucedida
@@ -137,7 +137,7 @@ if (!empty($email)) {
 
     include './../conectarbanco.php';
 
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+    $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 
 // Verifique se a conexão foi bem-sucedida

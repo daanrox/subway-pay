@@ -35,7 +35,7 @@ function get_conn()
 {
   include './../conectarbanco.php';
 
-    return new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+    return new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 }
 

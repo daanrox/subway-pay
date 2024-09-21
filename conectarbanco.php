@@ -1,9 +1,10 @@
 <?php
 
 $config = array(
-    'db_user' => 'u295945790_subaposta',
-    'db_pass' => 'jsQYU@=*Tf[7',
-    'db_name' => 'u295945790_subaposta'
+    'db_host' => getenv('MYSQL_HOST'),
+    'db_user' => getenv('MYSQL_USER'),
+    'db_pass' => getenv('MYSQL_PASSWORD'),
+    'db_name' => getenv('MYSQL_DATABASE'),
 );
 
 ?>

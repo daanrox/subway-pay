@@ -1,7 +1,7 @@
 <?php
 include '../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -39,7 +39,7 @@ if (!isset($_SESSION['email'])) {
 // Inicie a conexão com o banco de dados
 include './../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 // Verificar a conexão
 if ($conn->connect_error) {

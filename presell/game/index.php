@@ -1,5 +1,7 @@
 <?php
 
+include './../../conectarbanco.php';
+
 function non_null($form, $field)
 {
     if (!isset($form[$field])) {
@@ -37,13 +39,8 @@ function query($conn, $sql)
     ];
 }
 
-function get_connect() {
-$dbname = "u756913841_subwaypaypv";
-$dbuser = "u756913841_tki20";
-$dbpass = "Severino@123";
-    
-    $host = "localhost";
-    $conn = new mysqli($host, $dbuser, $dbpass, $dbname);
+function get_connect() {    
+    $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
     
     if ($conn->connect_error) {
         http_response_code(500); // internal server error

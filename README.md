@@ -20,6 +20,16 @@ Para fazer uma doação em agradecimento pelo projeto! Acesse: [https://roxcheck
 ### Deploy
 Aplicação em produção [https://subwayaposta.shop](https://subwayaposta.shop)
 
+### Docker
+
+```bash
+# Executar a stack
+docker compose up --build
+
+# Instalar o banco de dados (precisa da stack em execução, o comando pesquisa o container que contenha o nome "subway-pay-mariadb")
+source docker.env ; cat sql_subway.sql | docker exec -i $(docker ps | grep subway-pay-mariadb | cut -d' ' -f 1) mariadb --password=$MARIADB_ROOT_PASSWORD $MYSQL_DATABASE
+```
+
 ### Outros jogos
 
 - Modelo com Jogo Dino : [https://pay-subwaysurf.store](https://pay-subwaysurf.store)

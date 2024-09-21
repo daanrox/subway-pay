@@ -11,7 +11,7 @@ if (!isset($_SESSION['emailadm'])) {
 
 include '../../conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 
 $sql = "SELECT * FROM app";
