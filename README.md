@@ -5,6 +5,8 @@ Site para iGaming para coletar moedas através do jogo Subway Surfers, em caso d
 
 Para um melhor desempenho, e segurança utilize a hospedagem na Hostinger através deste link: [https://hostinger.com.br](https://hostinger.com.br?REFERRALCODE=1DANIEL1306)
 
+ENTRE EM CONTATO PARA INTEGRAÇÃO COM OUTRAS GATEWAYS DE PAGAMENTO
+
 Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Candy Crush, Dino, Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
 # Doação
