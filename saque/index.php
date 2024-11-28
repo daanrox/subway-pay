@@ -18,9 +18,9 @@ if (!empty($email)) {
         
          include './../conectarbanco.php';
 
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+        $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
         $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
+        $conn = new PDO("mysql:host={$config['db_host']};dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $conn->prepare("SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'");
@@ -60,7 +60,7 @@ if (!empty($email)) {
 
     include './../conectarbanco.php';
 
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+    $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 
 if ($conn->connect_error) {
@@ -88,7 +88,7 @@ $conn->close();
 <?php
 include 'conectarbanco.php';
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
