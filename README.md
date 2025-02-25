@@ -9,6 +9,11 @@ ENTRE EM CONTATO PARA INTEGRAÇÃO COM OUTRAS GATEWAYS DE PAGAMENTO
 
 Aplicação 100% funcional, caso tenha interesse em adquirir outros modelos como Candy Crush, Dino, Angry Birds, Mario ou Cassinos, entre em contato +5531992812273
 
+# Novidade
+
+Sistema com o jogo Piano Tiles : [https://piano.snakedasorte.com](https://piano.snakedasorte.com)
+Com músicas brasileiras e Integração com PixUp
+
 # Doação
 
 Para fazer uma doação em agradecimento pelo projeto! Acesse: [https://roxcheckout.shop](https://roxcheckout.shop)
