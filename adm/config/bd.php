@@ -1,5 +1,21 @@
 <?php
 include './../../conectarbanco.php';
+session_start();
+
+if (!isset($_SESSION['emailadm'])) {
+    http_response_code(403);
+    echo json_encode(["erro" => "Acesso negado."]);
+    exit();
+}
+
+$referer = $_SERVER['HTTP_REFERER'] ?? '';
+$host = $_SERVER['HTTP_HOST'];
+
+if (parse_url($referer, PHP_URL_HOST) !== $host) {
+    http_response_code(403);
+    echo json_encode(["erro" => "Requisição não autorizada."]);
+    exit();
+}
 
 $conn = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
 
@@ -16,10 +32,20 @@ $nomeUnico = "";
 $nomeUm = "";
 $nomeDois = "";
 
+function validarNome($nome) {
+    return preg_match('/^[A-Za-zÀ-ÿ\s]+$/', $nome);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nomeUnico = $_POST["nomeUnico"];
-    $nomeUm = $_POST["nomeUm"];
-    $nomeDois = $_POST["nomeDois"];
+    $nomeUnico = $_POST["nomeUnico"] ?? 'Subway Pay';
+    $nomeUm = $_POST["nomeUm"] ?? 'SUBWAY';
+    $nomeDois = $_POST["nomeDois"] ?? 'PAY';
+
+    if (!validarNome($nomeUnico) || !validarNome($nomeUm) || !validarNome($nomeDois)) {
+        http_response_code(400);
+        echo json_encode(["erro" => "Somente letras e espaços"]);
+        exit();
+    }
 
     if (strpos(strtolower($nomeUnico), '<script>') !== false) {
         $nomeUnico = 'Subway Pay';
