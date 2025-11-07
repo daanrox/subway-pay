@@ -22,7 +22,7 @@ Para fazer uma doação em agradecimento pelo projeto! Acesse: [https://roxcheck
 
 
 
-![Subway Pay](front_example2.jpg)
+![Subway Pay](front_example.jpg)
 
 ### Deploy
 Aplicação em produção [https://subwayaposta.shop](https://subwayaposta.shop)
