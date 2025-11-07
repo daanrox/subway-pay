@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script type="text/javascript">
         const aposta = 5;
@@ -10,7 +11,8 @@
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="viewport" content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
+    <meta name="viewport"
+        content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
     <meta name="description" content="">
 
     <link rel="manifest" href="subwaysurfers.webmanifest">
@@ -24,7 +26,8 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Subway Surfers Web</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             height: 100%;
             background-color: #0b316b;
@@ -56,16 +59,36 @@
             animation: showHideDot 2.5s ease-in-out infinite;
         }
 
-        .dot.one { animation-delay: 0.2s; }
-        .dot.two { animation-delay: 0.4s; }
-        .dot.three { animation-delay: 0.6s; }
+        .dot.one {
+            animation-delay: 0.2s;
+        }
+
+        .dot.two {
+            animation-delay: 0.4s;
+        }
+
+        .dot.three {
+            animation-delay: 0.6s;
+        }
 
         @keyframes showHideDot {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            60% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            60% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
+
         button#sair {
             position: absolute;
             display: none;
@@ -85,28 +108,29 @@
         }
     </style>
 </head>
+
 <body>
     <button id="sair" onclick="redirecionarParaOutraPagina()">ENCERRAR APOSTA</button>
 
     <script>
         function redirecionarParaOutraPagina() {
-         
+
             window.location.href = '../painel';
         }
     </script>
-    
-    
-    
-    
+
+
+
+
     <script>
-    
-    function redirecionar() {
-        window.location.href = '../painel';
-    }
+
+        function redirecionar() {
+            window.location.href = '../painel';
+        }
 
 
-    setTimeout(redirecionar, 40000);
-</script>
+        setTimeout(redirecionar, 40000);
+    </script>
 
 
 
@@ -120,11 +144,13 @@
     </script>
     <div id="message">
         <h1>Loading</h1>
-        <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+        <h1 class="dot one">.</h1>
+        <h1 class="dot two">.</h1>
+        <h1 class="dot three">.</h1>
     </div>
     <script src="js/loading.js"></script>
     <script src="js/boot.js?v=<?php echo time(); ?>"></script>
     <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 </body>
-</html>
 
+</html>

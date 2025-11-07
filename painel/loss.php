@@ -1,22 +1,10 @@
+
 <?php
 session_start();
 
-
-?>
-
-
-
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
 $email = 'influencer@mail.com';
 $saldo = 1
-
-    ?>
-
+?>
 
 <?php
 if (isset($_GET['msg'])) {
@@ -28,14 +16,11 @@ if (isset($_GET['msg'])) {
 }
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="pt-br" class="w-mod-js w-mod-ix wf-spacemono-n4-active wf-spacemono-n7-active wf-active">
 <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
@@ -111,7 +96,7 @@ if (isset($_GET['msg'])) {
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
-                <h2>VOCÊ PERDEU</H2> 
+                <h2>VOCÊ PERDEU</H2>
                 <h2>NÃO DESANIME!</h2>
                 <p class="win-warn"><strong>Você poderia ter ganho incríveis R$
                         <?php echo $valor; ?>
@@ -274,5 +259,9 @@ if (isset($_GET['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

@@ -1,5 +1,4 @@
 <?php
-// Adicione este código no início do arquivo redirect.php
 header("Location: ./index.php");
 exit;
 ?>
@@ -15,7 +14,6 @@ exit;
             window.history.replaceState(null, null, window.location.href);
         }
 
-        // Adiciona um ouvinte de eventos para detectar quando o usuário tenta voltar
         window.addEventListener('popstate', function (event) {
             window.location.href = '../painel/';
         });

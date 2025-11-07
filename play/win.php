@@ -51,7 +51,7 @@
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section" style='background-image: url(https://raw.githubusercontent.com/daanrox/subway-pay/main/assets/img/home/background.jpeg);'>
+        <section id="hero" class="hero-section dark wf-section" style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
             <style>
                 div.escudo {
@@ -78,8 +78,8 @@
                     <img src="https://raw.githubusercontent.com/daanrox/subway-pay/main/assets/img/user/trophy.gif">
                 </div>
                 <h2>PARABÉNS! <br> VOCÊ GANHOU</h2>
-               
-            
+
+
                 <p>Para continuar faturando e sacar seu dinheiro, continue jogando. #ficadica!</p>
                 <strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo para Jogar Novamente</strong>
 
@@ -237,5 +237,9 @@
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

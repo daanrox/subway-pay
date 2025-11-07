@@ -1,15 +1,11 @@
 <?php
 session_start();
 
-// Verificar se a sessão existe
 if (!isset($_SESSION['emailadm'])) {
-    // Sessão não existe, redirecionar para outra página
     header("Location: ../login");
     exit();
 }
 
-// O restante do código da sua página continua aqui
-// ...
 
 ?>
 
@@ -27,7 +23,6 @@ if (!isset($_SESSION['emailadm'])) {
 
 
 
-<!-- Adicione essas linhas ao cabeçalho do seu HTML -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -62,21 +57,13 @@ if (!isset($_SESSION['emailadm'])) {
       sizes="16x16"
       href="https://daanrox.com/assets/image/rox-footer.png"
     />
-    <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet" />
-    <!-- Custom CSS -->
     <link href="../dist/css/style.min.css" rel="stylesheet" />
 
   </head>
 
   <body>
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
-  
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
+
     <div
       id="main-wrapper"
       data-layout="vertical"
@@ -86,31 +73,14 @@ if (!isset($_SESSION['emailadm'])) {
       data-header-position="absolute"
       data-boxed-layout="full"
     >
-      <!-- ============================================================== -->
-      <!-- Topbar header - style you can find in pages.scss -->
-      <!-- ============================================================== -->
+
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
+           
             <a class="navbar-brand" href="../">
-              <!-- Logo icon -->
-              <!--<b class="logo-icon ps-2">-->
-                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                <!-- Dark Logo icon -->
-              <!--  <img-->
-              <!--    src="../assets/images/logo-icon.png "-->
-              <!--    alt="homepage"-->
-              <!--    class="light-logo"-->
-              <!--    width="25"-->
-              <!--  />-->
-              <!--</b>-->
-              <!--End Logo icon -->
-              <!-- Logo text -->
+              
               <span class="logo-text ms-2">
-                <!-- dark Logo text -->
                 <img
                   src="https://daanrox.com/assets/image/daanrox-logo.png"
                   width="100%" height="50"
@@ -149,7 +119,6 @@ if (!isset($_SESSION['emailadm'])) {
           </div>
         </nav>
       </header>
-        <!-- ==========    MENU    =================== -->
     
     <?php include '../components/aside.php' ?>
    
@@ -163,7 +132,6 @@ if (!isset($_SESSION['emailadm'])) {
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Tabela de Usuários</h5>
-       <!-- Column -->
         <div class="row">
             <div class="col-md-12 col-lg-4 col-xlg-3">
                 <div class="card card-hover">
@@ -191,7 +159,6 @@ if (!isset($_SESSION['emailadm'])) {
 
 <script>
 function escapeCsvValue(value) {
-    // Se o valor contiver vírgulas, aspas ou quebras de linha, envolva-o entre aspas
     if (/[",\n\r]/.test(value)) {
         return '"' + value.replace(/"/g, '""') + '"';
     }
@@ -210,9 +177,7 @@ function exportTable(tableId, filename, delimiter, excludeEditColumn) {
     var data = [];
     var headers = [];
 
-    // Adicione os cabeçalhos da tabela
     $('#' + tableId + ' thead th').each(function () {
-        // Exclua a coluna de edição se necessário
         if (excludeEditColumn && $(this).text().trim().toLowerCase() === 'editar') {
             return;
         }
@@ -220,13 +185,11 @@ function exportTable(tableId, filename, delimiter, excludeEditColumn) {
     });
     data.push(headers);
 
-    // Use a API do DataTables para obter todos os dados
     var table = $('#' + tableId).DataTable();
     table.rows().data().each(function (row) {
         var rowData = [];
 
         row.forEach(function (value, index) {
-            // Exclua a coluna de edição se necessário
             if (excludeEditColumn && $('#' + tableId + ' thead th').eq(index).text().trim().toLowerCase() === 'editar') {
                 return;
             }
@@ -236,7 +199,6 @@ function exportTable(tableId, filename, delimiter, excludeEditColumn) {
         data.push(rowData);
     });
 
-    // Crie uma planilha em formato CSV ou Excel, dependendo da extensão do arquivo
     if (filename.endsWith('.csv')) {
         var csvContent = data.map(row => row.join(delimiter)).join('\n');
         var blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -304,7 +266,6 @@ function saveFile(blob, filename) {
         </button>
       </div>
       <div class="modal-body">
-        <!-- Campos de input para edição -->
         <form id="editForm" action="/adm/usuarios/update.php" method="post">
             <label for="editEmail">Email:</label>
             <input type="text" class="form-control" id="editEmail" name="email" >
@@ -331,32 +292,13 @@ function saveFile(blob, filename) {
             <label for="editPlano">Revenue Share (%):</label>
             <input type="text" class="form-control" id="editPlano" name="plano" >
             
-            <!-- <select  name="plano" class="form-select custom-input" aria-label="Escolha a dificuldade">
-                <option value="bronze">Bronze</option>
-                <option value="ouro">Ouro</option>
-                <option value="platina">Platina</option>
-            </select>-->
     
-            
-            
-            
-            <!--<label for="editSaldoComissao">Saldo Comissao:</label>-->
-            <!--<input type="text" class="form-control" id="editSaldoComissao" name="saldo_comissao" >-->
-    
-            <!-- <label for="editPerdas">Perdas:</label>-->
-            <!-- <input type="text" class="form-control" id="editPerdas" name="percas" >-->
-    
-            <!-- <label for="editGanhos">Ganhos:</label>-->
-            <!-- <input type="text" class="form-control" id="editGanhos" name="ganhos" >-->
+           
     
             <label for="editCpa">Cpa:</label>
             <input type="text" class="form-control" id="editCpa" name="cpa" >
     
-            <!--<label for="editCpaFake">Chance do Afiliado Receber CPA (%):</label>-->
-            <!--<input type="text" class="form-control" id="editCpaFake" name="cpafake" >-->
-    
-            <!--<label for="editComissaoFake">Porcentagem de Rev. Share Falso (%):</label>-->
-            <!--<input type="text" class="form-control" id="editComissaoFake" name="comissaofake" >-->
+      
             <br style='margin-bottom: 15px'>
             <input type="hidden" id="editUserId" name="id">
 
@@ -368,21 +310,17 @@ function saveFile(blob, filename) {
 </div>
 <script>
     $(document).ready(function () {
-        // Adicione um evento para reagir a mudanças no campo de entrada
         $('#leadAffInput').on('input', function () {
-            // Obtenha o valor digitado no campo de entrada
             var leadAffValue = $(this).val();
 
-            // Solicitação AJAX
             $.ajax({
                 type: "GET",
                 url: "../php/cadastrados_ultimas_24h.php",
                 data: { leadAff: leadAffValue },
                 success: function (response) {
-                    // Atualiza o valor exibido na página
                     $("#valorUsuarios1").text(response.total);
                     $("#valorUsuarios2").text(response.ultimas_24h);
-                    console.log(response); // Exibe a resposta do servidor no console
+                    console.log(response); 
                 },
                 error: function (error) {
                     console.log("Erro na solicitação AJAX: " + error);
@@ -390,7 +328,6 @@ function saveFile(blob, filename) {
             });
         });
 
-        // Dispare o evento de mudança inicial para carregar os dados com base no valor padrão
         $('#leadAffInput').trigger('input');
     });
 </script>
@@ -404,7 +341,6 @@ function saveFile(blob, filename) {
     function mostrarOcultarSenha(){
         const senhaInput = document.getElementById('editSenha');
 
-        // Altera o tipo do input de senha para texto ou vice-versa
         senhaInput.type = senhaInput.type === 'password' ? 'text' : 'password';
         senhaInput.type = mostrarSenhaCheckbox.checked ? 'text' : 'password';
     }
@@ -414,16 +350,13 @@ function saveFile(blob, filename) {
 <script>
   $(document).ready(function() {
     
-    // Use AJAX para buscar dados do arquivo PHP
     $.ajax({
       url: 'bd.php',
       method: 'GET',
       success: function(data) {
-        // Limpar o corpo da tabela
         $('#table-body').empty();
         
 
-        // Inserir dados na tabela
         data.forEach(function(row) {
             var newRow = "<tr>" +
             "<td>" + row.data_cadastro + "</td>" +
@@ -442,14 +375,11 @@ function saveFile(blob, filename) {
         });
         
 
-        // Inicializar DataTables após a conclusão da chamada AJAX
         var table = $('#user-table').DataTable();
         
-        // Adicionar evento de clique para o botão de edição
         $('#user-table tbody').on('click', '.btn-edit', function() {
             
               var userId = $(this).data('id');
-              // Preencher os campos do modal com os dados do usuário
               fillEditModal(userId);
               // Abrir o modal
               $('#editModal').modal('show');
@@ -457,9 +387,8 @@ function saveFile(blob, filename) {
         
 
         function fillEditModal(userId) {
-            var user = getUserById(userId); // Implemente a lógica para obter os dados do usuário por ID
+            var user = getUserById(userId); 
             console.log(data)
-            // Preencher os campos do modal
             $('#editEmail').val(user.email);
             $('#editSenha').val(user.senha);
             $('#editTelefone').val(user.telefone);
@@ -482,26 +411,20 @@ function saveFile(blob, filename) {
         console.log('Erro ao obter dados do servidor.');
       }
     });
-    // Adicione um identificador ao seu campo de entrada
     var leadAffInput = $('#leadAffInput');
 
-    // Adicione um evento para reagir a mudanças no campo de entrada
     $('#leadAffInput').on('input', function () {
-            // Recarregue os dados da tabela com o novo valor de lead_aff
             loadData($(this).val());
         });
 
-        // Função para carregar dados da tabela
         function loadData(leadAff) {
             $.ajax({
                 url: 'bd.php',
                 method: 'GET',
                 data: { leadAff: leadAff },
                 success: function (data) {
-                    // Limpar o corpo da tabela
                     $('#table-body').empty();
 
-                    // Inserir dados na tabela
                     data.forEach(function (row) {
                         var newRow = "<tr>" +
                             "<td>" + row.data_cadastro + "</td>" +
@@ -517,15 +440,11 @@ function saveFile(blob, filename) {
                         $('#table-body').append(newRow);
                     });
 
-                    // Inicializar DataTables após a conclusão da chamada AJAX
                     var table = $('#user-table').DataTable();
 
-                    // Adicionar evento de clique para o botão de edição
                     $('#user-table tbody').on('click', '.btn-edit', function () {
                         var userId = $(this).data('id');
-                        // Preencher os campos do modal com os dados do usuário
                         fillEditModal(userId);
-                        // Abrir o modal
                         $('#editModal').modal('show');
                     });
                 },
@@ -535,34 +454,21 @@ function saveFile(blob, filename) {
             });
         }
 
-        // Adicione um identificador ao seu campo de entrada
         var leadAffSelect = $('#leadAffSelect');
 
-        // Adicione um evento para reagir a mudanças no campo de entrada
         leadAffSelect.on('change', function() {
-            // Obter o valor selecionado
             var leadAffValue = leadAffSelect.val();
         
-            // Se o valor selecionado for "Todos", reinicialize a tabela
             if (leadAffValue === "") {
-                // Destrua e recrie a tabela
                 $('#user-table').DataTable().destroy();
                 
-                // Recarregue os dados da tabela com o novo valor de lead_aff
                 loadData('');
         
-                // Inicialize novamente o DataTables
-                //$('#user-table').DataTable();
             } else {
-                // Se o valor selecionado for diferente de "Todos", proceda normalmente
                 $('#user-table').DataTable().destroy();
                 loadData(leadAffValue);
             }
         });
-
-
-        // Chame a função loadData inicialmente para carregar todos os dados
-        //loadData('');
     });
 </script>
 
@@ -583,38 +489,19 @@ function saveFile(blob, filename) {
           Desenvolvido por
           <a href="https://daanrox.com" target='_blank'>DAANROX</a>.
         </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
       </div>
-      <!-- ============================================================== -->
-      <!-- End Page wrapper  -->
-      <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
     <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
     <script src="../assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
     <script src="../dist/js/waves.js"></script>
-    <!--Menu sidebar -->
     <script src="../dist/js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
     <script src="../dist/js/custom.min.js"></script>
-    <!-- this page js -->
     <script src="../assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
     <script src="../assets/extra-libs/multicheck/jquery.multicheck.js"></script>
     <script src="../assets/extra-libs/DataTables/datatables.min.js"></script>
     <script>
-      /****************************************
-       *       Basic Table                   *
-       ****************************************/
       $("#zero_config").DataTable();
     </script>
      <link rel="stylesheet" href="https://cdn.positus.global/production/resources/robbu/whatsapp-button/whatsapp-button.css">

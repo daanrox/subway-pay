@@ -1,22 +1,9 @@
 <?php
 session_start();
 
-
-?>
-
-
-
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
 $email = 'influencer@mail.com';
 $saldo = 1
-
-    ?>
-
+?>
 
 <?php
 if (isset($_POST['msg'])) {
@@ -27,10 +14,6 @@ if (isset($_POST['msg'])) {
     }
 }
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 
@@ -160,7 +143,8 @@ if (isset($_POST['msg'])) {
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
             <style>
                 div.escudo {
@@ -181,26 +165,15 @@ if (isset($_POST['msg'])) {
                     margin: -10px 6px 0 0;
                 }
             </style>
-            
-            // <script>
-        
-                let addValue = <?php echo $valor; ?>;
-                
-               
-                let saldoInfluencer = localStorage.getItem('saldoInfluencer');
-                
-                let newSaldoInfluencer = Number(saldoInfluencer) + Number(addValue)
-                localStorage.setItem('saldoInfluencer', newSaldoInfluencer)
-                
-            // </script>
+
+
 
             <div class="minting-container w-container" style="margin-top: -20%">
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
                 <h2>EXCELENTE! VOCÊ GANHOU!</h2>
-                <p class="win-warn"><strong>Uau! Continue assim, você acaba de ganhar R$
-                        <?php echo $valor; ?>
+                <p class="win-warn"><strong>Uau! Continue assim, você foi demais!
                     </strong>
                 </p>
                 <p>Continue jogando com responsabilidade #ficadica!</p>
@@ -359,5 +332,11 @@ if (isset($_POST['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>
+
+

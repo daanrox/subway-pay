@@ -1,99 +1,90 @@
 <?php
 session_start();
 
-include './../conectarbanco.php';
+include "./../conectarbanco.php";
 
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-$noback = isset($_SESSION['noback']) && $_SESSION['noback'] === 'true';
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
+$noback = isset($_SESSION["noback"]) && $_SESSION["noback"] === "true";
 
-// Se 'noback' for verdadeiro, redireciona para a página do painel sem executar comandos SQL
 if ($noback) {
     header("Location: ../painel/");
-    exit;
+    exit();
 }
 
-
-
 $betValues = [
-    '1BC' => 1.00,
-    '2BC' => 2.00,
-    '3BC' => 5.00,
+    "1BC" => 1.0,
+    "2BC" => 2.0,
+    "3BC" => 5.0,
 ];
 
-$bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_POST['bet']] : 0.00;
-// echo "Aposta: " . $bet;
+$bet =
+    isset($_POST["bet"]) && isset($betValues[$_POST["bet"]])
+        ? $betValues[$_POST["bet"]]
+        : 0.0;
 
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 
+if ($conn->connect_error) {
+    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+}
 
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$saldoQuery = "SELECT saldo FROM appconfig WHERE email = ?";
+$saldoStmt = $conn->prepare($saldoQuery);
+$saldoStmt->bind_param("s", $email);
+$saldoStmt->execute();
+$saldoStmt->bind_result($saldoAtual);
+$saldoStmt->fetch();
+$saldoStmt->close();
 
-        if ($conn->connect_error) {
-            die("Erro na conexão com o banco de dados: " . $conn->connect_error);
-        }
+$updatePercas = "UPDATE appconfig SET percas = percas + ? WHERE email = ?";
+$updatePercasStmt = $conn->prepare($updatePercas);
+$updatePercasStmt->bind_param("ds", $bet, $email);
+$updatePercasStmt->execute();
+$updatePercasStmt->close();
 
-        $saldoQuery = "SELECT saldo FROM appconfig WHERE email = ?";
-        $saldoStmt = $conn->prepare($saldoQuery);
-        $saldoStmt->bind_param("s", $email);
-        $saldoStmt->execute();
-        $saldoStmt->bind_result($saldoAtual);
-        $saldoStmt->fetch();
-        $saldoStmt->close();
-        
+$leadAffId = "SELECT lead_aff FROM appconfig WHERE email = ?";
+$leadAffStmt = $conn->prepare($leadAffId);
+$leadAffStmt->bind_param("s", $email);
+$leadAffStmt->execute();
+$leadAffStmt->bind_result($leadAff);
+$leadAffStmt->fetch();
+$leadAffStmt->close();
 
-        $updatePercas = "UPDATE appconfig SET percas = percas + ? WHERE email = ?";
-        $updatePercasStmt = $conn->prepare($updatePercas);
-        $updatePercasStmt->bind_param("ds", $bet, $email);
-        $updatePercasStmt->execute();
-        $updatePercasStmt->close();
+if ($leadAff) {
+    $percentAff = "SELECT plano FROM appconfig WHERE id = ?";
+    $percentAffStmt = $conn->prepare($percentAff);
+    $percentAffStmt->bind_param("s", $leadAff);
+    $percentAffStmt->execute();
+    $percentAffStmt->bind_result($plano);
+    $percentAffStmt->fetch();
+    $percentAffStmt->close();
 
-        $leadAffId = "SELECT lead_aff FROM appconfig WHERE email = ?";
-        $leadAffStmt = $conn->prepare($leadAffId);
-        $leadAffStmt->bind_param("s", $email);
-        $leadAffStmt->execute();
-        $leadAffStmt->bind_result($leadAff);
-        $leadAffStmt->fetch();
-        $leadAffStmt->close();
-        
-        if($leadAff){
-         
-            $percentAff = "SELECT plano FROM appconfig WHERE id = ?";
-            $percentAffStmt = $conn->prepare($percentAff);
-            $percentAffStmt->bind_param("s", $leadAff);
-            $percentAffStmt->execute();
-            $percentAffStmt->bind_result($plano);
-            $percentAffStmt->fetch();
-            $percentAffStmt->close();
-    
-            if (is_numeric($plano) && $plano > 0) {
-                // Executar ações relacionadas ao banco de dados
-             
-        
-                $addValue = $bet * ($plano / 100);
-        
-                $updateComissao = "UPDATE appconfig SET saldo_comissao = saldo_comissao + ? WHERE id = ?";
-                $updateComissaoStmt = $conn->prepare($updateComissao);
-                $updateComissaoStmt->bind_param("di", $addValue, $leadAff);
-                $updateComissaoStmt->execute();
-                $updateComissaoStmt->close();
-        }
-            
-            
-            
-            
-            
-        }
+    if (is_numeric($plano) && $plano > 0) {
+        $addValue = $bet * ($plano / 100);
 
+        $updateComissao =
+            "UPDATE appconfig SET saldo_comissao = saldo_comissao + ? WHERE id = ?";
+        $updateComissaoStmt = $conn->prepare($updateComissao);
+        $updateComissaoStmt->bind_param("di", $addValue, $leadAff);
+        $updateComissaoStmt->execute();
+        $updateComissaoStmt->close();
+    }
+}
 
-        $novoSaldo = $saldoAtual - $bet;
+$novoSaldo = $saldoAtual - $bet;
 
-        $updateQuery = "UPDATE appconfig SET saldo = ? WHERE email = ?";
-        $updateStmt = $conn->prepare($updateQuery);
-        $updateStmt->bind_param("ds", $novoSaldo, $email);
-        $updateStmt->execute();
-        $updateStmt->close();
+$updateQuery = "UPDATE appconfig SET saldo = ? WHERE email = ?";
+$updateStmt = $conn->prepare($updateQuery);
+$updateStmt->bind_param("ds", $novoSaldo, $email);
+$updateStmt->execute();
+$updateStmt->close();
 
-        $conn->close();
-    
+$conn->close();
 
 ?>
 
@@ -104,14 +95,11 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
 
 <head>
     <script>
-         <script>
-        // Adicione esta parte ao final do seu corpo HTML
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
 
-        // Verifica se o noback está definido como true e redireciona para o painel
-        if (<?php echo $noback ? 'true' : 'false'; ?>) {
+        if (<? php echo $noback ? 'true' : 'false'; ?>) {
             window.location.href = '../painel/redirect.php';
         }
     </script>
@@ -132,40 +120,36 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
     <link href="./arquivos/page.css" rel="stylesheet" type="text/css">
 
 
-<script>
-    localStorage.setItem('realBetPage', 'false');
-
-    window.addEventListener('pageshow', function (event) {
-        // Verificar o localStorage quando a página for exibida ou recarregada
+    <script>
         localStorage.setItem('realBetPage', 'false');
-    });
+
+        window.addEventListener('pageshow', function (event) {
+            localStorage.setItem('realBetPage', 'false');
+        });
 
 
-    window.onload = function() {
-        // Adicione esta parte ao final do seu código PHP
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function(event) {
+        window.onload = function () {
             window.history.pushState(null, null, window.location.href);
-            // Configurar sessionStorage para evitar execução adicional
-            sessionStorage.setItem('noback', 'true');
-        };
-        
-        // Verificar sessionStorage quando a página for carregada ou recarregada
-        if (sessionStorage.getItem('noback') === 'true') {
-            window.location.href = '../painel/redirect.php';
-        }
-    };
-</script>
+            window.onpopstate = function (event) {
+                window.history.pushState(null, null, window.location.href);
+                sessionStorage.setItem('noback', 'true');
+            };
 
-<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+            if (sessionStorage.getItem('noback') === 'true') {
+                window.location.href = '../painel/redirect.php';
+            }
+        };
+    </script>
+
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <script type="text/javascript">
         WebFont.load({
             google: {
                 families: ["Space Mono:regular,700"]
-            
+
             }
         });
-       
+
     </script>
 
 
@@ -191,7 +175,8 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
             <style>
                 div.escudo {
@@ -217,12 +202,9 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
-                <h2>VOCÊ PERDEU</H2> 
+                <h2>VOCÊ PERDEU</H2>
                 <h2>NÃO DESANIME!</h2>
-                <!--<p class="win-warn"><strong>Você poderia ter ganho incríveis R$-->
-                <!--        <?php echo $valor; ?>-->
-                <!--    </strong>-->
-                <!--</p>-->
+
                 <p>A persistência é a chave para o sucesso, não deixe isso te por pra baixo. #ficadica!</p>
                 <strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo para Jogar Novamente</strong>
 
@@ -380,28 +362,28 @@ $bet = isset($_POST['bet']) && isset($betValues[$_POST['bet']]) ? $betValues[$_P
                             opacity: 1;
                         }
                     }
-
-                    </style>
-                    </div></div> <script>
-        window.onload = function() {
-            // Adicione esta parte ao final do seu código PHP
-            window.history.pushState(null, null, window.location.href);
-            window.onpopstate = function(event) {
+                </style>
+            </div>
+        </div>
+        <script>
+            window.onload = function () {
                 window.history.pushState(null, null, window.location.href);
+                window.onpopstate = function (event) {
+                    window.history.pushState(null, null, window.location.href);
+                };
             };
-        };
-    </script> 
-    
-    <script>
-    // Adicione esta parte ao final do seu corpo HTML
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
+        </script>
 
-    // Impede o usuário de voltar à página anterior
-    window.addEventListener('popstate', function (event) {
-        window.history.pushState(null, null, window.location.href);
-        window.location.href = '../painel/redirect.php'; // Redireciona para o painel
-    });
-</script>
-    </body></html>
+        <script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+
+            window.addEventListener('popstate', function (event) {
+                window.history.pushState(null, null, window.location.href);
+                window.location.href = '../painel/redirect.php';
+            });
+        </script>
+</body>
+
+</html>

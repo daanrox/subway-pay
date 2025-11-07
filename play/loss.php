@@ -1,39 +1,48 @@
 <?php
 session_start();
-include './../config.php';
-include './../conectarbanco.php';
+include "./../config.php";
+include "./../conectarbanco.php";
 
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 
 $betValues = [
-    '1BC' => 1.00,
-    '2BC' => 2.00,
-    '3BC' => 5.00,
+    "1BC" => 1.0,
+    "2BC" => 2.0,
+    "3BC" => 5.0,
 ];
 
-$bet = isset($_GET['bet']) && isset($betValues[$_GET['bet']]) ? $betValues[$_GET['bet']] : 0.00;
+$bet =
+    isset($_GET["bet"]) && isset($betValues[$_GET["bet"]])
+        ? $betValues[$_GET["bet"]]
+        : 0.0;
 
-if (isset($_GET['msg'])) {
-    $valor = $_GET['msg'];
+if (isset($_GET["msg"])) {
+    $valor = $_GET["msg"];
 
-    if ($valor === 0 || $valor === null || $valor === '') {
-        $valor = 0.00;
+    if ($valor === 0 || $valor === null || $valor === "") {
+        $valor = 0.0;
     }
 
     if ($email) {
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+        $conn = new mysqli(
+            "localhost",
+            $config["db_user"],
+            $config["db_pass"],
+            $config["db_name"]
+        );
 
         if ($conn->connect_error) {
-            die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+            die(
+                "Erro na conexão com o banco de dados: " . $conn->connect_error
+            );
         }
 
-        // Atualizar o saldo
         $saldoQuery = "SELECT saldo FROM appconfig WHERE email = '$email'";
         $saldoResult = $conn->query($saldoQuery);
 
         if ($saldoResult) {
             $row = $saldoResult->fetch_assoc();
-            $saldoAtual = $row['saldo'];
+            $saldoAtual = $row["saldo"];
 
             $novoSaldo = $saldoAtual - $bet;
 
@@ -47,22 +56,22 @@ if (isset($_GET['msg'])) {
             echo "Erro ao obter o saldo: " . $conn->error;
         }
 
-        // Fechar a conexão após usar
         $conn->close();
     }
 }
-
 ?>
 
 <?php
-
-
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 
 if ($email) {
-    // Obtenha o valor atual de perdas
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-    
+    $conn = new mysqli(
+        "localhost",
+        $config["db_user"],
+        $config["db_pass"],
+        $config["db_name"]
+    );
+
     if ($conn->connect_error) {
         die("Erro na conexão com o banco de dados: " . $conn->connect_error);
     }
@@ -72,23 +81,20 @@ if ($email) {
 
     if ($percasResult) {
         $row1 = $percasResult->fetch_assoc();
-        $percasAtual = $row1['percas'];
+        $percasAtual = $row1["percas"];
 
-        // Calcule o novo valor de percas
         $percas = floatval($percasAtual) + floatval($bet);
 
-        // Atualize o valor de percas no banco de dados
         $updatePercasQuery = "UPDATE appconfig SET percas = $percas WHERE email = '$email'";
         $updatePercasResult = $conn->query($updatePercasQuery);
 
         if (!$updatePercasResult) {
             echo "Erro ao atualizar percas: " . $conn->error;
-        } 
+        }
     } else {
         echo "Erro ao obter percas: " . $conn->error;
     }
 
-    // Fechar a conexão após usar
     $conn->close();
 } else {
     echo "Email não está definido.";
@@ -99,120 +105,99 @@ if ($email) {
 
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION["email"])) {
     header("Location: ../");
-    exit();}
-
+    exit();
+}
 ?>
 <?php
-// Iniciar ou resumir a sessão
 session_start();
-
-// Obtém o email da sessão
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 if (!empty($email)) {
     try {
-        
-        
-         include './../conectarbanco.php';
-
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-        $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
+        include "./../conectarbanco.php";
+        $conn = new mysqli(
+            "localhost",
+            $config["db_user"],
+            $config["db_pass"],
+            $config["db_name"]
+        );
+        $dbuser = $config["db_user"];
+        $conn = new PDO(
+            "mysql:host=localhost;dbname={$config["db_name"]}",
+            $config["db_user"],
+            $config["db_pass"]
+        );
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Verifica se o email existe na tabela confirmar_deposito
-        $stmt = $conn->prepare("SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'");
-        $stmt->bindParam(':email', $email);
+        $stmt = $conn->prepare(
+            "SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'"
+        );
+        $stmt->bindParam(":email", $email);
         $stmt->execute();
-
-        // Loop através de todas as entradas com o mesmo email e status pendente
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Verifica se há uma correspondência na tabela pix_deposito
-            $stmtPix = $conn->prepare("SELECT * FROM pix_deposito WHERE code = :externalReference");
-            $stmtPix->bindParam(':externalReference', $result['externalreference']);
+            $stmtPix = $conn->prepare(
+                "SELECT * FROM pix_deposito WHERE code = :externalReference"
+            );
+            $stmtPix->bindParam(
+                ":externalReference",
+                $result["externalreference"]
+            );
             $stmtPix->execute();
-
-            // Verifica se há uma correspondência na tabela pix_deposito
             $resultPix = $stmtPix->fetch(PDO::FETCH_ASSOC);
-
             if ($resultPix !== false) {
-                // Atualiza o status para 'aprovado' na tabela confirmar_deposito
-                $updateStmt = $conn->prepare("UPDATE confirmar_deposito SET status = 'aprovado' WHERE externalreference = :externalReference");
-                $updateStmt->bindParam(':externalReference', $result['externalreference']);
+                $updateStmt = $conn->prepare(
+                    "UPDATE confirmar_deposito SET status = 'aprovado' WHERE externalreference = :externalReference"
+                );
+                $updateStmt->bindParam(
+                    ":externalReference",
+                    $result["externalreference"]
+                );
                 $updateStmt->execute();
-
-                // Obtém o valor da correspondência na tabela pix_deposito
-                $valorCorrespondencia = $resultPix['value'];
-
-                // Atualiza a coluna saldo na tabela appconfig
-                $updateSaldoStmt = $conn->prepare("UPDATE appconfig SET saldo = saldo + :valorCorrespondencia, depositou = depositou + :valorCorrespondencia WHERE email = :email");
-                $updateSaldoStmt->bindParam(':valorCorrespondencia', $valorCorrespondencia);
-                $updateSaldoStmt->bindParam(':email', $email);
+                $valorCorrespondencia = $resultPix["value"];
+                $updateSaldoStmt = $conn->prepare(
+                    "UPDATE appconfig SET saldo = saldo + :valorCorrespondencia, depositou = depositou + :valorCorrespondencia WHERE email = :email"
+                );
+                $updateSaldoStmt->bindParam(
+                    ":valorCorrespondencia",
+                    $valorCorrespondencia
+                );
+                $updateSaldoStmt->bindParam(":email", $email);
                 $updateSaldoStmt->execute();
-                
                 header("Location: ../obrigado");
-                break; // Sai do loop assim que encontrar uma correspondência
+                break;
             }
         }
-
-
     } catch (PDOException $e) {
-        // Trata a exceção, se necessário
         echo "Erro: " . $e->getMessage();
     }
 } else {
-    // O código que você quer executar se o email estiver vazio
 }
 ?>
 
-
-
-
-
-
-
-
 <?php
-// Inicie a sessão se ainda não foi iniciada
-
-    include './../conectarbanco.php';
-
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-// Verifique se a conexão foi bem-sucedida
+include "./../conectarbanco.php";
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 if ($conn->connect_error) {
     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
 }
-
-// Recupere o email da sessão
-if (isset($_SESSION['email'])) {
-    $email = $_SESSION['email'];
-
-    // Consulta para obter o saldo associado ao email na tabela appconfig
+if (isset($_SESSION["email"])) {
+    $email = $_SESSION["email"];
     $consulta_saldo = "SELECT saldo FROM appconfig WHERE email = '$email'";
-
-    // Execute a consulta
     $resultado_saldo = $conn->query($consulta_saldo);
-
-    // Verifique se a consulta foi bem-sucedida
     if ($resultado_saldo) {
-        // Verifique se há pelo menos uma linha retornada
         if ($resultado_saldo->num_rows > 0) {
-            // Obtenha o saldo da primeira linha
             $row = $resultado_saldo->fetch_assoc();
-            $saldo = $row['saldo'];
+            $saldo = $row["saldo"];
         }
     }
 }
-
-// Feche a conexão com o banco de dados
 $conn->close();
 ?>
-
-
 
 <!DOCTYPE html>
 
@@ -226,7 +211,9 @@ $conn->close();
         }
     </style>
     <meta charset="pt-br">
-    <title><?php echo $title_site; ?></title>
+    <title>
+        <?php echo $title_site; ?>
+    </title>
     <meta property="og:image" content="../img/logo.png">
     <meta content="<?php echo $title_site; ?>" property="og:title">
     <meta name="twitter:image" content="../img/logo.png">
@@ -267,7 +254,8 @@ $conn->close();
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section" style='background-image: url(https://raw.githubusercontent.com/daanrox/subway-pay/main/assets/img/home/background.jpeg);'>
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
             <style>
                 div.escudo {
@@ -293,9 +281,9 @@ $conn->close();
                 <div class="escudo">
                     <img src="https://raw.githubusercontent.com/daanrox/subway-pay/main/assets/img/user/trophy.gif">
                 </div>
-                <h2>VOCÊ PERDEU</H2> 
+                <h2>VOCÊ PERDEU</H2>
                 <h2>NÃO DESANIME!</h2>
-               
+
                 <p>A persistência é a chave para o sucesso, não deixe isso te por pra baixo. #ficadica!</p>
                 <strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo para Jogar Novamente</strong>
 
@@ -453,5 +441,9 @@ $conn->close();
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

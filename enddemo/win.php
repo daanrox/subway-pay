@@ -1,43 +1,41 @@
 <?php
 session_start();
 
-include './../conectarbanco.php';
+include "./../conectarbanco.php";
 
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 
-if ($email && isset($_SESSION['valorParaAdicionarAoSaldo'])) {
-    $valor = $_SESSION['valorParaAdicionarAoSaldo'];
+if ($email && isset($_SESSION["valorParaAdicionarAoSaldo"])) {
+    $valor = $_SESSION["valorParaAdicionarAoSaldo"];
 
-    // Conexão com o banco de dados
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-    
-    // Verificar a conexão
+    $conn = new mysqli(
+        "localhost",
+        $config["db_user"],
+        $config["db_pass"],
+        $config["db_name"]
+    );
+
     if ($conn->connect_error) {
         die("Erro na conexão com o banco de dados: " . $conn->connect_error);
     }
 
-    // Consulta para obter o saldo atual do usuário
     $saldoQuery = "SELECT saldo FROM appconfig WHERE email = '$email'";
     $saldoResult = $conn->query($saldoQuery);
 
     if ($saldoResult) {
         $row = $saldoResult->fetch_assoc();
-        $saldoAtual = $row['saldo'];
+        $saldoAtual = $row["saldo"];
 
-        // Somar o valor recebido ao saldo existente
         $novoSaldo = $saldoAtual + $valor;
 
-        // Atualizar o saldo na tabela appconfig
         $updateQuery = "UPDATE appconfig SET saldo = $novoSaldo WHERE email = '$email'";
         $conn->query($updateQuery);
     } else {
         echo "Erro ao obter o saldo: " . $conn->error;
     }
 
-    // Limpar o valor da sessão para evitar reutilização
-    unset($_SESSION['valorParaAdicionarAoSaldo']);
+    unset($_SESSION["valorParaAdicionarAoSaldo"]);
 
-    // Fechar a conexão com o banco de dados
     $conn->close();
 }
 ?>
@@ -45,71 +43,72 @@ if ($email && isset($_SESSION['valorParaAdicionarAoSaldo'])) {
 
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION["email"])) {
     header("Location: ../");
-    exit();}
-
+    exit();
+}
 ?>
 <?php
-// Iniciar ou resumir a sessão
 session_start();
-
-// Obtém o email da sessão
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 if (!empty($email)) {
     try {
-        
-        
-         include './../conectarbanco.php';
-
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-        $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
+        include "./../conectarbanco.php";
+        $conn = new mysqli(
+            "localhost",
+            $config["db_user"],
+            $config["db_pass"],
+            $config["db_name"]
+        );
+        $dbuser = $config["db_user"];
+        $conn = new PDO(
+            "mysql:host=localhost;dbname={$config["db_name"]}",
+            $config["db_user"],
+            $config["db_pass"]
+        );
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Verifica se o email existe na tabela confirmar_deposito
-        $stmt = $conn->prepare("SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'");
-        $stmt->bindParam(':email', $email);
+        $stmt = $conn->prepare(
+            "SELECT * FROM confirmar_deposito WHERE email = :email AND status = 'pendente'"
+        );
+        $stmt->bindParam(":email", $email);
         $stmt->execute();
-
-        // Loop através de todas as entradas com o mesmo email e status pendente
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Verifica se há uma correspondência na tabela pix_deposito
-            $stmtPix = $conn->prepare("SELECT * FROM pix_deposito WHERE code = :externalReference");
-            $stmtPix->bindParam(':externalReference', $result['externalreference']);
+            $stmtPix = $conn->prepare(
+                "SELECT * FROM pix_deposito WHERE code = :externalReference"
+            );
+            $stmtPix->bindParam(
+                ":externalReference",
+                $result["externalreference"]
+            );
             $stmtPix->execute();
-
-            // Verifica se há uma correspondência na tabela pix_deposito
             $resultPix = $stmtPix->fetch(PDO::FETCH_ASSOC);
-
             if ($resultPix !== false) {
-                // Atualiza o status para 'aprovado' na tabela confirmar_deposito
-                $updateStmt = $conn->prepare("UPDATE confirmar_deposito SET status = 'aprovado' WHERE externalreference = :externalReference");
-                $updateStmt->bindParam(':externalReference', $result['externalreference']);
+                $updateStmt = $conn->prepare(
+                    "UPDATE confirmar_deposito SET status = 'aprovado' WHERE externalreference = :externalReference"
+                );
+                $updateStmt->bindParam(
+                    ":externalReference",
+                    $result["externalreference"]
+                );
                 $updateStmt->execute();
-
-                // Obtém o valor da correspondência na tabela pix_deposito
-                $valorCorrespondencia = $resultPix['value'];
-
-                // Atualiza a coluna saldo na tabela appconfig
-                $updateSaldoStmt = $conn->prepare("UPDATE appconfig SET saldo = saldo + :valorCorrespondencia, depositou = depositou + :valorCorrespondencia WHERE email = :email");
-                $updateSaldoStmt->bindParam(':valorCorrespondencia', $valorCorrespondencia);
-                $updateSaldoStmt->bindParam(':email', $email);
+                $valorCorrespondencia = $resultPix["value"];
+                $updateSaldoStmt = $conn->prepare(
+                    "UPDATE appconfig SET saldo = saldo + :valorCorrespondencia, depositou = depositou + :valorCorrespondencia WHERE email = :email"
+                );
+                $updateSaldoStmt->bindParam(
+                    ":valorCorrespondencia",
+                    $valorCorrespondencia
+                );
+                $updateSaldoStmt->bindParam(":email", $email);
                 $updateSaldoStmt->execute();
-                
                 header("Location: ../obrigado");
-                break; // Sai do loop assim que encontrar uma correspondência
+                break;
             }
         }
-
-
     } catch (PDOException $e) {
-        // Trata a exceção, se necessário
         echo "Erro: " . $e->getMessage();
     }
 } else {
-    // O código que você quer executar se o email estiver vazio
 }
 ?>
 
@@ -121,48 +120,29 @@ if (!empty($email)) {
 
 
 <?php
-// Inicie a sessão se ainda não foi iniciada
-
-    include './../conectarbanco.php';
-
-    $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-
-
-// Verifique se a conexão foi bem-sucedida
+include "./../conectarbanco.php";
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 if ($conn->connect_error) {
     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
 }
-
-// Recupere o email da sessão
-if (isset($_SESSION['email'])) {
-    $email = $_SESSION['email'];
-
-    // Consulta para obter o saldo associado ao email na tabela appconfig
+if (isset($_SESSION["email"])) {
+    $email = $_SESSION["email"];
     $consulta_saldo = "SELECT saldo FROM appconfig WHERE email = '$email'";
-
-    // Execute a consulta
     $resultado_saldo = $conn->query($consulta_saldo);
-
-    // Verifique se a consulta foi bem-sucedida
     if ($resultado_saldo) {
-        // Verifique se há pelo menos uma linha retornada
         if ($resultado_saldo->num_rows > 0) {
-            // Obtenha o saldo da primeira linha
             $row = $resultado_saldo->fetch_assoc();
-            $saldo = $row['saldo'];
+            $saldo = $row["saldo"];
         }
     }
 }
-
-// Feche a conexão com o banco de dados
 $conn->close();
 ?>
-
-
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="pt-br" class="w-mod-js w-mod-ix wf-spacemono-n4-active wf-spacemono-n7-active wf-active">
@@ -243,8 +223,9 @@ $conn->close();
                     <img src="arquivos/trophy.gif">
                 </div>
                 <h2>PARABÉNS! VOCÊ GANHOU</h2>
-                <p class="win-warn"><strong>Uau! Continue assim, agora deveria tentar com dinheiro real! e Lucrar de verdade
-                        
+                <p class="win-warn"><strong>Uau! Continue assim, agora deveria tentar com dinheiro real! e Lucrar de
+                        verdade
+
                     </strong>
                 </p>
                 <p>Para continuar faturando e sacar seu dinheiro, continue jogando. #ficadica!</p>
@@ -302,12 +283,9 @@ $conn->close();
                 function obterNumeroAleatorio()
                 {
                     $numeroAleatorio = rand(500, 1000);
-
                     return $numeroAleatorio;
                 }
-
                 $numero = obterNumeroAleatorio();
-
                 ?>
 
 
@@ -404,5 +382,9 @@ $conn->close();
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

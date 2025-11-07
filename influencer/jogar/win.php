@@ -1,37 +1,19 @@
+
 <?php
 session_start();
 
-
+$email = "influencer@mail.com";
+$saldo = 1;
 ?>
 
 
+<?php if (isset($_GET["msg"])) {
+    $valor = $_GET["msg"];
 
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
-$email = 'influencer@mail.com';
-$saldo = 1
-
-    ?>
-
-
-<?php
-if (isset($_GET['msg'])) {
-    $valor = $_GET['msg'];
-
-    if ($valor === 0 || $valor === null || $valor === '') {
-        $valor = 0.00;
+    if ($valor === 0 || $valor === null || $valor === "") {
+        $valor = 0.0;
     }
-}
-?>
-
-
-
-
-
+} ?>
 <!DOCTYPE html>
 
 <html lang="pt-br" class="w-mod-js w-mod-ix wf-spacemono-n4-active wf-spacemono-n7-active wf-active">
@@ -273,5 +255,9 @@ if (isset($_GET['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

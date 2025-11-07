@@ -1,15 +1,18 @@
 <?php
-include './../../conectarbanco.php';
+include "./../../conectarbanco.php";
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 
-// Verificar a conexão
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Query de leitura
-$sql = "SELECT COUNT(*) as id FROM appconfig"; // Substitua sua_tabela pelo nome real da sua tabela
+$sql = "SELECT COUNT(*) as id FROM appconfig";
 
 $result = $conn->query($sql);
 

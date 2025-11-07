@@ -1,7 +1,12 @@
 <?php
-include '../conectarbanco.php';
+include "../conectarbanco.php";
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -11,14 +16,11 @@ $sql = "SELECT nome_unico, nome_um, nome_dois FROM app";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-
     $row = $result->fetch_assoc();
 
-
-    $nomeUnico = $row['nome_unico'];
-    $nomeUm = $row['nome_um'];
-    $nomeDois = $row['nome_dois'];
-
+    $nomeUnico = $row["nome_unico"];
+    $nomeUm = $row["nome_um"];
+    $nomeDois = $row["nome_dois"];
 } else {
     return false;
 }
@@ -26,27 +28,13 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-
-
-
-
 <?php
-session_start(); ?>
-
-
-
-
-<?php
-// Iniciar ou resumir a sessão
 session_start();
 
-// Obtém o email da sessão
 $email = "influencer@mail.com";
 $saldo = 1;
+
 ?>
-
-
-
 
 <!DOCTYPE html>
 
@@ -61,7 +49,9 @@ $saldo = 1;
         }
     </style>
     <meta charset="pt-br">
-    <title><?= $nomeUnico ?> 🌊 </title>
+    <title>
+        <?= $nomeUnico ?> 🌊
+    </title>
     <meta property="og:image" content="../img/logo.png">
     <meta content="<?= $nomeUnico ?> 🌊" property="og:title">
     <meta name="twitter:image" content="../img/logo.png">
@@ -93,10 +83,10 @@ $saldo = 1;
     <link rel="stylesheet" href="../arquivos/css" media="all">
 
 
-<?php
+    <?php
         include '../pixels.php';
         ?>
-        
+
 
 </head>
 
@@ -105,7 +95,7 @@ $saldo = 1;
 
 
 
-<?php
+    <?php
         include '../pixels.php';
         ?>
 
@@ -113,7 +103,8 @@ $saldo = 1;
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
             <style>
                 div.escudo {
@@ -302,6 +293,10 @@ $saldo = 1;
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+        <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+</body>
 
-                    </st></div></div>
-                    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script></body></html>
+</html>

@@ -7,7 +7,6 @@ if (!isset($_SESSION['emailadm'])) {
     exit();
 }
 
-# if is not a post request, exit
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;

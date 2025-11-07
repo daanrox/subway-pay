@@ -1,7 +1,12 @@
 <?php
-include '../conectarbanco.php';
+include "../conectarbanco.php";
 
-$conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
+$conn = new mysqli(
+    "localhost",
+    $config["db_user"],
+    $config["db_pass"],
+    $config["db_name"]
+);
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
@@ -11,14 +16,11 @@ $sql = "SELECT nome_unico, nome_um, nome_dois FROM app";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-
     $row = $result->fetch_assoc();
 
-
-    $nomeUnico = $row['nome_unico'];
-    $nomeUm = $row['nome_um'];
-    $nomeDois = $row['nome_dois'];
-
+    $nomeUnico = $row["nome_unico"];
+    $nomeUm = $row["nome_um"];
+    $nomeDois = $row["nome_dois"];
 } else {
     return false;
 }
@@ -28,97 +30,95 @@ $conn->close();
 
 
 <?php
-    // Inicia a sessão
-    session_start();
+session_start();
+if (!isset($_SESSION["email"])) {
+    header("Location: /login");
+    die();
+}
 
-    // Verifica se 'email' está definido na sessão
-    if (!isset($_SESSION['email'])) {
-        header('Location: /login');
-        die();
-    }
-
-    $email = $_SESSION['email'];
+$email = $_SESSION["email"];
 ?>
 
 <?php
-// Iniciar ou resumir a sessão
 session_start();
 
-// Obtém o valor após o '=' na URL
-$externalReference = isset($_GET['externalReference']) ? $_GET['externalReference'] : '';
-$valor = isset($_GET['value']) ? $_GET['value'] : ''; // Adiciona esta linha para obter o valor da URL
+$externalReference = isset($_GET["externalReference"])
+    ? $_GET["externalReference"]
+    : "";
+$valor = isset($_GET["value"]) ? $_GET["value"] : "";
 
-// Armazena o externalReference e valor na sessão
-$_SESSION['externalReference'] = $externalReference;
-$_SESSION['valor'] = $valor; // Adiciona esta linha para armazenar o valor na sessão
+$_SESSION["externalReference"] = $externalReference;
+$_SESSION["valor"] = $valor;
 
-// Obtém o email da sessão
-$email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+$email = isset($_SESSION["email"]) ? $_SESSION["email"] : "";
 
-// Define o status como pendente
-$status = 'pendente';
+$status = "pendente";
 
-// Se o externalReference, email e valor estiverem presentes, realiza a verificação e inserção no banco de dados
 if (!empty($externalReference) && !empty($email) && !empty($valor)) {
     try {
-        
-        
-           include './../conectarbanco.php';
+        include "./../conectarbanco.php";
 
-        $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
-        $dbuser = $config['db_user'];
-        $conn = new PDO("mysql:host=localhost;dbname={$config['db_name']}", $config['db_user'], $config['db_pass']);
+        $conn = new mysqli(
+            "localhost",
+            $config["db_user"],
+            $config["db_pass"],
+            $config["db_name"]
+        );
+        $dbuser = $config["db_user"];
+        $conn = new PDO(
+            "mysql:host=localhost;dbname={$config["db_name"]}",
+            $config["db_user"],
+            $config["db_pass"]
+        );
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Verifica se já existe um registro com o mesmo email e externalReference
-        $stmt_check = $conn->prepare("SELECT COUNT(*) FROM confirmar_deposito WHERE email = :email AND externalreference = :externalReference");
-        $stmt_check->bindParam(':email', $email);
-        $stmt_check->bindParam(':externalReference', $externalReference);
+        $stmt_check = $conn->prepare(
+            "SELECT COUNT(*) FROM confirmar_deposito WHERE email = :email AND externalreference = :externalReference"
+        );
+        $stmt_check->bindParam(":email", $email);
+        $stmt_check->bindParam(":externalReference", $externalReference);
         $stmt_check->execute();
 
         $count = $stmt_check->fetchColumn();
 
         if ($count == 0) {
-            // Não há registro existente, pode realizar a inserção
-            $stmt_insert = $conn->prepare("INSERT INTO confirmar_deposito (email, externalreference, status, valor) VALUES (:email, :externalReference, :status, :valor)");
-            $stmt_insert->bindParam(':email', $email);
-            $stmt_insert->bindParam(':externalReference', $externalReference);
-            $stmt_insert->bindParam(':status', $status);
-            $stmt_insert->bindParam(':valor', $valor); // Adiciona esta linha para inserir o valor no banco de dados
+            $stmt_insert = $conn->prepare(
+                "INSERT INTO confirmar_deposito (email, externalreference, status, valor) VALUES (:email, :externalReference, :status, :valor)"
+            );
+            $stmt_insert->bindParam(":email", $email);
+            $stmt_insert->bindParam(":externalReference", $externalReference);
+            $stmt_insert->bindParam(":status", $status);
+            $stmt_insert->bindParam(":valor", $valor);
             $stmt_insert->execute();
-
         } else {
-            // Se houver um registro existente, você pode decidir o que fazer aqui
-            // Por exemplo, atualizar o valor no registro existente se necessário
         }
     } catch (PDOException $e) {
-        // Trate a exceção, se necessário
         echo "Erro: " . $e->getMessage();
     }
 } else {
-    // Se algum dos parâmetros estiver faltando, você pode decidir o que fazer aqui
 }
 
-// Redireciona para outra página
-// header('Location: ../deposito/consultarpagamento.php');
-// exit();
-?>
 
+?>
 
 <!DOCTYPE html>
 
 
 <html lang="pt-br" class="w-mod-js wf-spacemono-n4-active wf-spacemono-n7-active wf-active w-mod-ix">
+
 <head>
 
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style>.wf-force-outline-none[tabindex="-1"]:focus {
+    <style>
+        .wf-force-outline-none[tabindex="-1"]:focus {
             outline: none;
-        }</style>
+        }
+    </style>
 
 
-    <style type="text/css">.swal-icon--error {
+    <style type="text/css">
+        .swal-icon--error {
             border-color: #f27474;
             -webkit-animation: animateErrorIcon .5s;
             animation: animateErrorIcon .5s
@@ -159,6 +159,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 transform: rotateX(100deg);
                 opacity: 0
             }
+
             to {
                 -webkit-transform: rotateX(0deg);
                 transform: rotateX(0deg);
@@ -172,6 +173,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 transform: rotateX(100deg);
                 opacity: 0
             }
+
             to {
                 -webkit-transform: rotateX(0deg);
                 transform: rotateX(0deg);
@@ -186,17 +188,20 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 margin-top: 26px;
                 opacity: 0
             }
+
             50% {
                 -webkit-transform: scale(.4);
                 transform: scale(.4);
                 margin-top: 26px;
                 opacity: 0
             }
+
             80% {
                 -webkit-transform: scale(1.15);
                 transform: scale(1.15);
                 margin-top: -6px
             }
+
             to {
                 -webkit-transform: scale(1);
                 transform: scale(1);
@@ -212,17 +217,20 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 margin-top: 26px;
                 opacity: 0
             }
+
             50% {
                 -webkit-transform: scale(.4);
                 transform: scale(.4);
                 margin-top: 26px;
                 opacity: 0
             }
+
             80% {
                 -webkit-transform: scale(1.15);
                 transform: scale(1.15);
                 margin-top: -6px
             }
+
             to {
                 -webkit-transform: scale(1);
                 transform: scale(1);
@@ -245,7 +253,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             margin-left: -2px
         }
 
-        .swal-icon--warning__body, .swal-icon--warning__dot {
+        .swal-icon--warning__body,
+        .swal-icon--warning__dot {
             position: absolute;
             left: 50%;
             background-color: #f8bb86
@@ -263,6 +272,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             0% {
                 border-color: #f8d486
             }
+
             to {
                 border-color: #f8bb86
             }
@@ -272,6 +282,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             0% {
                 border-color: #f8d486
             }
+
             to {
                 border-color: #f8bb86
             }
@@ -281,7 +292,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             border-color: #a5dc86
         }
 
-        .swal-icon--success:after, .swal-icon--success:before {
+        .swal-icon--success:after,
+        .swal-icon--success:before {
             content: "";
             border-radius: 50%;
             position: absolute;
@@ -373,14 +385,17 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 -webkit-transform: rotate(-45deg);
                 transform: rotate(-45deg)
             }
+
             5% {
                 -webkit-transform: rotate(-45deg);
                 transform: rotate(-45deg)
             }
+
             12% {
                 -webkit-transform: rotate(-405deg);
                 transform: rotate(-405deg)
             }
+
             to {
                 -webkit-transform: rotate(-405deg);
                 transform: rotate(-405deg)
@@ -392,14 +407,17 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 -webkit-transform: rotate(-45deg);
                 transform: rotate(-45deg)
             }
+
             5% {
                 -webkit-transform: rotate(-45deg);
                 transform: rotate(-45deg)
             }
+
             12% {
                 -webkit-transform: rotate(-405deg);
                 transform: rotate(-405deg)
             }
+
             to {
                 -webkit-transform: rotate(-405deg);
                 transform: rotate(-405deg)
@@ -412,21 +430,25 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 left: 1px;
                 top: 19px
             }
+
             54% {
                 width: 0;
                 left: 1px;
                 top: 19px
             }
+
             70% {
                 width: 50px;
                 left: -8px;
                 top: 37px
             }
+
             84% {
                 width: 17px;
                 left: 21px;
                 top: 48px
             }
+
             to {
                 width: 25px;
                 left: 14px;
@@ -440,21 +462,25 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 left: 1px;
                 top: 19px
             }
+
             54% {
                 width: 0;
                 left: 1px;
                 top: 19px
             }
+
             70% {
                 width: 50px;
                 left: -8px;
                 top: 37px
             }
+
             84% {
                 width: 17px;
                 left: 21px;
                 top: 48px
             }
+
             to {
                 width: 25px;
                 left: 14px;
@@ -468,16 +494,19 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 right: 46px;
                 top: 54px
             }
+
             65% {
                 width: 0;
                 right: 46px;
                 top: 54px
             }
+
             84% {
                 width: 55px;
                 right: 0;
                 top: 35px
             }
+
             to {
                 width: 47px;
                 right: 8px;
@@ -491,16 +520,19 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 right: 46px;
                 top: 54px
             }
+
             65% {
                 width: 0;
                 right: 46px;
                 top: 54px
             }
+
             84% {
                 width: 55px;
                 right: 0;
                 top: 35px
             }
+
             to {
                 width: 47px;
                 right: 8px;
@@ -520,7 +552,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             margin-left: -2px
         }
 
-        .swal-icon--info:after, .swal-icon--info:before {
+        .swal-icon--info:after,
+        .swal-icon--info:before {
             content: "";
             position: absolute;
             left: 50%;
@@ -708,7 +741,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             margin-bottom: 20px
         }
 
-        .swal-content__input, .swal-content__textarea {
+        .swal-content__input,
+        .swal-content__textarea {
             -webkit-appearance: none;
             background-color: #fff;
             border: none;
@@ -722,7 +756,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             transition: border-color .2s
         }
 
-        .swal-content__input:focus, .swal-content__textarea:focus {
+        .swal-content__input:focus,
+        .swal-content__textarea:focus {
             outline: none;
             border-color: #6db8ff
         }
@@ -735,7 +770,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             color: transparent
         }
 
-        .swal-button--loading ~ .swal-button__loader {
+        .swal-button--loading~.swal-button__loader {
             opacity: 1
         }
 
@@ -784,12 +819,15 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             0% {
                 opacity: .4
             }
+
             20% {
                 opacity: .4
             }
+
             50% {
                 opacity: 1
             }
+
             to {
                 opacity: .4
             }
@@ -799,12 +837,15 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             0% {
                 opacity: .4
             }
+
             20% {
                 opacity: .4
             }
+
             50% {
                 opacity: 1
             }
+
             to {
                 opacity: .4
             }
@@ -879,18 +920,22 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 -webkit-transform: scale(1);
                 transform: scale(1)
             }
+
             1% {
                 -webkit-transform: scale(.5);
                 transform: scale(.5)
             }
+
             45% {
                 -webkit-transform: scale(1.05);
                 transform: scale(1.05)
             }
+
             80% {
                 -webkit-transform: scale(.95);
                 transform: scale(.95)
             }
+
             to {
                 -webkit-transform: scale(1);
                 transform: scale(1)
@@ -902,25 +947,32 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 -webkit-transform: scale(1);
                 transform: scale(1)
             }
+
             1% {
                 -webkit-transform: scale(.5);
                 transform: scale(.5)
             }
+
             45% {
                 -webkit-transform: scale(1.05);
                 transform: scale(1.05)
             }
+
             80% {
                 -webkit-transform: scale(.95);
                 transform: scale(.95)
             }
+
             to {
                 -webkit-transform: scale(1);
                 transform: scale(1)
             }
-        }</style>
+        }
+    </style>
     <meta charset="pt-br">
-    <title><?= $nomeUnico ?></title>
+    <title>
+        <?= $nomeUnico ?>
+    </title>
 
 
     <meta name="twitter:image" content="../img/logo.png">
@@ -928,8 +980,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
     <meta content="summary_large_image" name="twitter:card">
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    
-    
+
+
 
 
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -959,7 +1011,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
 
     <style>
-
         h1 {
             color: #333;
         }
@@ -1012,7 +1063,7 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
         }
 
         #copy-button {
-           
+
             background-color: #1fbffe;
             border-radius: 6px;
             color: #fff;
@@ -1026,16 +1077,16 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
             margin: 0 auto;
         }
-        
-        .redirectButton{
-             background-color: #5a9759;
+
+        .redirectButton {
+            background-color: #5a9759;
             border-radius: 6px;
             color: #fff;
             padding: 10px 120px;
             border: none;
             cursor: pointer;
             margin-top: 15px;
-            
+
         }
 
 
@@ -1070,29 +1121,12 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
         .img-banner-topo {
             border-radius: 0 0 10px 10px;
-            /*margin: 0 auto;*/
-            /*margin-right: auto;*/
-            /*width: 100%;*/
-            /*max-height: 500px;*/
+
             max-width: 1138px;
             max-height: 487px;
         }
 
-        /*.orderbump-percent span.stats {*/
-        /*    position: relative !important;*/
-        /*    margin: 0 10px;*/
-        /*}*/
-        /*.orderbump-percent span.stats::before {*/
-        /*    !*display: block !important;*!*/
-        /*    position: absolute !important;*/
-        /*    background-color: #50b232 !important;*/
-        /*    display: inline-flex;*/
-        /*    content: " ";*/
-        /*    width: 124%;*/
-        /*    height: 135%;*/
-        /*    right: -2%;*/
-        /*    top: -20%;*/
-        /*}*/
+
 
         .card {
             background: #fff;
@@ -1100,7 +1134,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             border-radius: 10px;
             margin-top: 24px;
             box-shadow: 4px 2px 7px rgb(0 0 0 / 5%);
-            /*padding: 15px 12px;*/
             position: relative;
         }
 
@@ -1170,7 +1203,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             border-radius: 10px;
             margin-top: 24px;
             box-shadow: 4px 2px 7px rgb(0 0 0 / 5%);
-            /*padding: 15px 12px;*/
             position: relative;
         }
 
@@ -1257,7 +1289,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                 margin: 50px auto 0 auto;
             }
         }
-
     </style>
 
 
@@ -1267,184 +1298,185 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 <body class="no-touch">
 
 
-<div>
-    <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
-        <div class="container w-container">
+    <div>
+        <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+            <div class="container w-container">
 
 
-            <a href="/painel" aria-current="page" class="brand w-nav-brand" aria-label="home">
-                <img src="../img/logo.png" loading="lazy" height="28" alt="" class="image-6">
-                <div class="nav-link logo"><?= $nomeUnico ?></div>
+                <a href="/painel" aria-current="page" class="brand w-nav-brand" aria-label="home">
+                    <img src="../img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+                    <div class="nav-link logo">
+                        <?= $nomeUnico ?>
+                    </div>
+                </a>
+                <nav role="navigation" class="nav-menu w-nav-menu">
+                    <a href="../painel" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+                    <a href="../saque" class="nav-link w-nav-link" style="max-width: 940px;">Saque</a>
+                    <a href="../afiliate" class="nav-link w-nav-link" style="max-width: 940px;">Indique e Ganhe</a>
+
+                    <a href="../logout.php" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
+                    <a href="../deposito" class="button nav w-button w--current">Depositar</a>
+                </nav>
+                <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button"
+                    tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+                    <div class="" style="-webkit-user-select: text;">
+                        <a href="../deposito" class="menu-button w-nav-dep nav w-button w--current">DEPOSITAR</a>
+                    </div>
+                </div>
+                <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button"
+                    tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+                    <div class="icon w-icon-nav-menu"></div>
+                </div>
+            </div>
+            <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
+        </div>
+        <div class="nav-bar">
+            <a href="../painel" class="link-block rarity w-inline-block">
+                <div>Jogar</div>
             </a>
-            <nav role="navigation" class="nav-menu w-nav-menu">
-                <a href="../painel" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
-                <a href="../saque" class="nav-link w-nav-link" style="max-width: 940px;">Saque</a>
-                <a href="../afiliate" class="nav-link w-nav-link" style="max-width: 940px;">Indique e Ganhe</a>  
+            <a href="../saque" class="link-block last w-inline-block">
+                <div class="text-block-8">Saque</div>
+            </a>
 
-                <a href="../logout.php" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
-                <a href="../deposito" class="button nav w-button w--current">Depositar</a>
-            </nav>
-            <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0"
-                 aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
-                <div class="" style="-webkit-user-select: text;">
-                    <a href="../deposito" class="menu-button w-nav-dep nav w-button w--current">DEPOSITAR</a>
-                </div>
-            </div>
-            <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button"
-                 tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
-                <div class="icon w-icon-nav-menu"></div>
-            </div>
+
+            <a href="../logout.php" class="link-block last w-inline-block">
+                <div class="text-block-8">Sair</div>
+            </a>
+            <a href="../deposito" class="button w-button w--current">Depositar</a>
         </div>
-        <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
-    </div>
-    <div class="nav-bar">
-        <a href="../painel" class="link-block rarity w-inline-block">
-            <div>Jogar</div>
-        </a>
-        <a href="../saque" class="link-block last w-inline-block">
-            <div class="text-block-8">Saque</div>
-        </a>
 
 
-        <a href="../logout.php" class="link-block last w-inline-block">
-            <div class="text-block-8">Sair</div>
-        </a>
-        <a href="../deposito" class="button w-button w--current">Depositar</a>
-    </div>
+        <div id="deposito">
+            <section id="hero" class="hero-section dark wf-section"
+                style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
+                <div class="minting-container w-container">
+                    <img src="../img/ok.webp" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image">
+                    <h2>BÔNUS DE DEPÓSITO VÁLIDO
+                        POR ATÉ
+                        <spam id="countdown">
+                    </h2>
+                    </spam>
+                    <p>PIX: depósitos instantâneos com uma pitada de diversão e muita praticidade. <br>
+                    </p>
+
+                    <script>
+                        const now = new Date().getTime();
+                        const targetTime = now + 5 * 60 * 1000;
+
+                        const countdown = document.getElementById('countdown');
+                        const x = setInterval(function () {
+                            const currentTime = new Date().getTime();
+                            const distance = targetTime - currentTime;
+
+                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                            countdown.innerHTML = minutes + ":" + seconds + " ";
+
+                            if (distance < 0) {
+                                clearInterval(x);
+                                countdown.innerHTML = "EXPIRADO";
+                                countdown.style.color = 'red';
+                            }
+                        }, 1000);
+                    </script>
 
 
-    <div id="deposito">
-        <section id="hero" class="hero-section dark wf-section">
-            <div class="minting-container w-container">
-                <img src="../img/ok.webp" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image">
-                <h2>BÔNUS DE DEPÓSITO VÁLIDO
-                    POR ATÉ
-                    <spam id="countdown">
-                </h2>
-                </spam>
-                <p>PIX: depósitos instantâneos com uma pitada de diversão e muita praticidade. <br>
-                </p>
+                    <div class="conteiner">
 
-                <script>
-                    // Definindo a data alvo (5 minutos a partir do momento atual)
-                    const now = new Date().getTime();
-                    const targetTime = now + 5 * 60 * 1000; // 5 minutos em milissegundos
+                        <div id="qrcode"></div>
 
-                    // Atualização do contador a cada segundo
-                    const countdown = document.getElementById('countdown');
-                    const x = setInterval(function () {
-                        const currentTime = new Date().getTime();
-                        const distance = targetTime - currentTime;
+                    </div>
 
-                        // Cálculos para minutos e segundos
-                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    <div class="divqr">
 
-                        // Exibindo o contador regressivo
-                        countdown.innerHTML = minutes + ":" + seconds + " ";
 
-                        // Condição para parar o contador quando o tempo acabar
-                        if (distance < 0) {
-                            clearInterval(x);
-                            countdown.innerHTML = "EXPIRADO";
-                            countdown.style.color = 'red';
+                        <div id="qr-code-text"></div>
+                        <button id="copy-button">Copiar Código Pix</button>
+
+                        <br>
+                        <button class="redirectButton" id="redirectButton">Paguei</button>
+
+
+
+                    </div>
+
+
+                    <script>
+
+                        document.getElementById('redirectButton').addEventListener('click', function () {
+
+                            window.location.href = '../painel';
+                        });
+                    </script>
+
+
+
+
+
+
+                    <script>
+                        (function (d, t) {
+                            var BASE_URL = "https://app.chatwoot.com";
+                            var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                            g.src = BASE_URL + "/packs/js/sdk.js";
+                            g.defer = true;
+                            g.async = true;
+                            s.parentNode.insertBefore(g, s);
+                            g.onload = function () {
+                                window.chatwootSDK.run({
+                                    websiteToken: '=======',
+                                    baseUrl: BASE_URL
+                                })
+                            }
+                        })(document, "script");
+                    </script>
+
+
+
+
+
+
+
+
+
+                    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+                    <script>
+                        // Obtenha os parâmetros da URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const pixKey = urlParams.get('pix_key');
+
+                        // Verifique se a chave PIX está presente
+                        if (pixKey) {
+                            // Crie uma instância do QRCode
+                            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                                text: pixKey,
+                                width: 256,
+                                height: 256
+                            });
+
+                            // Exiba a chave PIX abaixo do QR code
+                            document.getElementById('qr-code-text').innerText = "PIX Key: " + pixKey;
+
+                            // Adicione a funcionalidade de cópia do PIX Key
+                            document.getElementById("copy-button").addEventListener("click", function () {
+                                var textArea = document.createElement("textarea");
+                                textArea.value = pixKey; // Adicione a chave PIX como valor
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                document.execCommand("copy");
+                                document.body.removeChild(textArea);
+                                alert("PIX Key copiada para a área de transferência.");
+                            });
+                        } else {
+                            // Caso a chave PIX não esteja presente, exiba uma mensagem de erro
+                            document.getElementById('qr-code-text').innerText = 'Chave PIX não encontrada.';
                         }
-                    }, 1000);
-                </script>
-
-
-                <div class="conteiner">
-
-                    <div id="qrcode"></div>
-
-                </div>
-                
-                  <div class="divqr">
-
-
-                    <div id="qr-code-text" ></div>
-                     <button id="copy-button">Copiar Código Pix</button>
-                    
-                     <br>
-                     <button class="redirectButton"id="redirectButton">Paguei</button>
+                    </script>
 
 
 
-                </div>
-                
-                
-                 <script>
-        // Adiciona um evento de clique ao botão
-        document.getElementById('redirectButton').addEventListener('click', function() {
-            // Redireciona para a página desejada
-            window.location.href = '../painel'; // Substitua 'sua_pagina_destino.php' pela URL da sua página de destino
-        });
-    </script>
-                
-                
-                
-                
-                
-     
-    <script>
-      (function(d,t) {
-        var BASE_URL="https://app.chatwoot.com";
-        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        g.src=BASE_URL+"/packs/js/sdk.js";
-        g.defer = true;
-        g.async = true;
-        s.parentNode.insertBefore(g,s);
-        g.onload=function(){
-          window.chatwootSDK.run({
-            websiteToken: '=======',
-            baseUrl: BASE_URL
-          })
-        }
-      })(document,"script");
-    </script>
-    
-
-
-
-     
-                
-                
-         
-     
-<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-
-<script>
-    // Obtenha os parâmetros da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const pixKey = urlParams.get('pix_key');
-
-    // Verifique se a chave PIX está presente
-    if (pixKey) {
-        // Crie uma instância do QRCode
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: pixKey,
-            width: 256,
-            height: 256
-        });
-
-        // Exiba a chave PIX abaixo do QR code
-        document.getElementById('qr-code-text').innerText = "PIX Key: " + pixKey;
-
-        // Adicione a funcionalidade de cópia do PIX Key
-        document.getElementById("copy-button").addEventListener("click", function () {
-            var textArea = document.createElement("textarea");
-            textArea.value = pixKey; // Adicione a chave PIX como valor
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            alert("PIX Key copiada para a área de transferência.");
-        });
-    } else {
-        // Caso a chave PIX não esteja presente, exiba uma mensagem de erro
-        document.getElementById('qr-code-text').innerText = 'Chave PIX não encontrada.';
-    }
-</script>
 
 
 
@@ -1454,218 +1486,223 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
 
 
-                   
-              
-
-            </div>
-        </section>
-    </div>
-    <div class="intermission wf-section"></div>
-    <div id="about" class="comic-book white wf-section">
-        <div class="minting-container left w-container">
-            <div class="w-layout-grid grid-2">
-                <img src="arquivos/money.png" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
-                <div>
-                    <h2>Indique um amigo e ganhe R$ no PIX</h2>
-                    <h3>Como funciona?</h3>
-                    <p>Convide seus amigos que ainda não estão na plataforma. Você receberá R$ por cada amigo que
-                        se
-                        inscrever e fizer um depósito. Não há limite para quantos amigos você pode convidar. Isso
-                        significa que também não há limite para quanto você pode ganhar!</p>
-                    <h3>Como recebo o dinheiro?</h3>
-                    <p>O saldo é adicionado diretamente ao seu saldo no painel abaixo, com o qual você pode sacar
-                        via
-                        PIX.</p>
-                    <h3>Upgrade</h3>
-                    <p>No primeiro amigo que você indicar, você terá acesso ao modo ULTIMATE da nossa plataforma.
-                        Você
-                        poderá apostar valores maiores e ter mais chances de ganhar jogando.</p>
+                </div>
+            </section>
+        </div>
+        <div class="intermission wf-section"></div>
+        <div id="about" class="comic-book white wf-section">
+            <div class="minting-container left w-container">
+                <div class="w-layout-grid grid-2">
+                    <img src="arquivos/money.png" loading="lazy" width="240" alt="Roboto #6340"
+                        class="mint-card-image v2">
+                    <div>
+                        <h2>Indique um amigo e ganhe R$ no PIX</h2>
+                        <h3>Como funciona?</h3>
+                        <p>Convide seus amigos que ainda não estão na plataforma. Você receberá R$ por cada amigo que
+                            se
+                            inscrever e fizer um depósito. Não há limite para quantos amigos você pode convidar. Isso
+                            significa que também não há limite para quanto você pode ganhar!</p>
+                        <h3>Como recebo o dinheiro?</h3>
+                        <p>O saldo é adicionado diretamente ao seu saldo no painel abaixo, com o qual você pode sacar
+                            via
+                            PIX.</p>
+                        <h3>Upgrade</h3>
+                        <p>No primeiro amigo que você indicar, você terá acesso ao modo ULTIMATE da nossa plataforma.
+                            Você
+                            poderá apostar valores maiores e ter mais chances de ganhar jogando.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script type="text/javascript">
-        function myFunction() {
-            var x = document.getElementById("myInput");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
+        <script type="text/javascript">
+            function myFunction() {
+                var x = document.getElementById("myInput");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
             }
-        }
-    </script>
-    <div class="footer-section wf-section">
-        <div class="domo-text"><?= $nomeUm ?> <br>
-        </div>
-        <div class="domo-text purple"><?= $nomeDois ?> <br>
-        </div>
-        <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117, accredited by license GLH-16289876512. </div>
-        <div class="follow-test">
-          <a href="/legal">
-            <strong class="bold-white-link">Termos de uso</strong>
-          </a>
-        </div>
-          <div class="follow-test">contato@<?php
+        </script>
+        <div class="footer-section wf-section">
+            <div class="domo-text">
+                <?= $nomeUm ?> <br>
+            </div>
+            <div class="domo-text purple">
+                <?= $nomeDois ?> <br>
+            </div>
+            <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117,
+                accredited by license GLH-16289876512. </div>
+            <div class="follow-test">
+                <a href="/legal">
+                    <strong class="bold-white-link">Termos de uso</strong>
+                </a>
+            </div>
+            <div class="follow-test">contato@
+                <?php
 $nomeUnico = strtolower(str_replace(' ', '', $nomeUnico));
 echo $nomeUnico;
-?>.com</div>
-      </div>
+?>.com
+            </div>
+        </div>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var SPMaskBehavior = function (val) {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var SPMaskBehavior = function (val) {
                     return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
                 },
-                spOptions = {
-                    onKeyPress: function (val, e, field, options) {
-                        field.mask(SPMaskBehavior.apply({}, arguments), options);
-                    }
-                };
+                    spOptions = {
+                        onKeyPress: function (val, e, field, options) {
+                            field.mask(SPMaskBehavior.apply({}, arguments), options);
+                        }
+                    };
 
-            $('.phone-mask').mask(SPMaskBehavior, spOptions);
-            $('.date-mask').mask('00/00/0000', {clearIfNotMatch: true, selectOnFocus: true});
-            $('.cpf-mask').mask('000.000.000-00', {reverse: true, clearIfNotMatch: true, selectOnFocus: true});
-            $('.cep-mask').mask('00000-000', {clearIfNotMatch: true, selectOnFocus: true});
-            $('.creditCardDate-mask').mask('00/00', {clearIfNotMatch: true, selectOnFocus: true});
-            $('.money-mask').mask("#.##0,00", {clearIfNotMatch: true, reverse: true});
-            $('.percent-mask').mask("##0.0", {clearIfNotMatch: true, reverse: true});
-            $(".username-mask").mask("000000000000000000000000", {"translation": {0: {pattern: /[A-Za-z0-9]/}}});
-        });
+                $('.phone-mask').mask(SPMaskBehavior, spOptions);
+                $('.date-mask').mask('00/00/0000', { clearIfNotMatch: true, selectOnFocus: true });
+                $('.cpf-mask').mask('000.000.000-00', { reverse: true, clearIfNotMatch: true, selectOnFocus: true });
+                $('.cep-mask').mask('00000-000', { clearIfNotMatch: true, selectOnFocus: true });
+                $('.creditCardDate-mask').mask('00/00', { clearIfNotMatch: true, selectOnFocus: true });
+                $('.money-mask').mask("#.##0,00", { clearIfNotMatch: true, reverse: true });
+                $('.percent-mask').mask("##0.0", { clearIfNotMatch: true, reverse: true });
+                $(".username-mask").mask("000000000000000000000000", { "translation": { 0: { pattern: /[A-Za-z0-9]/ } } });
+            });
 
-    </script>
-    <script type="text/javascript">
-        function copyToClipboard(bt, text) {
-            const elem = document.createElement('textarea');
-            elem.value = text;
-            document.body.appendChild(elem);
-            elem.select();
-            document.execCommand('copy');
-            document.body.removeChild(elem);
-            document.getElementById('depCopiaCodigo').innerHTML = "URL Copiada";
-        }
+        </script>
+        <script type="text/javascript">
+            function copyToClipboard(bt, text) {
+                const elem = document.createElement('textarea');
+                elem.value = text;
+                document.body.appendChild(elem);
+                elem.select();
+                document.execCommand('copy');
+                document.body.removeChild(elem);
+                document.getElementById('depCopiaCodigo').innerHTML = "URL Copiada";
+            }
 
-        $('.playersOn').on('click', function () {
-            $(this).toggleClass('ativo');
-        });
-    </script>
-</div>
-<iframe allow="join-ad-interest-group" data-tagging-id="AW-11305271105" data-load-time="1694530834556" height="0"
+            $('.playersOn').on('click', function () {
+                $(this).toggleClass('ativo');
+            });
+        </script>
+    </div>
+    <iframe allow="join-ad-interest-group" data-tagging-id="AW-11305271105" data-load-time="1694530834556" height="0"
         width="0" style="display: none; visibility: hidden;"
         src="./FruitsMoney 🍓 _ Jogo da Frutinha_files/11305271105.html"></iframe>
 
-<iframe data-product="web_widget" title="No content" role="presentation" tabindex="-1" allow="microphone *"
+    <iframe data-product="web_widget" title="No content" role="presentation" tabindex="-1" allow="microphone *"
         aria-hidden="true" src="./FruitsMoney 🍓 _ Jogo da Frutinha_files/saved_resource.html"
         style="width: 0px; height: 0px; border: 0px; position: absolute; top: -9999px;"></iframe>
-<div style="visibility: visible;">
-    <div></div>
-    <div>
-        <style>
-            @-webkit-keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-launcherOnOpen {
-                0% {
-                    -webkit-transform: translateY(0px) rotate(0deg);
-                    transform: translateY(0px) rotate(0deg);
+    <div style="visibility: visible;">
+        <div></div>
+        <div>
+            <style>
+                @-webkit-keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-launcherOnOpen {
+                    0% {
+                        -webkit-transform: translateY(0px) rotate(0deg);
+                        transform: translateY(0px) rotate(0deg);
+                    }
+
+                    30% {
+                        -webkit-transform: translateY(-5px) rotate(2deg);
+                        transform: translateY(-5px) rotate(2deg);
+                    }
+
+                    60% {
+                        -webkit-transform: translateY(0px) rotate(0deg);
+                        transform: translateY(0px) rotate(0deg);
+                    }
+
+
+                    90% {
+                        -webkit-transform: translateY(-1px) rotate(0deg);
+                        transform: translateY(-1px) rotate(0deg);
+
+                    }
+
+                    100% {
+                        -webkit-transform: translateY(-0px) rotate(0deg);
+                        transform: translateY(-0px) rotate(0deg);
+                    }
                 }
 
-                30% {
-                    -webkit-transform: translateY(-5px) rotate(2deg);
-                    transform: translateY(-5px) rotate(2deg);
+                @keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-launcherOnOpen {
+                    0% {
+                        -webkit-transform: translateY(0px) rotate(0deg);
+                        transform: translateY(0px) rotate(0deg);
+                    }
+
+                    30% {
+                        -webkit-transform: translateY(-5px) rotate(2deg);
+                        transform: translateY(-5px) rotate(2deg);
+                    }
+
+                    60% {
+                        -webkit-transform: translateY(0px) rotate(0deg);
+                        transform: translateY(0px) rotate(0deg);
+                    }
+
+
+                    90% {
+                        -webkit-transform: translateY(-1px) rotate(0deg);
+                        transform: translateY(-1px) rotate(0deg);
+
+                    }
+
+                    100% {
+                        -webkit-transform: translateY(-0px) rotate(0deg);
+                        transform: translateY(-0px) rotate(0deg);
+                    }
                 }
 
-                60% {
-                    -webkit-transform: translateY(0px) rotate(0deg);
-                    transform: translateY(0px) rotate(0deg);
+                @keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-widgetOnLoad {
+                    0% {
+                        opacity: 0;
+                    }
+
+                    100% {
+                        opacity: 1;
+                    }
                 }
 
+                @-webkit-keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-widgetOnLoad {
+                    0% {
+                        opacity: 0;
+                    }
 
-                90% {
-                    -webkit-transform: translateY(-1px) rotate(0deg);
-                    transform: translateY(-1px) rotate(0deg);
-
+                    100% {
+                        opacity: 1;
+                    }
                 }
-
-                100% {
-                    -webkit-transform: translateY(-0px) rotate(0deg);
-                    transform: translateY(-0px) rotate(0deg);
-                }
-            }
-
-            @keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-launcherOnOpen {
-                0% {
-                    -webkit-transform: translateY(0px) rotate(0deg);
-                    transform: translateY(0px) rotate(0deg);
-                }
-
-                30% {
-                    -webkit-transform: translateY(-5px) rotate(2deg);
-                    transform: translateY(-5px) rotate(2deg);
-                }
-
-                60% {
-                    -webkit-transform: translateY(0px) rotate(0deg);
-                    transform: translateY(0px) rotate(0deg);
-                }
-
-
-                90% {
-                    -webkit-transform: translateY(-1px) rotate(0deg);
-                    transform: translateY(-1px) rotate(0deg);
-
-                }
-
-                100% {
-                    -webkit-transform: translateY(-0px) rotate(0deg);
-                    transform: translateY(-0px) rotate(0deg);
-                }
-            }
-
-            @keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-widgetOnLoad {
-                0% {
-                    opacity: 0;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
-
-            @-webkit-keyframes ww-c40cdd29-7aaa-4e69-9538-973a5e1343c2-widgetOnLoad {
-                0% {
-                    opacity: 0;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
-        </style>
+            </style>
+        </div>
     </div>
-</div>
 
-<script>
-async function c() {
-    const now = new Date().getTime();
-    // 5 minutes
-    const interval = 5 * 60 * 1000;
+    <script>
+        async function c() {
+            const now = new Date().getTime();
+            const interval = 5 * 60 * 1000;
 
-    while (new Date().getTime() < now + interval) {
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
-        const url = '../deposito/consultarpagamento.php?token=' + token; //<--------------COLOCAR URL
-        await fetch(url)
-            .then((resp) => resp.json())
-            .then(function ({status}) {
-                console.log(status)
-                if (status === 'PAID_OUT') {
-                    window.location.href = '../obrigado/';//<--------------COLOCAR URL
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-}
+            while (new Date().getTime() < now + interval) {
+                const params = new URLSearchParams(window.location.search);
+                const token = params.get('token');
+                const url = '../deposito/consultarpagamento.php?token=' + token;
+                await fetch(url)
+                    .then((resp) => resp.json())
+                    .then(function ({ status }) {
+                        console.log(status)
+                        if (status === 'PAID_OUT') {
+                            window.location.href = '../obrigado/';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
 
-setTimeout(c, 1000)
-</script>
+        setTimeout(c, 1000)
+    </script>
 
 </body>
+
 </html>

@@ -18,7 +18,6 @@ if ($result->num_rows > 0) {
     $nomeUnico = $row['nome_unico'];
     $nomeUm = $row['nome_um'];
     $nomeDois = $row['nome_dois'];
-
 } else {
     return false;
 }
@@ -29,38 +28,19 @@ $conn->close();
 
 <?php
 session_start();
-
-
 ?>
 
-
-
-
 <?php
-// Iniciar ou resumir a sessão
-session_start();
 
-// Obtém o email da sessão
 $email = 'influencer@mail.com';
 $saldo = 10
 
-    ?>
-
-
-
-
-
-
-
-
-
-
-
-
+?>
 <!DOCTYPE html>
 
 <html lang="pt-br" class="w-mod-js w-mod-ix wf-spacemono-n4-active wf-spacemono-n7-active wf-active">
 <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
@@ -69,7 +49,9 @@ $saldo = 10
         }
     </style>
     <meta charset="pt-br">
-    <title><?= $nomeUnico ?> 🌊 </title>
+    <title>
+        <?= $nomeUnico ?> 🌊
+    </title>
     <meta property="og:image" content="../img/logo.png">
     <meta content="<?= $nomeUnico ?> 🌊" property="og:title">
     <meta name="twitter:image" content="../img/logo.png">
@@ -125,7 +107,8 @@ $saldo = 10
 
 
 
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important;">
 
             <style>
                 div.escudo {
@@ -147,7 +130,7 @@ $saldo = 10
                 }
             </style>
 
-            <div class="minting-container w-container" style="margin-top: -40px;" >
+            <div class="minting-container w-container" style="margin-top: -40px;">
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
@@ -162,11 +145,9 @@ $saldo = 10
                 <?php
                 session_start();
 
-                // Pegar o email da sessão
                 $email = 'influencer@mail.com';
                 $jogo_demo = 2;
 
-                // Configurações do banco de dados
                 $dbname = "u756913841_<?= $nomeUnico ?>pv";
                 $dbuser = "u756913841_tki20";
                 $dbpass = "Severino@123";
@@ -181,9 +162,9 @@ $saldo = 10
                 <form data-name="" id="auth" method="post" aria-label="Form" action="jogoteste">
                     <div class="">
                         <?php if ($jogo_demo > 0): ?>
-                            <input type="submit" value="Iniciar Jogo" class="botao-jogar" style='cursor: pointer'><br><br>
+                        <input type="submit" value="Iniciar Jogo" class="botao-jogar" style='cursor: pointer'><br><br>
                         <?php else: ?>
-                            <p>Todas as tentativas foram usadas.</p>
+                        <p>Todas as tentativas foram usadas.</p>
                         <?php endif; ?>
                     </div>
                 </form>
@@ -191,28 +172,30 @@ $saldo = 10
 
                 <style>
                     .botao-jogar {
-                            display: inline-block;
-                            padding: 16px 40px;
-                            border-style: solid;
-                            border-width: 4px;
-                            border-color: #1f2024;
-                            border-radius: 8px;
-                            background-color: #ACE5D7;
-                            box-shadow: -3px 3px 0 0 #1f2024;
-                            -webkit-transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
-                            transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
-                            transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-                            transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
-                            font-family: right grotesk, sans-serif;
-                            color: #1f2024;
-                            font-size: 1.25em;
-                            text-align: center;
-                            letter-spacing: .12em;
+                        display: inline-block;
+                        padding: 16px 40px;
+                        border-style: solid;
+                        border-width: 4px;
+                        border-color: #1f2024;
+                        border-radius: 8px;
+                        background-color: #ACE5D7;
+                        box-shadow: -3px 3px 0 0 #1f2024;
+                        -webkit-transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+                        transition: background-color 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+                        transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+                        transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease, -webkit-transform 200ms ease;
+                        font-family: right grotesk, sans-serif;
+                        color: #1f2024;
+                        font-size: 1.25em;
+                        text-align: center;
+                        letter-spacing: .12em;
                     }
                 </style>
 
 
-                <i style="font-size: 10px;">Teste agora o <?= $nomeUnico ?>!</i>
+                <i style="font-size: 10px;">Teste agora o
+                    <?= $nomeUnico ?>!
+                </i>
             </div>
             <div id="wins" style="
                 display: block;
@@ -230,10 +213,11 @@ $saldo = 10
             ">
 
                 <?php
-                function obterNumeroAleatorio() {
-                $numeroAleatorio = rand(500, 1000);
+                function obterNumeroAleatorio()
+                {
+                    $numeroAleatorio = rand(500, 1000);
 
-                return $numeroAleatorio;
+                    return $numeroAleatorio;
                 }
 
                 $numero = obterNumeroAleatorio();
@@ -241,7 +225,9 @@ $saldo = 10
                 ?>
 
 
-                Usuários Online:<br class="jWQDfMST8B"> <?php echo $numero; ?> </div>
+                Usuários Online:<br class="jWQDfMST8B">
+                <?php echo $numero; ?>
+            </div>
 
 
 
@@ -249,12 +235,17 @@ $saldo = 10
         <section id="mint" class="mint-section wf-section">
             <div class="minting-container w-container">
                 <img src="arquivos/jake.gif" loading="lazy" width="240" alt="" class="mint-card-image">
-                <h2><?= $nomeUnico ?></h2>
-                <p class="paragraph">Bem-vindo ao mundo emocionante de <?= $nomeUnico ?>!
+                <h2>
+                    <?= $nomeUnico ?>
+                </h2>
+                <p class="paragraph">Bem-vindo ao mundo emocionante de
+                    <?= $nomeUnico ?>!
                     Prepare-se para uma aventura eletrizante nos trilhos, onde cada curva guarda a promessa de fortuna.
                     Desvie dos obstáculos, colete moedas reluzentes e desbloqueie novos percursos enquanto corre em
                     busca da riqueza. Sua jornada pela cidade começa agora – acelere, desfrute e acumule sua fortuna nos
-                    trilhos de <?= $nomeUnico ?>!. </p>
+                    trilhos de
+                    <?= $nomeUnico ?>!.
+                </p>
 
 
                 <a href="../painel" class="primary-button hero w-button">JOGAR AGORA</a>
@@ -285,7 +276,9 @@ $saldo = 10
             <div class="question first">
                 <img src="arquivos/60f988c9d3d37e14794eca22_head 25.svg" loading="lazy" width="110" alt="">
                 <h3>Como funciona?</h3>
-                <div><?= $nomeUnico ?> é o mais novo jogo divertido e lucrativo da galera! Lembra daquele joguinho de surfar
+                <div>
+                    <?= $nomeUnico ?> é o mais novo jogo divertido e lucrativo da galera! Lembra daquele joguinho de
+                    surfar
                     por cima dos trens que todo mundo era viciado? Ele voltou e agora dá para ganhar dinheiro de
                     verdade, mas cuidado com os obstáculos para você garantir o seu prêmio. É super simples, surf,
                     desvie dos obstáculos e colete seus prêmios.
@@ -313,7 +306,8 @@ $saldo = 10
                 <img src="arquivos/60fa004b7690e70dded91f9a_light.svg" loading="lazy" width="80" alt="">
                 <h3>É tipo foguetinho?</h3>
                 <div>
-                    <b>Não</b>! <?= $nomeUnico ?> é totalmente diferente, basta apenas estar atento para desviar dos
+                    <b>Não</b>!
+                    <?= $nomeUnico ?> é totalmente diferente, basta apenas estar atento para desviar dos
                     obstáculos na hora certa. Não existe sua sorte em jogo, basta ter foco e completar o percurso
                     até resgatar o máximo de moedas que conseguir.
                 </div>
@@ -356,10 +350,13 @@ $saldo = 10
                         <li>Seu amigo deve se inscrever através do seu link de convite pessoal. </li>
                         <li>Seu amigo deve ter depositado pelo menos R$25.00 BRL para receber o prêmio do convite.
                         </li>
-                        <li>Você não pode criar novas contas na <?= $nomeUnico ?> e se inscrever através do seu próprio link
+                        <li>Você não pode criar novas contas na
+                            <?= $nomeUnico ?> e se inscrever através do seu próprio link
                             para receber a recompensa. O programa Indique um Amigo é feito para nossos jogadores
-                            convidarem amigos para a plataforma <?= $nomeUnico ?>. Qualquer outro uso deste programa é
-                            estritamente proibido. </li>
+                            convidarem amigos para a plataforma
+                            <?= $nomeUnico ?>. Qualquer outro uso deste programa é
+                            estritamente proibido.
+                        </li>
                     </ol>
                     <p>‍</p>
                 </div>
@@ -416,35 +413,40 @@ $saldo = 10
     </div>
 
     <div class="footer-section wf-section">
-        <div class="domo-text"><?= $nomeUm ?> <br>
+        <div class="domo-text">
+            <?= $nomeUm ?> <br>
         </div>
-        <div class="domo-text purple"><?= $nomeDois ?> <br>
+        <div class="domo-text purple">
+            <?= $nomeDois ?> <br>
         </div>
-    <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117, accredited by license GLH-16289876512. </div>
+        <div class="follow-test">© Copyright xlk Limited, with registered offices at Dr. M.L. King Boulevard 117,
+            accredited by license GLH-16289876512. </div>
         <div class="follow-test">
-          <a href="/legal">
-            <strong class="bold-white-link">Termos de uso</strong>
-          </a>
+            <a href="/legal">
+                <strong class="bold-white-link">Termos de uso</strong>
+            </a>
         </div>
-          <div class="follow-test">contato@<?php
-$nomeUnico = strtolower(str_replace(' ', '', $nomeUnico));
-echo $nomeUnico;
-?>.com</div>
-      </div>
+        <div class="follow-test">contato@
+            <?php
+                                            $nomeUnico = strtolower(str_replace(' ', '', $nomeUnico));
+                                            echo $nomeUnico;
+                                            ?>.com
+        </div>
+    </div>
 
 
 
 
     <div id="imageDownloaderSidebarContainer">
         <div class="image-downloader-ext-container">
-            <div tabindex="-1" class="b-sidebar-outer"><!---->
+            <div tabindex="-1" class="b-sidebar-outer">
                 <div id="image-downloader-sidebar" tabindex="-1" role="dialog" aria-modal="false" aria-hidden="true"
                     class="b-sidebar shadow b-sidebar-right bg-light text-dark" style="width: 500px; display: none;">
-                    <!---->
+
                     <div class="b-sidebar-body">
                         <div></div>
-                    </div><!---->
-                </div><!----><!---->
+                    </div>
+                </div>
             </div>
         </div>
     </div>

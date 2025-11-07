@@ -1,33 +1,19 @@
 <?php
 session_start();
 
-
+$email = "influencer@mail.com";
+$saldo = 1;
 ?>
 
 
+<?php if (isset($_GET["msg"])) {
+    $valor = $_GET["msg"];
 
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
-$email = 'influencer@mail.com';
-$saldo = 1
-
-    ?>
-
-
-<?php
-if (isset($_GET['msg'])) {
-    $valor = $_GET['msg'];
-
-    if ($valor === 0 || $valor === null || $valor === '') {
-        $valor = 0.00;
+    if ($valor === 0 || $valor === null || $valor === "") {
+        $valor = 0.0;
     }
 }
 ?>
-
 
 
 
@@ -83,13 +69,13 @@ if (isset($_GET['msg'])) {
 
 
     <script>
-        
+
         let betInfluencer = localStorage.getItem('betInfluencer');
         let saldoInfluencer = localStorage.getItem('saldoInfluencer');
-        
+
         let newSaldoInfluencer = Number(saldoInfluencer) - Number(betInfluencer)
         localStorage.setItem('saldoInfluencer', newSaldoInfluencer)
-        
+
     </script>
 
 
@@ -138,21 +124,6 @@ if (isset($_GET['msg'])) {
             background-color: #0f9bd8;
         }
     </style>
-
-    <!--<div class="overlay" id="overlay"></div>-->
-    <!--<div id="popup" class="minting-container w-container"-->
-    <!--    style=" z-index: 200; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">-->
-    <!--    <div class="popup-content">-->
-    <!--        <h2 class="win-warn" style="display: flex;">Excelente!</h2>-->
-    <!--        <p>Parabéns campeão, você ganhou <strong>R$-->
-    <!--                <?php echo $valor; ?>-->
-    <!--            </strong> de Bônus no seu Primeiro deposito </p>-->
-    <!--        <p>Continue assim, <strong>faça seu cadastro!</strong></p>-->
-    <!--    </div>-->
-    <!--    <button class="popup-button" onclick="closePopup()">OK</button>-->
-    <!--</div>-->
-
-
 
 
 
@@ -212,7 +183,6 @@ if (isset($_GET['msg'])) {
                     </strong>
                 </p>
                 <p>Faça mais uma tentativa, você foi melhor que 86% dos jogadores. #ficadica!</p>
-                <!--<strong style="margin-top: 20px"> ⬇️ Clique no Botão Abaixo</strong>-->
 
                 <a href="/influencer/" class="cadastro-btn">OK</a>
 
@@ -368,5 +338,9 @@ if (isset($_GET['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

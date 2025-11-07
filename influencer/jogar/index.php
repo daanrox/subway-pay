@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script type="text/javascript">
         const aposta = 5;
@@ -10,7 +11,8 @@
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="viewport" content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
+    <meta name="viewport"
+        content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
     <meta name="description" content="">
 
     <link rel="manifest" href="subwaysurfers.webmanifest">
@@ -23,7 +25,8 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Subway Pay 🌊</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             height: 100%;
             background-color: #0b316b;
@@ -55,49 +58,60 @@
             animation: showHideDot 2.5s ease-in-out infinite;
         }
 
-        .dot.one { animation-delay: 0.2s; }
-        .dot.two { animation-delay: 0.4s; }
-        .dot.three { animation-delay: 0.6s; }
+        .dot.one {
+            animation-delay: 0.2s;
+        }
+
+        .dot.two {
+            animation-delay: 0.4s;
+        }
+
+        .dot.three {
+            animation-delay: 0.6s;
+        }
 
         @keyframes showHideDot {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            60% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            60% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
+
         button#sair {
             position: absolute;
             display: none;
             top: 135px;
             left: calc(50% - 130px);
-            padding:.85rem 2.8rem;
+            padding: .85rem 2.8rem;
             line-height: 32px;
             font-size: 18px;
             text-align: center;
-            font-weight:700;
+            font-weight: 700;
             color: white;
             background-color: #1fbffe;
-            box-shadow:-3px 3px 0 0 #1f2024;
-            border:4px solid #1f2024;
-            border-radius:8px;
-            transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease;
+            box-shadow: -3px 3px 0 0 #1f2024;
+            border: 4px solid #1f2024;
+            border-radius: 8px;
+            transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease;
             z-index: 100000;
             cursor: pointer;
         }
     </style>
 </head>
+
 <body>
-    <button id="sair" >ENCERRAR APOSTA</button>
-
-   
-    
-    
-    
-    
-  
-
-
-
+    <button id="sair">ENCERRAR APOSTA</button>
 
     <script>
         window.NOSW = true;
@@ -106,15 +120,17 @@
             bundlesPath: './bundles',
         }
     </script>
-    
-    
+
+
     <div id="message">
         <h1>Loading</h1>
-        <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+        <h1 class="dot one">.</h1>
+        <h1 class="dot two">.</h1>
+        <h1 class="dot three">.</h1>
     </div>
     <script src="js/loading.js"></script>
     <script src="js/boot.js?v=<?php echo time(); ?>"></script>
     <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
 </body>
-</html>
 
+</html>

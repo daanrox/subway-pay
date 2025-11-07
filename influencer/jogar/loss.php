@@ -1,36 +1,18 @@
 <?php
 session_start();
 
-
+$email = "influencer@mail.com";
+$saldo = 1;
 ?>
 
 
+<?php if (isset($_GET["msg"])) {
+    $valor = $_GET["msg"];
 
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
-$email = 'influencer@mail.com';
-$saldo = 1
-
-    ?>
-
-
-<?php
-if (isset($_GET['msg'])) {
-    $valor = $_GET['msg'];
-
-    if ($valor === 0 || $valor === null || $valor === '') {
-        $valor = 0.00;
+    if ($valor === 0 || $valor === null || $valor === "") {
+        $valor = 0.0;
     }
-}
-?>
-
-
-
-
+} ?>
 
 <!DOCTYPE html>
 
@@ -111,7 +93,7 @@ if (isset($_GET['msg'])) {
                 <div class="escudo">
                     <img src="arquivos/trophy.gif">
                 </div>
-                <h2>VOCÊ PERDEU</H2> 
+                <h2>VOCÊ PERDEU</H2>
                 <h2>NÃO DESANIME!</h2>
                 <p class="win-warn"><strong>Você poderia ter ganho incríveis R$
                         <?php echo $valor; ?>
@@ -274,5 +256,9 @@ if (isset($_GET['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

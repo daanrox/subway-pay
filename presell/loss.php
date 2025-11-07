@@ -1,21 +1,10 @@
 <?php
 session_start();
 
-
-?>
-
-
-
-
-<?php
-// Iniciar ou resumir a sessão
-session_start();
-
-// Obtém o email da sessão
 $email = 'influencer@mail.com';
 $saldo = 1
 
-    ?>
+?>
 
 
 <?php
@@ -27,9 +16,6 @@ if (isset($_GET['msg'])) {
     }
 }
 ?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -172,7 +158,8 @@ if (isset($_GET['msg'])) {
     <div>
 
 
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"
+            style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important;">
 
             <style>
                 div.escudo {
@@ -360,5 +347,9 @@ if (isset($_GET['msg'])) {
                             opacity: 1;
                         }
                     }
+                </style>
+            </div>
+        </div>
+</body>
 
-                    </st></div></div></body></html>
+</html>

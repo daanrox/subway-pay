@@ -1,75 +1,69 @@
 <!DOCTYPE html>
 
-<?php 
-session_start();
 
-include './../config.php';
-
-?>
 <html lang="en">
 
 <head>
 
-    
-<script>
+
+    <script>
         let statusPage = localStorage.getItem('realBetPage');
-        if (statusPage === 'false'){
+        if (statusPage === 'false') {
             window.location.href = '../painel/';
-            
+
         }
-        
-        
-        
+
+
+
         window.addEventListener('pageshow', function (event) {
-    // Verificar o localStorage quando a página for exibida ou recarregada
-    var statusPage2 = localStorage.getItem("realBetPage");
+            var statusPage2 = localStorage.getItem("realBetPage");
 
-    if (statusPage2 === "false") {
-        window.location.href = '../painel/';
-    }
-    
-    if(!statusPage2){
-        window.location.href= '../painel/';
-    }
-});
-        
-</script>
-    
-   <script type="text/javascript">
-    function extrairvalorAposta() {
-        var url = window.location.href;
-        var match = url.match(/jogarsubway=(\d+BC)/);
-
-        if (match) {
-            var valorAposta = match[1];
-            var valorMapeado;
-            switch (valorAposta) {
-                case '1BC':
-                    valorMapeado = 1;
-                    break;
-                case '2BC':
-                    valorMapeado = 2;
-                    break;
-                case '3BC':
-                    valorMapeado = 5;
-                    break;
-                default:
-                    window.location.href = '/painel';
-                    return; 
+            if (statusPage2 === "false") {
+                window.location.href = '../painel/';
             }
 
-            return valorMapeado;
-        } else {
-            window.location.href = '/painel';
+            if (!statusPage2) {
+                window.location.href = '../painel/';
+            }
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        function extrairvalorAposta() {
+            var url = window.location.href;
+            var match = url.match(/jogarsubway=(\d+BC)/);
+
+            if (match) {
+                var valorAposta = match[1];
+                var valorMapeado;
+                switch (valorAposta) {
+                    case '1BC':
+                        valorMapeado = 1;
+                        break;
+                    case '2BC':
+                        valorMapeado = 2;
+                        break;
+                    case '3BC':
+                        valorMapeado = 5;
+                        break;
+                    default:
+                        window.location.href = '/painel';
+                        return;
+                }
+
+                return valorMapeado;
+            } else {
+                window.location.href = '/painel';
+            }
         }
-    }
 
-    
-    var valorAposta = extrairvalorAposta();
-    const aposta = valorAposta;
-</script>
 
-    
+        var valorAposta = extrairvalorAposta();
+        const aposta = valorAposta;
+    </script>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -84,7 +78,9 @@ include './../config.php';
     <link rel="apple-touch-icon-precomposed" href="assets/images/app-icon-57.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta name="robots" content="noindex,nofollow" />
-    <title><?php echo $title_site; ?></title>
+    <title>
+        <?php echo $title_site; ?>
+    </title>
     <style>
         body,
         html {
@@ -154,17 +150,17 @@ include './../config.php';
             display: none;
             top: 135px;
             left: calc(50% - 130px);
-            padding:.85rem 2.8rem;
+            padding: .85rem 2.8rem;
             line-height: 32px;
             font-size: 18px;
             text-align: center;
-            font-weight:700;
+            font-weight: 700;
             color: white;
             background-color: #1fbffe;
-            box-shadow:-3px 3px 0 0 #1f2024;
-            border:4px solid #1f2024;
-            border-radius:8px;
-            transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease;
+            box-shadow: -3px 3px 0 0 #1f2024;
+            border: 4px solid #1f2024;
+            border-radius: 8px;
+            transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease;
             z-index: 100000;
         }
     </style>
