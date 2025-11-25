@@ -1,4 +1,19 @@
 <?php
+ini_set("display_errors", 1);
+ini_set("display_startup_erros", 1);
+error_reporting(E_ALL);
+
+session_start();
+
+
+function validateForm($input)
+{
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    return $input;
+}
+
 include "../conectarbanco.php";
 
 $conn = new mysqli(
@@ -9,165 +24,43 @@ $conn = new mysqli(
 );
 
 if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
+    $errorMsg = "Erro na conexão com o banco de dados: " . $conn->connect_error;
+    die($errorMsg);
 }
 
-$sql = "SELECT nome_unico, nome_um, nome_dois FROM app";
+$sql = "SELECT nome_unico, nome_um, nome_dois, cpa, revenue_share FROM app LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-
     $nomeUnico = $row["nome_unico"];
     $nomeUm = $row["nome_um"];
     $nomeDois = $row["nome_dois"];
+    $cpa = $row["cpa"];
+    $plano = $row["revenue_share"];
 } else {
-    return false;
+    $nomeUnico = "Sistema";
+    $nomeUm = "Nome Um";
+    $nomeDois = "Nome Dois";
+    $cpa = 0;
+    $plano = "basic";
 }
 
-$conn->close();
-?>
-
-<?php
-$baseUrl =
-    isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http";
-$baseUrl .= "://" . $_SERVER["HTTP_HOST"];
-
-$staticPart = "/cadastrar/?aff=";
-
-$callbackUrl = $baseUrl . $staticPart;
-
-echo "<script>";
-echo 'console.log("Callback URL:", ' . json_encode($callbackUrl) . ");"; 
-echo "var callbackUrl = " . json_encode($callbackUrl) . ";";
-echo "</script>";
-?>
-
-
-
-<?php
-ini_set("display_errors", 1);
-ini_set("display_startup_erros", 1);
-error_reporting(E_ALL);
-
-session_start();
-
-function validateForm($input)
-{
-    $input = trim($input);
-    $input = stripslashes($input);
-    $input = htmlspecialchars($input);
-    return $input;
-}
-
-include "./../conectarbanco.php";
-
-$conn = new mysqli(
-    "localhost",
-    $config["db_user"],
-    $config["db_pass"],
-    $config["db_name"]
-);
-
-if ($conn->connect_error) {
-    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
-}
-
-function getParamFromUrl($url, $paramName)
-{
-    parse_str(parse_url($url, PHP_URL_QUERY), $op);
-    return array_key_exists($paramName, $op) ? $op[$paramName] : "";
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = validateForm($_POST["email"]);
-    $senha = validateForm($_POST["senha"]);
-    $telefone = validateForm($_POST["telefone_confirmation"]);
-    $leadAff = isset($_POST["lead_aff"])
-        ? validateForm($_POST["lead_aff"])
-        : "";
-
-    if (emailExists($email, $conn)) {
-        $errorMessage = "Já existe uma conta com esse e-mail.";
-    } else {
-        $getNextIdQuery = "SELECT MAX(id) AS max_id FROM appconfig";
-        $nextIdResult = $conn->query($getNextIdQuery);
-        $nextIdRow = $nextIdResult->fetch_assoc();
-        $nextId = $nextIdRow["max_id"] + 1;
-
-        while (idExists($nextId, $conn)) {
-            $nextId++;
-        }
-
-        $cpaValue = "SELECT cpa, revenue_share FROM app";
-        $cpaStmt = $conn->prepare($cpaValue);
-
-        if ($cpaStmt) {
-            $cpaStmt->execute();
-            $cpaStmt->bind_result($cpa, $plano);
-            $cpaStmt->fetch();
-            $cpaStmt->close();
-        }
-
-        $saldo = 0;
-
-        $saldo_comissao = 0; 
-
-        $linkAfiliado = $callbackUrl . $nextId;
-
-        $dataCadastro = new DateTime(
-            "now",
-            new DateTimeZone("America/Sao_Paulo")
-        );
-        $dataCadastroFormatada = $dataCadastro->format("d-m-Y H:i");
-
-        $afiliado = isset($_GET["aff"]) ? $_GET["aff"] : "";
-
-        $insertQuery = "INSERT INTO appconfig (id,cpa, email, senha, telefone, saldo, lead_aff, linkafiliado, indicados, plano, saldo_comissao, data_cadastro, afiliado) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param(
-            "iisssissiiss",
-            $nextId,
-            $cpa,
-            $email,
-            $senha,
-            $telefone,
-            $saldo,
-            $leadAff,
-            $linkAfiliado,
-            $plano,
-            $saldo_comissao,
-            $dataCadastroFormatada,
-            $afiliado
-        );
-
-        if ($stmt->execute()) {
-            $_SESSION["email"] = $email;
-
-            header("Location: /deposito");
-            exit();
-        } else {
-            $errorMessage =
-                "Erro ao inserir dados na tabela 'appconfig': " . $stmt->error;
-        }
-
-        $stmt->close();
-        $nextIdResult->close();
-    }
-}
+$baseUrl = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on" ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"];
+$callbackUrl = $baseUrl . "/cadastrar/?aff=";
 
 function idExists($id, $conn)
 {
     $checkIdQuery = "SELECT id FROM appconfig WHERE id = ?";
     $checkIdStmt = $conn->prepare($checkIdQuery);
-    $checkIdStmt->bind_param("i", $id);
+    $checkIdStmt->bind_param("s", $id);
     $checkIdStmt->execute();
     $checkIdStmt->store_result();
     $exists = $checkIdStmt->num_rows > 0;
     $checkIdStmt->close();
     return $exists;
 }
+
 function emailExists($email, $conn)
 {
     $checkEmailQuery = "SELECT email FROM appconfig WHERE email = ?";
@@ -179,7 +72,92 @@ function emailExists($email, $conn)
     $checkEmailStmt->close();
     return $exists;
 }
-$conn->close();
+
+$errorMessage = "";
+$successMessage = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $email = validateForm($_POST["email"]);
+    $senha = validateForm($_POST["senha"]);
+    $confirmarSenha = validateForm($_POST["password_confirmation"]);
+    $telefone = validateForm($_POST["telefone_confirmation"]);
+    $leadAff = isset($_POST["lead_aff"]) ? validateForm($_POST["lead_aff"]) : "";
+    
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errorMessage = "E-mail inválido.";
+    } elseif ($senha !== $confirmarSenha) {
+        $errorMessage = "As senhas não coincidem.";
+    } elseif (strlen($senha) < 6) {
+        $errorMessage = "A senha deve ter pelo menos 6 caracteres.";
+    } elseif (emailExists($email, $conn)) {
+        $errorMessage = "Já existe uma conta com esse e-mail.";
+    } else {
+        
+        $getNextIdQuery = "SELECT MAX(CAST(id AS UNSIGNED)) AS max_id FROM appconfig";
+        $nextIdResult = $conn->query($getNextIdQuery);
+        if ($nextIdResult) {
+            $nextIdRow = $nextIdResult->fetch_assoc();
+            $nextId = ($nextIdRow["max_id"] ?? 0) + 1;
+        } else {
+            $nextId = 1;
+        }
+
+        while (idExists($nextId, $conn)) {
+            $nextId++;
+        }
+
+        $saldo = "0";
+        $saldo_comissao = "0";
+        $linkAfiliado = $callbackUrl . $nextId;
+        
+        $dataCadastro = new DateTime("now", new DateTimeZone("America/Sao_Paulo"));
+        $dataCadastroFormatada = $dataCadastro->format("d-m-Y H:i");
+        
+        $afiliado = isset($_GET["aff"]) ? $_GET["aff"] : "";
+        
+
+        $insertQuery = "INSERT INTO appconfig (id, cpa, email, senha, telefone, saldo, lead_aff, linkafiliado, indicados, plano, saldo_comissao, data_cadastro, afiliado) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, ?, ?)";
+        
+        $stmt = $conn->prepare($insertQuery);
+        
+        if ($stmt) {            
+            $stmt->bind_param(
+                "ssssssssssss",
+                $nextId,
+                $cpa,
+                $email,
+                $senha,
+                $telefone,
+                $saldo,
+                $leadAff,
+                $linkAfiliado,
+                $plano,
+                $saldo_comissao,
+                $dataCadastroFormatada,
+                $afiliado
+            );
+            
+            if ($stmt->execute()) {
+                $_SESSION["email"] = $email;
+                $_SESSION["user_id"] = $nextId;
+                
+                header("Location: /deposito");
+                exit();
+            } else {
+                $errorMessage = "Erro ao cadastrar usuário: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            $errorMessage = "Erro ao preparar a consulta: " . $conn->error;
+        }
+        if (isset($nextIdResult)) {
+            $nextIdResult->close();
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -198,21 +176,14 @@ $conn->close();
         <?= $nomeUnico ?> 🌊
     </title>
     <meta property="og:image" content="../img/logo.png">
-
-
     <meta content="<?= $nomeUnico ?> 🌊" property="og:title">
-
     <meta name="twitter:image" content="../img/logo.png">
     <meta content="<?= $nomeUnico ?> 🌊" property="twitter:title">
-
     <meta property="og:type" content="website">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="arquivos/page.css" rel="stylesheet" type="text/css">
     <script src="arquivos/webfont.js" type="text/javascript"></script>
-
-
-
     <script type="text/javascript">
         WebFont.load({
             google: {
@@ -220,37 +191,59 @@ $conn->close();
             }
         });
     </script>
-
-
-
-
     <link rel="apple-touch-icon" sizes="180x180" href="../img/logo.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../img/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../img/logo.png">
-
-
     <link rel="icon" type="image/x-icon" href="../img/logo.png">
-
-    <?php include "../pixels.php"; ?>
-
-
+    <style>
+        .notification-container {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        .success-message {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        .nav-bar {
+            display: none;
+            background-color: #333;
+            padding: 20px;
+            width: 90%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .nav-bar a.login {
+            color: white;
+        }
+        .button.w-button {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-
-
     <div>
-
-
-
         <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
             <div class="container w-container">
-
-
-
                 <a href="../" aria-current="page" class="brand w-nav-brand" aria-label="home">
                     <img src="arquivos/l2.png" loading="lazy" height="28" alt="" class="image-6">
-
                     <div class="nav-link logo">
                         <?= $nomeUnico ?>
                     </div>
@@ -260,41 +253,7 @@ $conn->close();
                     <a href="../login/" class="nav-link w-nav-link" style="max-width: 940px;">Login</a>
                     <a href="../cadastrar/" class="button nav w-button w--current">Cadastrar</a>
                 </nav>
-
                 <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
-
-
-
-                <style>
-                    .nav-bar {
-                        display: none;
-                        background-color: #333;
-                        padding: 20px;
-                        width: 90%;
-
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        z-index: 1000;
-                    }
-
-                    .nav-bar a {
-                        color: white;
-                        text-decoration: none;
-                        padding: 10px;
-                        display: block;
-                        margin-bottom: 10px;
-                    }
-
-                    .nav-bar a.login {
-                        color: white;
-                    }
-
-                    .button.w-button {
-                        text-align: center;
-                    }
-                </style>
-
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         var menuButton = document.querySelector('.menu-button');
@@ -309,15 +268,6 @@ $conn->close();
                         });
                     });
                 </script>
-
-
-
-
-
-
-
-
-
                 <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button"
                     tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
                 </div>
@@ -340,10 +290,6 @@ $conn->close();
         <section id="hero" class="hero-section dark wf-section"
             style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
             <div class="minting-container w-container">
-
-
-
-
                 <img src="arquivos/Kcykfsq.png" loading="lazy" width="240"
                     data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
                 <h2>CADASTRO</h2>
@@ -351,38 +297,29 @@ $conn->close();
                     <br>
                 </p>
 
-
-
                 <?php 
-if (!empty($errorMessage)) {
-    echo '<div class="notification-container error-message">' .
-        $errorMessage .
-        "</div>";
-} elseif (!empty($successMessage)) {
-    echo '<div class="notification-container success-message">' .
-        $successMessage .
-        "</div>";
-} ?>
+                if (!empty($errorMessage)) {
+                    echo '<div class="notification-container error-message">' .
+                        $errorMessage .
+                        "</div>";
+                } elseif (!empty($successMessage)) {
+                    echo '<div class="notification-container success-message">' .
+                        $successMessage .
+                        "</div>";
+                } ?>
 
-
-
-                <form method="POST" action="<?php echo $_SERVER[" REQUEST_URI"]; ?>">
-
-
-                    <script
-                        src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.7.24/libphonenumber-js.min.js"></script>
-
+                <form method="POST" action="">
                     <div class="properties">
                         <h4 class="rarity-heading">E-mail</h4>
                         <div class="rarity-row roboto-type2">
                             <input type="e-mail" class="large-input-field w-input" maxlength="256" name="email"
-                                placeholder="seuemail@gmail.com" id="email" required>
+                                placeholder="seuemail@gmail.com" id="email" required value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
                         </div>
                         <h4 class="rarity-heading">Telefone</h4>
                         <div class="rarity-row roboto-type2">
                             <input type="tel" class="large-input-field w-input" maxlength="15" minlength: "15"
                                 name="telefone_confirmation" placeholder="(XX) 9XXXX-XXXX" id="telefone_confirmation"
-                                required>
+                                required value="<?= isset($_POST['telefone_confirmation']) ? $_POST['telefone_confirmation'] : '' ?>">
                         </div>
                         <h4 class="rarity-heading">Senha</h4>
                         <div class="rarity-row roboto-type2">
@@ -393,58 +330,40 @@ if (!empty($errorMessage)) {
                         <div class="rarity-row roboto-type2">
                             <input type="password" class="large-input-field w-input" maxlength="256"
                                 name="password_confirmation" data-name="password" placeholder="Confirme sua senha"
-                                id="myInput" required>
+                                id="password_confirmation" required>
 
-                            <input type="hidden" name="lead_aff" id="lead_aff" value="">
+                            <input type="hidden" name="lead_aff" id="lead_aff" value="<?= isset($_GET['aff']) ? $_GET['aff'] : '' ?>">
                         </div>
                         <br>
-
-
-
-
-
                         <input type="checkbox" onclick="mostrarSenha()"> Mostrar senha
                     </div>
-
 
                     <script>
                         function mostrarSenha() {
                             var senhaInput = document.getElementById('senha');
+                            var confirmInput = document.getElementById('password_confirmation');
                             if (senhaInput.type === 'password') {
                                 senhaInput.type = 'text';
+                                confirmInput.type = 'text';
                             } else {
                                 senhaInput.type = 'password';
+                                confirmInput.type = 'password';
                             }
                         }
-                    </script>
 
-
-                    <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             const urlParams = new URLSearchParams(window.location.search);
                             const leadAff = urlParams.get('aff');
-
                             document.getElementById('lead_aff').value = leadAff;
                         });
-
-
                     </script>
-
-
 
                     <div class="">
                         <button type="submit" class="primary-button w-button">
                             <i class="fa fa-check fa-fw"></i>
                             Criar Conta
                         </button><br>
-
-
                         <p class="medium-paragraph _3-2vw-margin">Ao registrar você concorda com os
-
-
-
-
-
                             <a href="../terms">termos de serviço</a> e que possui pelo menos 18 anos.
                         </p>
                     </div>
@@ -462,27 +381,6 @@ if (!empty($errorMessage)) {
                 </div>
             </div>
         </div>
-
-        <script>
-
-            document.addEventListener('DOMContentLoaded', function () {
-                var notificationContainer = document.querySelector('.notification-container');
-                var loadingGif = document.querySelector('carregando.gif');
-  
-      <? php if (!empty($successMessage) || !empty($errorMessage)) { ?>
-                    notificationContainer.style.display = 'block';
-      <? php } ?>
-  
- 
-      <? php if (empty($successMessage) && empty($errorMessage)) { ?>
-                    loadingGif.style.display = 'block';
-                    setTimeout(function () {
-                        loadingGif.style.display = 'none';
-                        notificationContainer.style.display = 'block';
-                    }, 2000); 
-      <? php } ?>
-  });
-        </script>
 
         <div class="footer-section wf-section">
             <div class="domo-text">
@@ -505,10 +403,6 @@ if (!empty($errorMessage)) {
           ?>.com
             </div>
         </div>
-
-
-
-
     </div>
     <div id="imageDownloaderSidebarContainer">
         <div class="image-downloader-ext-container">
@@ -525,81 +419,63 @@ if (!empty($errorMessage)) {
     <div style="visibility: visible;">
         <div></div>
         <div>
-
             <style>
                 @-webkit-keyframes ww-51fbc3b8-5830-4bee-ad15-8955338512d0-launcherOnOpen {
                     0% {
                         -webkit-transform: translateY(0px) rotate(0deg);
                         transform: translateY(0px) rotate(0deg);
                     }
-
                     30% {
                         -webkit-transform: translateY(-5px) rotate(2deg);
                         transform: translateY(-5px) rotate(2deg);
                     }
-
                     60% {
                         -webkit-transform: translateY(0px) rotate(0deg);
                         transform: translateY(0px) rotate(0deg);
                     }
-
-
                     90% {
                         -webkit-transform: translateY(-1px) rotate(0deg);
                         transform: translateY(-1px) rotate(0deg);
-
                     }
-
                     100% {
                         -webkit-transform: translateY(-0px) rotate(0deg);
                         transform: translateY(-0px) rotate(0deg);
                     }
                 }
-
                 @keyframes ww-51fbc3b8-5830-4bee-ad15-8955338512d0-launcherOnOpen {
                     0% {
                         -webkit-transform: translateY(0px) rotate(0deg);
                         transform: translateY(0px) rotate(0deg);
                     }
-
                     30% {
                         -webkit-transform: translateY(-5px) rotate(2deg);
                         transform: translateY(-5px) rotate(2deg);
                     }
-
                     60% {
                         -webkit-transform: translateY(0px) rotate(0deg);
                         transform: translateY(0px) rotate(0deg);
                     }
-
-
                     90% {
                         -webkit-transform: translateY(-1px) rotate(0deg);
                         transform: translateY(-1px) rotate(0deg);
-
                     }
-
                     100% {
                         -webkit-transform: translateY(-0px) rotate(0deg);
                         transform: translateY(-0px) rotate(0deg);
                     }
                 }
-
                 @keyframes ww-51fbc3b8-5830-4bee-ad15-8955338512d0-widgetOnLoad {
                     0% {
                         opacity: 0;
                     }
-
                     100% {
                         opacity: 1;
                     }
                 }
-
                 @-webkit-keyframes ww-51fbc3b8-5830-4bee-ad15-8955338512d0-widgetOnLoad {
                     0% {
                         opacity: 0;
                     }
-
                     100% {
                         opacity: 1;
                     }
@@ -613,15 +489,24 @@ if (!empty($errorMessage)) {
             var telefoneInput = document.getElementById('telefone_confirmation');
 
             if (telefoneInput) {
-                telefoneInput.addEventListener('input', function (event) {
-                    var unformattedValue = event.target.value.replace(/\D/g, '');
-                    var formattedValue = new libphonenumber.AsYouType('BR').input(unformattedValue);
-
-                    event.target.value = formattedValue;
+                telefoneInput.addEventListener('input', function (e) {
+                    var value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 11) value = value.substring(0, 11);
+                    
+                    if (value.length > 0) {
+                        if (value.length <= 2) {
+                            value = '(' + value;
+                        } else if (value.length <= 7) {
+                            value = '(' + value.substring(0, 2) + ') ' + value.substring(2);
+                        } else if (value.length <= 11) {
+                            value = '(' + value.substring(0, 2) + ') ' + value.substring(2, 7) + '-' + value.substring(7);
+                        }
+                    }
+                    
+                    e.target.value = value;
                 });
             }
         });
     </script>
 </body>
-
 </html>
