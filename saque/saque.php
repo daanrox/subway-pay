@@ -44,7 +44,7 @@ if ($saldo >= $valor && $valor > 0) {
     $stmt_update_saldo->execute();
     $stmt_update_saldo->close();
 
-    if ($valor <= 5) {
+    if ($valor <= 0) {
         $status = "Concluído";
         $chave_pix = $chavepix;
         $valor_a_pagar = $valor;
@@ -356,7 +356,7 @@ $conn->close();
     </script>
 
     <div>
-        <section id="hero" class="hero-section dark wf-section">
+        <section id="hero" class="hero-section dark wf-section"  style="background-image: url('/af835635b84ba0916d7c0ddd4e0bd25b.jpg') !important; background-attachment: fixed !important; background-position: center; background-size: cover;">
 
 
 
