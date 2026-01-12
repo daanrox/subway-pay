@@ -94,7 +94,6 @@ if (!isset($_SESSION['emailadm'])) {
             </div>
         </div>
 
-
         <script>
             $(document).ready(function () {
                 $.ajax({
@@ -102,41 +101,58 @@ if (!isset($_SESSION['emailadm'])) {
                     method: 'GET',
                     success: function (data) {
                         $('#table-body').empty();
-
+        
                         if (Array.isArray(data)) {
                             data.forEach(function (row) {
+                                var status = row.status;
+                                var statusLower = status.toLowerCase();
+                                
+                                var mostrarBotao = (statusLower !== 'aprovado' && statusLower !== 'rejeitado');
+                                
+                                var acoesHTML = '';
+                                
+                                if (mostrarBotao) {
+                                    acoesHTML = 
+                                        "<div class='d-flex align-items-center'>" +
+                                        "<select class='form-selectatt status-select'>" +
+                                        "<option value='Processando'" + (statusLower === 'processando' ? ' selected' : '') + ">Processando</option>" +
+                                        "<option value='Aprovado'" + (statusLower === 'aprovado' ? ' selected' : '') + ">Aprovado</option>" +
+                                        "<option value='Rejeitado'" + (statusLower === 'rejeitado' ? ' selected' : '') + ">Rejeitado</option>" +
+                                        "</select>" +
+                                        "<button class='btnatt btn-primaryatt btn-atualizar ms-2'>✔</button>" +
+                                        "</div>";
+                                } else {
+                                    acoesHTML = 
+                                        "<div class='text-muted'>" +
+                                        "<small>Nenhuma ação disponível</small>" +
+                                        "</div>";
+                                }
+                                
                                 var newRow = "<tr data-id='" + row.externalreference + "'>" +
                                     "<td>" + row.email + "</td>" +
                                     "<td>" + row.externalreference + "</td>" +
                                     "<td>" + row.destino + "</td>" +
                                     "<td>" + row.chavepix + "</td>" +
                                     "<td>" + row.valor + "</td>" +
-                                    "<td class='status-column'>" + row.status + "</td>" +
-                                    "<td>" +
-                                    "<div class='d-flex align-items-center'>" +
-                                    "<select class='form-selectatt status-select'>" +
-                                    "<option value='Processando'>Processando</option>" +
-                                    "<option value='Aprovado'>Aprovado</option>" +
-                                    "<option value='Rejeitado'>Rejeitado</option>" +
-                                    "</select>" +
-                                    "<button class='btnatt btn-primaryatt btn-atualizar ms-2'>✔</button>" +
-                                    "</div>" +
-                                    "</td>" +
+                                    "<td class='status-column'>" + status + "</td>" +
+                                    "<td>" + acoesHTML + "</td>" +
                                     "</tr>";
-
+        
                                 $('#table-body').append(newRow);
                             });
-
-                            $('.btn-atualizar').on('click', function () {
+        
+                            $('#table-body').on('click', '.btn-atualizar', function () {
                                 console.log("Cliquei no botão para atualizar");
                                 var novoStatus = $(this).siblings('.status-select').val();
                                 var statusColumn = $(this).closest('tr').find('.status-column');
-
                                 var id = $(this).closest('tr').data('id');
-
+        
                                 console.log('ID:', id);
                                 console.log('Novo Status:', novoStatus);
-
+        
+                                var novoStatusLower = novoStatus.toLowerCase();
+                                var removerAcoes = (novoStatusLower === 'aprovado' || novoStatusLower === 'rejeitado');
+        
                                 $.ajax({
                                     url: 'atualizar_status.php',
                                     method: 'POST',
@@ -145,6 +161,11 @@ if (!isset($_SESSION['emailadm'])) {
                                         console.log('Resposta do servidor:', response);
                                         alert(response);
                                         statusColumn.text(novoStatus);
+                                        
+                                        if (removerAcoes) {
+                                            var acoesCell = statusColumn.closest('tr').find('td:last');
+                                            acoesCell.html("<div class='text-muted'><small>Nenhuma ação disponível</small></div>");
+                                        }
                                     },
                                     error: function (xhr, status, error) {
                                         console.log('Erro na requisição AJAX:', status, error);
