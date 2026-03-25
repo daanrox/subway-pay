@@ -327,11 +327,11 @@ $conn->close();
                                 const withdrawName = document.getElementById('withdrawName').value;
                                 const withdrawCPF = document.getElementById('withdrawCPF').value;
                                 const withdrawValue = document.getElementById('withdrawValue').value;
-                                if (withdrawValue < <? php echo $saqueMinimo; ?>) {
+                                if (withdrawValue < <?php echo $saqueMinimo; ?>) {
                                     alert("Saque mínimo: R$<?php echo $saqueMinimo; ?>")
                                     window.location.href = '../painel/'
                                 }
-                                if (withdrawValue >= <? php echo $saqueMinimo; ?>) {
+                                if (withdrawValue >= <?php echo $saqueMinimo; ?>) {
                                     alert("Solicitação de saque realizada!");
                                     const url = ``;
                                     window.location.href = url;
