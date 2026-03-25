@@ -338,9 +338,9 @@ $conn->close();
             window.onload = function () {
                 var saldoDiv = document.getElementById('saldoDiv');
 
-            <? php if (isset($saldo)): ?>
-                    saldoDiv.innerHTML = '<p style='background - color: rgba(0, 0, 0, 0.55); width: 80 %; max - width: 350px; margin: 0 auto; '>SALDO: R$<b class="saldo">' + <? php echo json_encode(number_format($saldo, 2, ',', '.')); ?> + '</b></p>';
-            <? php endif; ?>
+            <?php if (isset($saldo)): ?>
+                    saldoDiv.innerHTML = '<p style='background - color: rgba(0, 0, 0, 0.55); width: 80 %; max - width: 350px; margin: 0 auto; '>SALDO: R$<b class="saldo">' + <?php echo json_encode(number_format($saldo, 2, ',', '.')); ?> + '</b></p>';
+            <?php endif; ?>
         };
         </script>
 
