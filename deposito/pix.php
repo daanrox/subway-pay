@@ -99,6 +99,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 }
 
 
+// Get pix_key from URL parameter
+$pixKey = isset($_GET["pix_key"]) ? $_GET["pix_key"] : "";
 ?>
 
 <!DOCTYPE html>
@@ -979,11 +981,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
     <meta content="summary_large_image" name="twitter:card">
 
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-
-
-
-
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="./arquivos/page.css" rel="stylesheet" type="text/css">
     <link href="./arquivos/alert.css" rel="stylesheet" type="text/css">
@@ -1007,7 +1004,6 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
     <link rel="icon" type="image/png" sizes="32x32" href="./img/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./img/logo.png">
 
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
 
     <style>
@@ -1049,8 +1045,18 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
             padding: 10px;
             border: 5px solid #1fbffe;
             border-radius: 10px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 256px;
+            min-width: 256px;
         }
 
+        #qrcode img {
+            max-width: 100%;
+            height: auto;
+        }
 
         #qr-code-text {
             margin-top: 20px;
@@ -1384,14 +1390,27 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
 
                     <div class="conteiner">
 
-                        <div id="qrcode"></div>
+                        <div id="qrcode">
+                            <?php if (!empty($pixKey)): ?>
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=<?php echo urlencode($pixKey); ?>" 
+                                     alt="QR Code PIX" 
+                                     width="256" 
+                                     height="256">
+                            <?php endif; ?>
+                        </div>
 
                     </div>
 
                     <div class="divqr">
 
 
-                        <div id="qr-code-text"></div>
+                        <div id="qr-code-text">
+                            <?php if (!empty($pixKey)): ?>
+                                PIX Key: <?php echo htmlspecialchars($pixKey); ?>
+                            <?php else: ?>
+                                Chave PIX não encontrada.
+                            <?php endif; ?>
+                        </div>
                         <button id="copy-button">Copiar Código Pix</button>
 
                         <br>
@@ -1411,58 +1430,16 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                     </script>
 
 
-
-
-
-
                     <script>
-                        (function (d, t) {
-                            var BASE_URL = "https://app.chatwoot.com";
-                            var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-                            g.src = BASE_URL + "/packs/js/sdk.js";
-                            g.defer = true;
-                            g.async = true;
-                            s.parentNode.insertBefore(g, s);
-                            g.onload = function () {
-                                window.chatwootSDK.run({
-                                    websiteToken: '=======',
-                                    baseUrl: BASE_URL
-                                })
-                            }
-                        })(document, "script");
-                    </script>
-
-
-
-
-
-
-
-
-
-                    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-
-                    <script>
-                        // Obtenha os parâmetros da URL
                         const urlParams = new URLSearchParams(window.location.search);
                         const pixKey = urlParams.get('pix_key');
 
-                        // Verifique se a chave PIX está presente
                         if (pixKey) {
-                            // Crie uma instância do QRCode
-                            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                                text: pixKey,
-                                width: 256,
-                                height: 256
-                            });
-
-                            // Exiba a chave PIX abaixo do QR code
                             document.getElementById('qr-code-text').innerText = "PIX Key: " + pixKey;
 
-                            // Adicione a funcionalidade de cópia do PIX Key
                             document.getElementById("copy-button").addEventListener("click", function () {
                                 var textArea = document.createElement("textarea");
-                                textArea.value = pixKey; // Adicione a chave PIX como valor
+                                textArea.value = pixKey;
                                 document.body.appendChild(textArea);
                                 textArea.select();
                                 document.execCommand("copy");
@@ -1470,8 +1447,8 @@ if (!empty($externalReference) && !empty($email) && !empty($valor)) {
                                 alert("PIX Key copiada para a área de transferência.");
                             });
                         } else {
-                            // Caso a chave PIX não esteja presente, exiba uma mensagem de erro
                             document.getElementById('qr-code-text').innerText = 'Chave PIX não encontrada.';
+                            document.getElementById('qrcode').innerHTML = '<div style="color: red; text-align: center;">QR Code não disponível</div>';
                         }
                     </script>
 
